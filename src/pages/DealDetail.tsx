@@ -248,9 +248,14 @@ export default function DealDetail() {
             {/* Amount */}
             <Card>
               <CardContent className="p-6 text-center">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Requested Amount</p>
+                <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Requested Credit</p>
                 <p className="font-display font-bold text-4xl text-primary">${Number(request.credit_amount).toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground mt-1">{request.fiscal_year}</p>
+                <p className="text-xs text-muted-foreground mt-2">{request.fiscal_year}</p>
+                <div className="border-t mt-4 pt-4">
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Original Deal Value</p>
+                  <p className="font-display font-bold text-2xl">${(Number(request.credit_amount) * 100).toLocaleString()}</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Credit is ~1% of deal value</p>
+                </div>
               </CardContent>
             </Card>
 

@@ -4,9 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
-  PieChart, Pie, Legend,
+  PieChart, Pie,
 } from "recharts";
 import { DollarSign, Clock, TrendingUp, BarChart3 } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Tables } from "@/integrations/supabase/types";
 
 const TIER_LABELS: Record<string, string> = {
@@ -34,55 +35,43 @@ const PRODUCT_COLORS = [
 
 export default function InternalReports() {
   const [requests, setRequests] = useState<Tables<"credit_requests">[]>([]);
-  const [history, setHistory] = useState<Tables<"status_history">[]>([]);
   const [loading, setLoading] = useState(true);
+  const [productView, setProductView] = useState<"count" | "amount">("count");
 
   useEffect(() => {
     (async () => {
-      const [reqRes, histRes] = await Promise.all([
-        supabase.from("credit_requests").select("*"),
-        supabase.from("status_history").select("*"),
-      ]);
-      setRequests(reqRes.data || []);
-      setHistory(histRes.data || []);
+      const { data } = await supabase.from("credit_requests").select("*");
+      setRequests(data || []);
       setLoading(false);
     })();
   }, []);
 
-  // YTD approved credits by month
   const monthlyData = useMemo(() => {
-    const approved = requests.filter((r) =>
-      ["APPROVED", "PAID_OUT"].includes(r.status)
-    );
+    const approved = requests.filter((r) => ["APPROVED", "PAID_OUT"].includes(r.status));
     const months: Record<string, number> = {};
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    // Initialize all months
     monthNames.forEach((m) => (months[m] = 0));
-
     approved.forEach((r) => {
-      const d = new Date(r.created_at);
-      const key = monthNames[d.getMonth()];
+      const key = monthNames[new Date(r.created_at).getMonth()];
       months[key] += Number(r.credit_amount);
     });
-
     return monthNames.map((m) => ({ month: m, amount: months[m] })).filter((_, i) => i <= new Date().getMonth());
   }, [requests]);
 
-  // Product breakdown
   const productData = useMemo(() => {
-    const counts: Record<string, number> = {};
+    const map: Record<string, { count: number; amount: number }> = {};
     requests.forEach((r) => {
       r.products.forEach((p) => {
-        counts[p] = (counts[p] || 0) + 1;
+        if (!map[p]) map[p] = { count: 0, amount: 0 };
+        map[p].count++;
+        map[p].amount += Number(r.credit_amount);
       });
     });
-    return Object.entries(counts)
-      .map(([name, value]) => ({ name, value }))
-      .sort((a, b) => b.value - a.value);
+    return Object.entries(map)
+      .map(([name, d]) => ({ name, count: d.count, amount: d.amount }))
+      .sort((a, b) => b.amount - a.amount);
   }, [requests]);
 
-  // Tier breakdown
   const tierData = useMemo(() => {
     const counts: Record<string, { count: number; amount: number }> = {};
     requests.forEach((r) => {
@@ -91,33 +80,21 @@ export default function InternalReports() {
       counts[r.tier].amount += Number(r.credit_amount);
     });
     return Object.entries(counts).map(([tier, data]) => ({
-      name: TIER_LABELS[tier] || tier,
-      tier,
-      count: data.count,
-      amount: data.amount,
+      name: TIER_LABELS[tier] || tier, tier, count: data.count, amount: data.amount,
     }));
   }, [requests]);
 
-  // Average time to approval (for APPROVED/PAID_OUT requests)
   const avgApprovalDays = useMemo(() => {
-    const approved = requests.filter((r) =>
-      ["APPROVED", "PAID_OUT"].includes(r.status)
-    );
+    const approved = requests.filter((r) => ["APPROVED", "PAID_OUT"].includes(r.status));
     if (approved.length === 0) return 0;
-
     const durations = approved.map((r) => {
-      const created = new Date(r.created_at).getTime();
-      const updated = new Date(r.updated_at).getTime();
-      return (updated - created) / (1000 * 60 * 60 * 24);
+      return (new Date(r.updated_at).getTime() - new Date(r.created_at).getTime()) / (1000 * 60 * 60 * 24);
     });
-
     return Math.round(durations.reduce((a, b) => a + b, 0) / durations.length);
   }, [requests]);
 
   const totalApprovedYTD = useMemo(() => {
-    return requests
-      .filter((r) => ["APPROVED", "PAID_OUT"].includes(r.status))
-      .reduce((s, r) => s + Number(r.credit_amount), 0);
+    return requests.filter((r) => ["APPROVED", "PAID_OUT"].includes(r.status)).reduce((s, r) => s + Number(r.credit_amount), 0);
   }, [requests]);
 
   const totalRequests = requests.length;
@@ -126,11 +103,7 @@ export default function InternalReports() {
     : 0;
 
   if (loading) {
-    return (
-      <InternalLayout>
-        <div className="p-6 text-center text-muted-foreground py-20">Loading reports...</div>
-      </InternalLayout>
-    );
+    return <InternalLayout><div className="p-6 text-center text-muted-foreground py-20">Loading reports...</div></InternalLayout>;
   }
 
   return (
@@ -143,58 +116,10 @@ export default function InternalReports() {
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-5">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-success/10 flex items-center justify-center">
-                  <DollarSign className="h-5 w-5 text-success" />
-                </div>
-                <div>
-                  <p className="text-2xl font-display font-bold">${(totalApprovedYTD / 1000).toFixed(0)}K</p>
-                  <p className="text-xs text-muted-foreground">Approved YTD</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-5">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <BarChart3 className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-2xl font-display font-bold">{totalRequests}</p>
-                  <p className="text-xs text-muted-foreground">Total Requests</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-5">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-warning/10 flex items-center justify-center">
-                  <Clock className="h-5 w-5 text-warning" />
-                </div>
-                <div>
-                  <p className="text-2xl font-display font-bold">{avgApprovalDays}d</p>
-                  <p className="text-xs text-muted-foreground">Avg Approval Time</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-5">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-accent flex items-center justify-center">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-2xl font-display font-bold">{approvalRate}%</p>
-                  <p className="text-xs text-muted-foreground">Approval Rate</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <Card><CardContent className="p-5"><div className="flex items-center gap-3"><div className="h-10 w-10 rounded-lg bg-success/10 flex items-center justify-center"><DollarSign className="h-5 w-5 text-success" /></div><div><p className="text-2xl font-display font-bold">${(totalApprovedYTD / 1000).toFixed(0)}K</p><p className="text-xs text-muted-foreground">Approved YTD</p></div></div></CardContent></Card>
+          <Card><CardContent className="p-5"><div className="flex items-center gap-3"><div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center"><BarChart3 className="h-5 w-5 text-primary" /></div><div><p className="text-2xl font-display font-bold">{totalRequests}</p><p className="text-xs text-muted-foreground">Total Requests</p></div></div></CardContent></Card>
+          <Card><CardContent className="p-5"><div className="flex items-center gap-3"><div className="h-10 w-10 rounded-lg bg-warning/10 flex items-center justify-center"><Clock className="h-5 w-5 text-warning" /></div><div><p className="text-2xl font-display font-bold">{avgApprovalDays}d</p><p className="text-xs text-muted-foreground">Avg Approval Time</p></div></div></CardContent></Card>
+          <Card><CardContent className="p-5"><div className="flex items-center gap-3"><div className="h-10 w-10 rounded-lg bg-accent flex items-center justify-center"><TrendingUp className="h-5 w-5 text-primary" /></div><div><p className="text-2xl font-display font-bold">{approvalRate}%</p><p className="text-xs text-muted-foreground">Approval Rate</p></div></div></CardContent></Card>
         </div>
 
         {/* Monthly Credits Bar Chart */}
@@ -206,22 +131,11 @@ export default function InternalReports() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={monthlyData} barSize={32}>
                   <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: 12 }}
-                    tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`}
-                  />
-                  <Tooltip
-                    formatter={(value: number) => [`$${value.toLocaleString()}`, "Approved"]}
-                    contentStyle={{ borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }}
-                  />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} />
+                  <Tooltip formatter={(value: number) => [`$${value.toLocaleString()}`, "Approved"]} contentStyle={{ borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }} />
                   <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
                     {monthlyData.map((entry, i) => (
-                      <Cell
-                        key={i}
-                        fill={entry.amount > 0 ? "hsl(231, 48%, 48%)" : "hsl(220, 16%, 90%)"}
-                      />
+                      <Cell key={i} fill={entry.amount > 0 ? "hsl(231, 48%, 48%)" : "hsl(220, 16%, 90%)"} />
                     ))}
                   </Bar>
                 </BarChart>
@@ -232,11 +146,21 @@ export default function InternalReports() {
 
         {/* Bottom Row: Product + Tier */}
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Product Breakdown */}
+          {/* Product Breakdown with count/amount toggle */}
           <Card>
             <CardContent className="p-6">
-              <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Requests by Product</h3>
-              <p className="text-sm text-muted-foreground mb-6">Which Red Hat products drive credit requests</p>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-xs uppercase tracking-wider text-muted-foreground">Requests by Product</h3>
+                <Tabs value={productView} onValueChange={(v) => setProductView(v as "count" | "amount")}>
+                  <TabsList className="h-7">
+                    <TabsTrigger value="count" className="text-[10px] px-2 h-5">Count</TabsTrigger>
+                    <TabsTrigger value="amount" className="text-[10px] px-2 h-5">Dollars</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+              <p className="text-sm text-muted-foreground mb-6">
+                {productView === "count" ? "Number of requests per product" : "Total credit dollars per product"}
+              </p>
               <div className="h-[280px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -246,7 +170,7 @@ export default function InternalReports() {
                       cy="50%"
                       innerRadius={55}
                       outerRadius={90}
-                      dataKey="value"
+                      dataKey={productView === "count" ? "count" : "amount"}
                       strokeWidth={2}
                       stroke="hsl(var(--card))"
                       label={({ name, percent }) =>
@@ -259,19 +183,24 @@ export default function InternalReports() {
                       ))}
                     </Pie>
                     <Tooltip
-                      formatter={(value: number) => [`${value} requests`, "Count"]}
+                      formatter={(value: number) =>
+                        productView === "count"
+                          ? [`${value} requests`, "Count"]
+                          : [`$${value.toLocaleString()}`, "Credit Amount"]
+                      }
                       contentStyle={{ borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }}
                     />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              {/* Legend */}
               <div className="grid grid-cols-2 gap-2 mt-4">
                 {productData.map((p, i) => (
                   <div key={p.name} className="flex items-center gap-2 text-xs">
                     <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: PRODUCT_COLORS[i % PRODUCT_COLORS.length] }} />
                     <span className="truncate text-muted-foreground">{p.name}</span>
-                    <span className="font-semibold ml-auto">{p.value}</span>
+                    <span className="font-semibold ml-auto">
+                      {productView === "count" ? p.count : `$${(p.amount / 1000).toFixed(0)}K`}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -294,20 +223,12 @@ export default function InternalReports() {
                         <span className="text-xs text-muted-foreground">{t.count} requests · ${(t.amount / 1000).toFixed(0)}K</span>
                       </div>
                       <div className="h-3 rounded-full bg-muted overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-500"
-                          style={{
-                            width: `${pct}%`,
-                            backgroundColor: TIER_COLORS[t.tier] || "hsl(231, 48%, 48%)",
-                          }}
-                        />
+                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: TIER_COLORS[t.tier] || "hsl(231, 48%, 48%)" }} />
                       </div>
                     </div>
                   );
                 })}
               </div>
-
-              {/* Tier summary cards */}
               <div className="grid grid-cols-3 gap-3 mt-8">
                 {tierData.map((t) => (
                   <div key={t.tier} className="text-center p-3 rounded-lg bg-muted/50">

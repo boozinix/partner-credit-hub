@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { InternalLayout } from "@/components/layouts/InternalLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, User, AlertTriangle } from "lucide-react";
@@ -38,15 +38,25 @@ export default function InternalUsers() {
   const toggleOOO = async (approver: Tables<"approvers">) => {
     setToggling(approver.id);
     const newStatus = !approver.is_ooo;
-    await supabase.from("approvers").update({ is_ooo: newStatus }).eq("id", approver.id);
+    // If turning off OOO, clear delegate
+    const updates: any = { is_ooo: newStatus };
+    if (!newStatus) updates.ooo_delegate_id = null;
+    await supabase.from("approvers").update(updates).eq("id", approver.id);
     toast({
       title: newStatus ? `${approver.name} marked OOO` : `${approver.name} back from OOO`,
       description: newStatus
-        ? "Requests will be routed to their delegate."
+        ? "Select a delegate to handle their approvals."
         : "Requests will be routed normally.",
     });
     await fetchApprovers();
     setToggling(null);
+  };
+
+  const setDelegate = async (approverId: string, delegateId: string) => {
+    await supabase.from("approvers").update({ ooo_delegate_id: delegateId }).eq("id", approverId);
+    const delegate = approvers.find((a) => a.id === delegateId);
+    toast({ title: "Delegate assigned", description: `Requests will be routed to ${delegate?.name}.` });
+    await fetchApprovers();
   };
 
   const getDelegate = (id: string | null) => {
@@ -81,6 +91,7 @@ export default function InternalUsers() {
               ) : (
                 approvers.map((a) => {
                   const delegate = getDelegate(a.ooo_delegate_id);
+                  const otherApprovers = approvers.filter((o) => o.id !== a.id);
                   return (
                     <TableRow key={a.id}>
                       <TableCell>
@@ -110,8 +121,22 @@ export default function InternalUsers() {
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">{a.email}</TableCell>
                       <TableCell>
-                        {delegate ? (
-                          <span className="text-sm">{delegate.name}</span>
+                        {a.is_ooo ? (
+                          <Select
+                            value={a.ooo_delegate_id || ""}
+                            onValueChange={(val) => setDelegate(a.id, val)}
+                          >
+                            <SelectTrigger className="h-8 w-[180px] text-xs">
+                              <SelectValue placeholder="Select delegate..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {otherApprovers.map((o) => (
+                                <SelectItem key={o.id} value={o.id} className="text-xs">
+                                  {o.name} ({ROLE_LABELS[o.role]})
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         ) : (
                           <span className="text-xs text-muted-foreground">—</span>
                         )}
@@ -140,9 +165,9 @@ export default function InternalUsers() {
               <div>
                 <p className="text-sm font-semibold">How OOO Delegation Works</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  When an approver is marked as Out of Office, any new requests requiring their approval tier 
-                  will be automatically routed to their designated delegate. Existing pending requests remain 
-                  assigned until manually reassigned.
+                  When an approver is marked as Out of Office, select a delegate from the dropdown. 
+                  Any new requests requiring their approval tier will be automatically routed to the delegate. 
+                  Existing pending requests remain assigned until manually reassigned.
                 </p>
               </div>
             </div>
