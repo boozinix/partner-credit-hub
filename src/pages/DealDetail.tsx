@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign } from "lucide-react";
+import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign, ArrowLeft } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 export default function DealDetail() {
