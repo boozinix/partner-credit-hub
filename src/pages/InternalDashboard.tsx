@@ -220,7 +220,14 @@ export default function InternalDashboard() {
                     </TableCell>
                     <TableCell className="font-medium">{r.customer_name}</TableCell>
                     <TableCell className="text-right font-display font-semibold">${Number(r.credit_amount).toLocaleString()}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground max-w-[150px] truncate">{r.products[0] || "—"}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-[200px]">
+                          <div className="flex flex-wrap gap-1">
+                            {r.products.slice(0, 2).map((p) => (
+                              <span key={p} className="inline-flex items-center rounded bg-accent px-1.5 py-0.5 text-[11px] font-medium text-accent-foreground">{p}</span>
+                            ))}
+                            {r.products.length > 2 && <span className="text-[11px] text-muted-foreground">+{r.products.length - 2}</span>}
+                          </div>
+                        </TableCell>
                     <TableCell><TierBadge tier={r.tier} /></TableCell>
                     <TableCell><StatusBadge status={r.status} /></TableCell>
                     <TableCell>
