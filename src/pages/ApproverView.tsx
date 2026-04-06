@@ -8,7 +8,8 @@ import { TierBadge } from "@/components/TierBadge";
 import { TimelineStep } from "@/components/TimelineStep";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, Shield, DollarSign } from "lucide-react";
+import { Check, X, Shield, DollarSign, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { Tables } from "@/integrations/supabase/types";
 
 const STATUS_ORDER: Record<string, number> = {
@@ -98,6 +99,9 @@ export default function ApproverView() {
       </header>
 
       <div className="container py-10 max-w-5xl">
+        <Link to="/internal" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+          <ArrowLeft className="h-3 w-3" /> Back to Finance Queue
+        </Link>
         <div className="grid lg:grid-cols-[1fr_360px] gap-8">
           {/* Left */}
           <div className="space-y-6">

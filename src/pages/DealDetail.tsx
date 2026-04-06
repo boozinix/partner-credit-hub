@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign } from "lucide-react";
+import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign, ArrowLeft } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 export default function DealDetail() {
@@ -122,6 +122,9 @@ export default function DealDetail() {
   return (
     <InternalLayout>
       <div className="p-6">
+        <Link to="/internal" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4">
+          <ArrowLeft className="h-3 w-3" /> Back to Finance Queue
+        </Link>
         <div className="grid lg:grid-cols-[1fr_380px] gap-6">
           {/* Left */}
           <div className="space-y-6">

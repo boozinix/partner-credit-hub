@@ -73,7 +73,7 @@ export default function InternalDashboard() {
               <Download className="h-4 w-4 mr-2" /> Export CSV
             </Button>
             <Button size="sm" asChild>
-              <Link to="/submit">
+              <Link to="/customer/submit">
                 <Plus className="h-4 w-4 mr-2" /> New Entry
               </Link>
             </Button>
@@ -137,9 +137,10 @@ export default function InternalDashboard() {
                 <div>
                   <div className="flex items-center gap-1.5 mb-1 opacity-70">
                     <AlertCircle className="h-3.5 w-3.5" />
-                    <span className="text-xs">Pending</span>
+                    <span className="text-xs">In Queue</span>
                   </div>
                   <p className="font-display font-bold text-3xl">{activeRequests.length}</p>
+                  <p className="text-xs opacity-60 mt-0.5">${(budget.inQueue / 1000).toFixed(0)}K total</p>
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-1 opacity-70">
