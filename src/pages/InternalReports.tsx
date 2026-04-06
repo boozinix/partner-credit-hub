@@ -146,7 +146,7 @@ export default function InternalReports() {
 
         {/* Bottom Row: Product + Tier */}
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Product Breakdown with count/amount toggle */}
+          {/* Product Breakdown — horizontal bar chart */}
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-1">
@@ -161,48 +161,31 @@ export default function InternalReports() {
               <p className="text-sm text-muted-foreground mb-6">
                 {productView === "count" ? "Number of requests per product" : "Total credit dollars per product"}
               </p>
-              <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={productData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={55}
-                      outerRadius={90}
-                      dataKey={productView === "count" ? "count" : "amount"}
-                      strokeWidth={2}
-                      stroke="hsl(var(--card))"
-                      label={({ name, percent }) =>
-                        `${name.length > 15 ? name.slice(0, 15) + "…" : name} (${(percent * 100).toFixed(0)}%)`
-                      }
-                      labelLine={false}
-                    >
-                      {productData.map((_, i) => (
-                        <Cell key={i} fill={PRODUCT_COLORS[i % PRODUCT_COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value: number) =>
-                        productView === "count"
-                          ? [`${value} requests`, "Count"]
-                          : [`$${value.toLocaleString()}`, "Credit Amount"]
-                      }
-                      contentStyle={{ borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="grid grid-cols-2 gap-2 mt-4">
-                {productData.map((p, i) => (
-                  <div key={p.name} className="flex items-center gap-2 text-xs">
-                    <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: PRODUCT_COLORS[i % PRODUCT_COLORS.length] }} />
-                    <span className="truncate text-muted-foreground">{p.name}</span>
-                    <span className="font-semibold ml-auto">
-                      {productView === "count" ? p.count : `$${(p.amount / 1000).toFixed(0)}K`}
-                    </span>
-                  </div>
-                ))}
+              <div className="space-y-3">
+                {productData.map((p, i) => {
+                  const maxVal = Math.max(...productData.map((x) => productView === "count" ? x.count : x.amount));
+                  const val = productView === "count" ? p.count : p.amount;
+                  const pct = maxVal > 0 ? (val / maxVal) * 100 : 0;
+                  return (
+                    <div key={p.name}>
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2">
+                          <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: PRODUCT_COLORS[i % PRODUCT_COLORS.length] }} />
+                          <span className="text-xs font-medium truncate max-w-[180px]">{p.name}</span>
+                        </div>
+                        <span className="text-xs font-semibold tabular-nums">
+                          {productView === "count" ? `${p.count} requests` : `$${(p.amount / 1000).toFixed(0)}K`}
+                        </span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{ width: `${pct}%`, backgroundColor: PRODUCT_COLORS[i % PRODUCT_COLORS.length] }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
