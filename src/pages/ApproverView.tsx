@@ -99,6 +99,9 @@ export default function ApproverView() {
       </header>
 
       <div className="container py-10 max-w-5xl">
+        <Link to="/internal" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+          <ArrowLeft className="h-3 w-3" /> Back to Finance Queue
+        </Link>
         <div className="grid lg:grid-cols-[1fr_360px] gap-8">
           {/* Left */}
           <div className="space-y-6">
