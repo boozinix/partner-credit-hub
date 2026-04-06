@@ -90,11 +90,17 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
             <SidebarTrigger />
             <div className="flex-1" />
             <Link
+              to="/customer"
+              className="inline-flex items-center gap-1.5 rounded-md border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20 transition-colors"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              Switch to Customer Portal
+            </Link>
+            <Link
               to="/"
               className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
             >
-              <LogOut className="h-3 w-3" />
-              Public Portal
+              Home
             </Link>
           </header>
           <main className="flex-1 overflow-auto">{children}</main>
