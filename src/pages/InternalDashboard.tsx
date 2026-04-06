@@ -10,8 +10,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { Search, Download, Plus, ExternalLink, Clock, TrendingUp, AlertCircle } from "lucide-react";
+import { Search, Download, Plus, ExternalLink, Clock, TrendingUp, AlertCircle, AlertTriangle } from "lucide-react";
 import type { Tables, Enums } from "@/integrations/supabase/types";
+
+function isOverdue(updatedAt: string): boolean {
+  const updated = new Date(updatedAt);
+  const now = new Date();
+  let bizDays = 0;
+  const d = new Date(updated);
+  while (d < now) {
+    d.setDate(d.getDate() + 1);
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6) bizDays++;
+    if (bizDays > 3) return true;
+  }
+  return false;
+}
 
 export default function InternalDashboard() {
   const [requests, setRequests] = useState<Tables<"credit_requests">[]>([]);
