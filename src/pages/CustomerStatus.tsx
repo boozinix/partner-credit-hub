@@ -190,6 +190,8 @@ export default function CustomerStatus() {
                     const histEntry = history.find((h) => h.to_status === step.key);
                     const timestamp = histEntry
                       ? new Date(histEntry.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })
+                      : status === "upcoming" && step.estDays > 0
+                      ? `+${step.estDays} business days`
                       : undefined;
 
                     return (
