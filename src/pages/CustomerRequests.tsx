@@ -67,31 +67,41 @@ export default function CustomerRequests() {
                   <p className="text-muted-foreground text-center py-12">No requests in this category.</p>
                 ) : (
                   <div className="grid gap-3 mt-4">
-                    {filter(tab).map((r) => (
-                      <Link key={r.id} to={`/customer/status/${r.tracking_id}`}>
-                        <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                          <CardContent className="p-5 flex items-center justify-between">
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                <span className="font-display font-bold text-sm font-mono">{r.tracking_id}</span>
-                                <StatusBadge status={r.status} />
-                                <TierBadge tier={r.tier} />
+                    {filter(tab).map((r) => {
+                      const dealAmount = Number(r.credit_amount) * 100;
+                      return (
+                        <Link key={r.id} to={`/customer/status/${r.tracking_id}`}>
+                          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                            <CardContent className="p-5">
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-display font-bold text-sm font-mono">{r.tracking_id}</span>
+                                  <StatusBadge status={r.status} />
+                                  <TierBadge tier={r.tier} />
+                                </div>
+                                <div className="text-right flex items-center gap-3">
+                                  <div>
+                                    <p className="font-display font-bold text-lg">${Number(r.credit_amount).toLocaleString()}</p>
+                                    <p className="text-xs text-muted-foreground">of ${(dealAmount / 1000).toFixed(0)}K deal</p>
+                                  </div>
+                                  <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                                </div>
                               </div>
-                              <p className="text-sm text-muted-foreground">{r.credit_type}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {new Date(r.created_at).toLocaleDateString()} · {r.products.join(", ")}
-                              </p>
-                            </div>
-                            <div className="text-right flex items-center gap-4">
-                              <div>
-                                <p className="font-display font-bold text-lg">${Number(r.credit_amount).toLocaleString()}</p>
+                              <div className="flex items-center justify-between">
+                                <div className="flex flex-wrap gap-1.5">
+                                  {r.products.map((p) => (
+                                    <span key={p} className="inline-flex items-center rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-foreground">{p}</span>
+                                  ))}
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  {new Date(r.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                                </p>
                               </div>
-                              <ExternalLink className="h-4 w-4 text-muted-foreground" />
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    ))}
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </TabsContent>
