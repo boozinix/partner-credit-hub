@@ -73,7 +73,7 @@ export default function InternalDashboard() {
               <Download className="h-4 w-4 mr-2" /> Export CSV
             </Button>
             <Button size="sm" asChild>
-              <Link to="/submit">
+              <Link to="/customer/submit">
                 <Plus className="h-4 w-4 mr-2" /> New Entry
               </Link>
             </Button>
