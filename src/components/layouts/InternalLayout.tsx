@@ -103,6 +103,9 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
               Home
             </Link>
           </header>
+          <div className="bg-amber-50 border-b border-amber-200 px-4 py-1.5 text-center text-xs text-amber-800">
+            🔶 Prototype — Interview Demo. All data is fictional.
+          </div>
           <main className="flex-1 overflow-auto">{children}</main>
         </div>
       </div>
