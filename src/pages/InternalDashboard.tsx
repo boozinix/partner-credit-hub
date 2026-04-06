@@ -10,8 +10,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { Search, Download, Plus, ExternalLink, Clock, TrendingUp, AlertCircle } from "lucide-react";
+import { Search, Download, Plus, ExternalLink, Clock, TrendingUp, AlertCircle, AlertTriangle } from "lucide-react";
 import type { Tables, Enums } from "@/integrations/supabase/types";
+
+function isOverdue(updatedAt: string): boolean {
+  const updated = new Date(updatedAt);
+  const now = new Date();
+  let bizDays = 0;
+  const d = new Date(updated);
+  while (d < now) {
+    d.setDate(d.getDate() + 1);
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6) bizDays++;
+    if (bizDays > 3) return true;
+  }
+  return false;
+}
 
 export default function InternalDashboard() {
   const [requests, setRequests] = useState<Tables<"credit_requests">[]>([]);
@@ -229,7 +243,16 @@ export default function InternalDashboard() {
                           </div>
                         </TableCell>
                     <TableCell><TierBadge tier={r.tier} /></TableCell>
-                    <TableCell><StatusBadge status={r.status} /></TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1.5">
+                        <StatusBadge status={r.status} />
+                        {!["APPROVED", "PAID_OUT", "DENIED"].includes(r.status) && isOverdue(r.updated_at) && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-[10px] font-semibold text-destructive">
+                            <AlertTriangle className="h-3 w-3" /> Overdue
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <Button asChild variant="ghost" size="icon">
                         <Link to={`/internal/deals/${r.tracking_id}`}><ExternalLink className="h-4 w-4" /></Link>
