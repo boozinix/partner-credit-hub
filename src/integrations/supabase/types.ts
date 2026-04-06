@@ -14,7 +14,210 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      approval_steps: {
+        Row: {
+          acted_at: string | null
+          approver_id: string
+          comments: string | null
+          created_at: string
+          id: string
+          request_id: string
+          role: Database["public"]["Enums"]["approver_role"]
+          status: string
+        }
+        Insert: {
+          acted_at?: string | null
+          approver_id: string
+          comments?: string | null
+          created_at?: string
+          id?: string
+          request_id: string
+          role: Database["public"]["Enums"]["approver_role"]
+          status?: string
+        }
+        Update: {
+          acted_at?: string | null
+          approver_id?: string
+          comments?: string | null
+          created_at?: string
+          id?: string
+          request_id?: string
+          role?: Database["public"]["Enums"]["approver_role"]
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "approval_steps_approver_id_fkey"
+            columns: ["approver_id"]
+            isOneToOne: false
+            referencedRelation: "approvers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "approval_steps_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "credit_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      approvers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_ooo: boolean
+          name: string
+          ooo_delegate_id: string | null
+          role: Database["public"]["Enums"]["approver_role"]
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_ooo?: boolean
+          name: string
+          ooo_delegate_id?: string | null
+          role: Database["public"]["Enums"]["approver_role"]
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_ooo?: boolean
+          name?: string
+          ooo_delegate_id?: string | null
+          role?: Database["public"]["Enums"]["approver_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "approvers_ooo_delegate_id_fkey"
+            columns: ["ooo_delegate_id"]
+            isOneToOne: false
+            referencedRelation: "approvers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      credit_requests: {
+        Row: {
+          assigned_approver_id: string | null
+          aws_account_id: string
+          aws_marketplace_deal_id: string | null
+          business_justification: string | null
+          created_at: string
+          credit_amount: number
+          credit_type: string
+          customer_email: string
+          customer_name: string
+          deal_end_date: string | null
+          deal_start_date: string | null
+          denial_reason: string | null
+          fiscal_year: string
+          id: string
+          internal_notes: string | null
+          invoice_number: string | null
+          products: string[]
+          status: Database["public"]["Enums"]["request_status"]
+          tier: Database["public"]["Enums"]["request_tier"]
+          tracking_id: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_approver_id?: string | null
+          aws_account_id: string
+          aws_marketplace_deal_id?: string | null
+          business_justification?: string | null
+          created_at?: string
+          credit_amount: number
+          credit_type?: string
+          customer_email: string
+          customer_name: string
+          deal_end_date?: string | null
+          deal_start_date?: string | null
+          denial_reason?: string | null
+          fiscal_year?: string
+          id?: string
+          internal_notes?: string | null
+          invoice_number?: string | null
+          products?: string[]
+          status?: Database["public"]["Enums"]["request_status"]
+          tier: Database["public"]["Enums"]["request_tier"]
+          tracking_id: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_approver_id?: string | null
+          aws_account_id?: string
+          aws_marketplace_deal_id?: string | null
+          business_justification?: string | null
+          created_at?: string
+          credit_amount?: number
+          credit_type?: string
+          customer_email?: string
+          customer_name?: string
+          deal_end_date?: string | null
+          deal_start_date?: string | null
+          denial_reason?: string | null
+          fiscal_year?: string
+          id?: string
+          internal_notes?: string | null
+          invoice_number?: string | null
+          products?: string[]
+          status?: Database["public"]["Enums"]["request_status"]
+          tier?: Database["public"]["Enums"]["request_tier"]
+          tracking_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_requests_assigned_approver_id_fkey"
+            columns: ["assigned_approver_id"]
+            isOneToOne: false
+            referencedRelation: "approvers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      status_history: {
+        Row: {
+          changed_by: string
+          comments: string | null
+          created_at: string
+          from_status: Database["public"]["Enums"]["request_status"] | null
+          id: string
+          request_id: string
+          to_status: Database["public"]["Enums"]["request_status"]
+        }
+        Insert: {
+          changed_by: string
+          comments?: string | null
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["request_status"] | null
+          id?: string
+          request_id: string
+          to_status: Database["public"]["Enums"]["request_status"]
+        }
+        Update: {
+          changed_by?: string
+          comments?: string | null
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["request_status"] | null
+          id?: string
+          request_id?: string
+          to_status?: Database["public"]["Enums"]["request_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "status_history_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "credit_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +226,17 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      approver_role: "FINANCE" | "DIRECTOR" | "VP"
+      request_status:
+        | "SUBMITTED"
+        | "FINANCE_REVIEW"
+        | "DIRECTOR_PENDING"
+        | "VP_PENDING"
+        | "NEEDS_CHANGES"
+        | "APPROVED"
+        | "DENIED"
+        | "PAID_OUT"
+      request_tier: "UNDER_10K" | "BETWEEN_10K_50K" | "OVER_50K"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +363,19 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      approver_role: ["FINANCE", "DIRECTOR", "VP"],
+      request_status: [
+        "SUBMITTED",
+        "FINANCE_REVIEW",
+        "DIRECTOR_PENDING",
+        "VP_PENDING",
+        "NEEDS_CHANGES",
+        "APPROVED",
+        "DENIED",
+        "PAID_OUT",
+      ],
+      request_tier: ["UNDER_10K", "BETWEEN_10K_50K", "OVER_50K"],
+    },
   },
 } as const
