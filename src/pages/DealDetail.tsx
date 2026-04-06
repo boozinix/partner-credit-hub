@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign, ArrowLeft } from "lucide-react";
+import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign, ArrowLeft, Send } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 export default function DealDetail() {
@@ -23,8 +23,15 @@ export default function DealDetail() {
   const [approvers, setApprovers] = useState<Tables<"approvers">[]>([]);
   const [loading, setLoading] = useState(true);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [sendBackModalOpen, setSendBackModalOpen] = useState(false);
   const [internalNotes, setInternalNotes] = useState("");
   const [acting, setActing] = useState(false);
+  const [sendBackBody, setSendBackBody] = useState("");
+  const [sendBackItems, setSendBackItems] = useState([
+    "Verify the requested credit amount matches your invoice",
+    "Provide updated business justification",
+    "Confirm deal start and end dates",
+  ]);
 
   const fetchData = async () => {
     if (!trackingId) return;
@@ -46,7 +53,7 @@ export default function DealDetail() {
 
   useEffect(() => { fetchData(); }, [trackingId]);
 
-  const performAction = async (action: "approve" | "deny" | "send_back") => {
+  const performAction = async (action: "approve" | "deny" | "send_back", sendBackComment?: string) => {
     if (!request) return;
     setActing(true);
 
@@ -58,9 +65,8 @@ export default function DealDetail() {
       comment = "Request denied by finance team.";
     } else if (action === "send_back") {
       newStatus = "NEEDS_CHANGES";
-      comment = "Changes requested. Please review and resubmit.";
+      comment = sendBackComment || "Changes requested. Please review and resubmit.";
     } else {
-      // Approve: route to next level based on tier
       if (request.status === "FINANCE_REVIEW" || request.status === "SUBMITTED") {
         if (request.tier === "UNDER_10K") {
           newStatus = "APPROVED";
@@ -100,6 +106,23 @@ export default function DealDetail() {
     fetchData();
   };
 
+  const handleSendBackConfirm = () => {
+    const itemsList = sendBackItems.filter(i => i.trim()).map(i => `• ${i}`).join("\n");
+    const fullComment = `Changes requested:\n${itemsList}${sendBackBody ? `\n\nAdditional notes: ${sendBackBody}` : ""}`;
+    setSendBackModalOpen(false);
+    performAction("send_back", fullComment);
+  };
+
+  const handleSendBackClick = () => {
+    setSendBackBody("");
+    setSendBackItems([
+      "Verify the requested credit amount matches your invoice",
+      "Provide updated business justification",
+      "Confirm deal start and end dates",
+    ]);
+    setSendBackModalOpen(true);
+  };
+
   if (loading) {
     return <InternalLayout><div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div></InternalLayout>;
   }
@@ -111,10 +134,16 @@ export default function DealDetail() {
   const directorApprover = approvers.find((a) => a.role === "DIRECTOR");
   const vpApprover = approvers.find((a) => a.role === "VP");
 
+  const STATUS_ORDER: Record<string, number> = {
+    SUBMITTED: 0, FINANCE_REVIEW: 1, DIRECTOR_PENDING: 2, VP_PENDING: 3,
+    APPROVED: 4, PAID_OUT: 5, NEEDS_CHANGES: 1, DENIED: -1,
+  };
+  const currentIndex = STATUS_ORDER[request.status] ?? 0;
+
   const chain = [
-    { role: "Finance Analyst", approver: financeApprover, needed: true },
-    { role: "Director", approver: directorApprover, needed: request.tier !== "UNDER_10K" },
-    { role: "VP", approver: vpApprover, needed: request.tier === "OVER_50K" },
+    { role: "Finance Analyst", approver: financeApprover, needed: true, statusKey: "FINANCE_REVIEW" },
+    { role: "Director", approver: directorApprover, needed: request.tier !== "UNDER_10K", statusKey: "DIRECTOR_PENDING" },
+    { role: "VP", approver: vpApprover, needed: request.tier === "OVER_50K", statusKey: "VP_PENDING" },
   ].filter((c) => c.needed);
 
   const canAct = ["SUBMITTED", "FINANCE_REVIEW", "DIRECTOR_PENDING", "VP_PENDING"].includes(request.status);
@@ -267,12 +296,18 @@ export default function DealDetail() {
                   {chain.map((c, i) => {
                     const step = approvalSteps.find((s) => s.role === c.approver?.role);
                     const isOOO = c.approver?.is_ooo;
+                    const stepStatusIndex = STATUS_ORDER[c.statusKey] ?? i;
+                    const isActive = stepStatusIndex === currentIndex && canAct;
+                    const isCompleted = step?.status === "APPROVED" || stepStatusIndex < currentIndex;
+
                     return (
                       <div key={i} className="flex items-start gap-3">
                         <div className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                          step?.status === "APPROVED" ? "bg-success text-success-foreground" : "bg-muted text-muted-foreground"
+                          isCompleted ? "bg-success text-success-foreground"
+                          : isActive ? "bg-primary text-primary-foreground animate-pulse"
+                          : "bg-muted text-muted-foreground"
                         }`}>
-                          {step?.status === "APPROVED" ? <Check className="h-4 w-4" /> : i + 1}
+                          {isCompleted ? <Check className="h-4 w-4" /> : i + 1}
                         </div>
                         <div className="flex-1">
                           <p className="text-xs text-muted-foreground uppercase tracking-wider">{c.role}</p>
@@ -284,6 +319,9 @@ export default function DealDetail() {
                               </span>
                             )}
                           </p>
+                          {isActive && !isCompleted && (
+                            <p className="text-xs text-primary font-medium mt-0.5">Awaiting review…</p>
+                          )}
                           {step?.acted_at && (
                             <p className="text-xs text-muted-foreground">{new Date(step.acted_at).toLocaleDateString()}</p>
                           )}
@@ -338,7 +376,7 @@ export default function DealDetail() {
                 <Button variant="destructive" size="sm" onClick={() => performAction("deny")} disabled={acting}>
                   <X className="h-4 w-4 mr-1" /> Deny
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => performAction("send_back")} disabled={acting}>
+                <Button variant="outline" size="sm" onClick={handleSendBackClick} disabled={acting}>
                   <RotateCcw className="h-4 w-4 mr-1" /> Send Back to Customer
                 </Button>
                 <Button size="sm" onClick={() => performAction("approve")} disabled={acting}>
@@ -349,6 +387,72 @@ export default function DealDetail() {
           </div>
         )}
       </div>
+
+      {/* Send Back Modal */}
+      <Dialog open={sendBackModalOpen} onOpenChange={setSendBackModalOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <RotateCcw className="h-5 w-5 text-warning" />
+              Send Back to Customer
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <p className="text-xs text-muted-foreground mb-1">Recipient</p>
+              <p className="text-sm font-medium">{request?.customer_email}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-1">Subject</p>
+              <p className="text-sm font-medium bg-muted px-3 py-2 rounded">Action Required: Credit Request {request?.tracking_id}</p>
+            </div>
+            <div className="rounded-lg border-2 border-warning/30 bg-warning/5 p-4">
+              <p className="text-xs font-semibold text-warning mb-3">Action Items Needed</p>
+              <div className="space-y-2">
+                {sendBackItems.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <span className="text-warning text-xs">•</span>
+                    <input
+                      type="text"
+                      value={item}
+                      onChange={(e) => {
+                        const updated = [...sendBackItems];
+                        updated[idx] = e.target.value;
+                        setSendBackItems(updated);
+                      }}
+                      className="flex-1 bg-transparent border-b border-warning/20 text-sm py-1 focus:outline-none focus:border-warning"
+                    />
+                    <button
+                      onClick={() => setSendBackItems(sendBackItems.filter((_, i) => i !== idx))}
+                      className="text-muted-foreground hover:text-destructive text-xs"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  onClick={() => setSendBackItems([...sendBackItems, ""])}
+                  className="text-xs text-warning hover:text-warning/80 font-medium mt-1"
+                >
+                  + Add item
+                </button>
+              </div>
+            </div>
+            <Textarea
+              value={sendBackBody}
+              onChange={(e) => setSendBackBody(e.target.value)}
+              placeholder="Additional message to the customer..."
+              className="min-h-[80px]"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSendBackModalOpen(false)}>Cancel</Button>
+            <Button onClick={handleSendBackConfirm} className="bg-warning text-warning-foreground hover:bg-warning/90">
+              <Send className="h-4 w-4 mr-2" /> Send & Notify
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Email Composer Modal */}
       <Dialog open={emailModalOpen} onOpenChange={setEmailModalOpen}>

@@ -14,12 +14,12 @@ import { AlertTriangle, DollarSign, Calendar, User, ArrowLeft, Send, CheckCircle
 import type { Tables } from "@/integrations/supabase/types";
 
 const LIFECYCLE_STEPS = [
-  { key: "SUBMITTED", label: "Request Submitted", desc: "Your credit request has been received." },
-  { key: "FINANCE_REVIEW", label: "Finance Review", desc: "A finance analyst is reviewing your request." },
-  { key: "DIRECTOR_PENDING", label: "Director Approval", desc: "Pending director-level sign-off." },
-  { key: "VP_PENDING", label: "VP Approval", desc: "Final executive approval required." },
-  { key: "APPROVED", label: "Approved", desc: "Credit approved and processing for payout." },
-  { key: "PAID_OUT", label: "Paid Out", desc: "Credit has been disbursed to your account." },
+  { key: "SUBMITTED", label: "Request Submitted", desc: "Your credit request has been received.", estDays: 0 },
+  { key: "FINANCE_REVIEW", label: "Finance Review", desc: "A finance analyst is reviewing your request.", estDays: 3 },
+  { key: "DIRECTOR_PENDING", label: "Director Approval", desc: "Pending director-level sign-off.", estDays: 5 },
+  { key: "VP_PENDING", label: "VP Approval", desc: "Final executive approval required.", estDays: 7 },
+  { key: "APPROVED", label: "Approved", desc: "Credit approved and processing for payout.", estDays: 10 },
+  { key: "PAID_OUT", label: "Paid Out", desc: "Credit has been disbursed to your account.", estDays: 30 },
 ];
 
 const STATUS_ORDER: Record<string, number> = {
@@ -190,6 +190,8 @@ export default function CustomerStatus() {
                     const histEntry = history.find((h) => h.to_status === step.key);
                     const timestamp = histEntry
                       ? new Date(histEntry.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })
+                      : status === "upcoming" && step.estDays > 0
+                      ? `+${step.estDays} business days`
                       : undefined;
 
                     return (
