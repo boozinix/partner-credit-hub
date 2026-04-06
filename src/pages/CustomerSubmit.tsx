@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PublicLayout } from "@/components/layouts/PublicLayout";
+import { CustomerLayout } from "@/components/layouts/CustomerLayout";
+import { usePersona } from "@/contexts/PersonaContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -42,14 +43,13 @@ const sections = [
   { icon: MessageSquare, label: "Business Case" },
 ];
 
-export default function SubmitPage() {
+export default function CustomerSubmit() {
   const navigate = useNavigate();
+  const { persona } = usePersona();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [form, setForm] = useState({
-    customerName: "",
-    customerEmail: "",
     awsAccountId: "",
     awsMarketplaceDealId: "",
     creditAmount: "",
@@ -65,7 +65,7 @@ export default function SubmitPage() {
     setSelectedProducts((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]));
 
   const filledSections = [
-    form.customerName && form.awsAccountId,
+    form.awsAccountId,
     form.creditAmount,
     selectedProducts.length > 0,
     form.businessJustification,
@@ -74,7 +74,7 @@ export default function SubmitPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.customerName || !form.customerEmail || !form.awsAccountId || !form.creditAmount) {
+    if (!form.awsAccountId || !form.creditAmount) {
       toast({ title: "Missing fields", description: "Please fill all required fields.", variant: "destructive" });
       return;
     }
@@ -86,8 +86,8 @@ export default function SubmitPage() {
 
     const { error } = await supabase.from("credit_requests").insert({
       tracking_id: trackingId,
-      customer_name: form.customerName,
-      customer_email: form.customerEmail,
+      customer_name: persona.company,
+      customer_email: persona.email,
       aws_account_id: form.awsAccountId,
       aws_marketplace_deal_id: form.awsMarketplaceDealId || null,
       credit_amount: amount,
@@ -107,7 +107,6 @@ export default function SubmitPage() {
       return;
     }
 
-    // Add initial status history
     const { data: req } = await supabase
       .from("credit_requests")
       .select("id")
@@ -118,22 +117,24 @@ export default function SubmitPage() {
       await supabase.from("status_history").insert({
         request_id: req.id,
         to_status: "SUBMITTED",
-        changed_by: form.customerEmail,
+        changed_by: persona.email,
         comments: "Credit request submitted via partner portal.",
       });
     }
 
     setLoading(false);
     toast({ title: "Request Submitted!", description: `Tracking ID: ${trackingId}` });
-    navigate(`/status/${trackingId}`);
+    navigate(`/customer/status/${trackingId}`);
   };
 
   return (
-    <PublicLayout>
+    <CustomerLayout>
       <div className="container py-10 max-w-6xl">
         <div className="mb-8">
           <h1 className="font-display font-bold text-3xl mb-2">Submit Credit Request</h1>
-          <p className="text-muted-foreground">Complete all sections below to submit your AWS Marketplace credit request.</p>
+          <p className="text-muted-foreground">
+            Submitting as <span className="font-medium text-foreground">{persona.company}</span>. Complete all sections below.
+          </p>
         </div>
 
         {/* Progress */}
@@ -153,9 +154,7 @@ export default function SubmitPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-[1fr_340px] gap-8">
-            {/* Main Form */}
             <div className="space-y-8">
-              {/* Section 1 */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -165,12 +164,12 @@ export default function SubmitPage() {
                 </CardHeader>
                 <CardContent className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="customerName">Company Name *</Label>
-                    <Input id="customerName" value={form.customerName} onChange={(e) => update("customerName", e.target.value)} placeholder="Acme Corporation" />
+                    <Label>Company</Label>
+                    <Input value={persona.company} disabled className="bg-muted" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="customerEmail">Contact Email *</Label>
-                    <Input id="customerEmail" type="email" value={form.customerEmail} onChange={(e) => update("customerEmail", e.target.value)} placeholder="partner@acme.com" />
+                    <Label>Contact Email</Label>
+                    <Input value={persona.email} disabled className="bg-muted" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="awsAccountId">AWS Account ID *</Label>
@@ -183,7 +182,6 @@ export default function SubmitPage() {
                 </CardContent>
               </Card>
 
-              {/* Section 2 */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -193,7 +191,7 @@ export default function SubmitPage() {
                 </CardHeader>
                 <CardContent className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="creditType">Credit Type</Label>
+                    <Label>Credit Type</Label>
                     <Select value={form.creditType} onValueChange={(v) => update("creditType", v)}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
@@ -208,21 +206,20 @@ export default function SubmitPage() {
                     <Input id="creditAmount" type="number" value={form.creditAmount} onChange={(e) => update("creditAmount", e.target.value)} placeholder="25000" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="dealStartDate">Deal Start Date</Label>
-                    <Input id="dealStartDate" type="date" value={form.dealStartDate} onChange={(e) => update("dealStartDate", e.target.value)} />
+                    <Label>Deal Start Date</Label>
+                    <Input type="date" value={form.dealStartDate} onChange={(e) => update("dealStartDate", e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="dealEndDate">Deal End Date</Label>
-                    <Input id="dealEndDate" type="date" value={form.dealEndDate} onChange={(e) => update("dealEndDate", e.target.value)} />
+                    <Label>Deal End Date</Label>
+                    <Input type="date" value={form.dealEndDate} onChange={(e) => update("dealEndDate", e.target.value)} />
                   </div>
                   <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="invoiceNumber">Invoice Number</Label>
-                    <Input id="invoiceNumber" value={form.invoiceNumber} onChange={(e) => update("invoiceNumber", e.target.value)} placeholder="INV-2026-XXXX" />
+                    <Label>Invoice Number</Label>
+                    <Input value={form.invoiceNumber} onChange={(e) => update("invoiceNumber", e.target.value)} placeholder="INV-2026-XXXX" />
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Section 3 */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -239,7 +236,6 @@ export default function SubmitPage() {
                 </CardContent>
               </Card>
 
-              {/* Section 4 */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -251,17 +247,13 @@ export default function SubmitPage() {
                   <Textarea
                     value={form.businessJustification}
                     onChange={(e) => update("businessJustification", e.target.value)}
-                    placeholder="Describe your business justification, expected outcomes, and how this credit aligns with your cloud modernization strategy..."
+                    placeholder="Describe your business justification..."
                     className="min-h-[120px]"
                   />
                 </CardContent>
               </Card>
 
-              {/* Submit */}
-              <div className="flex items-center justify-between">
-                <button type="button" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Save Draft
-                </button>
+              <div className="flex items-center justify-end">
                 <Button type="submit" size="lg" disabled={loading} className="px-8">
                   {loading ? "Submitting..." : "Submit Marketplace Request"}
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -269,7 +261,6 @@ export default function SubmitPage() {
               </div>
             </div>
 
-            {/* Sidebar */}
             <div className="space-y-6">
               <Card className="border-primary/20 bg-accent/30">
                 <CardContent className="p-6">
@@ -295,9 +286,7 @@ export default function SubmitPage() {
                   <p className="text-sm text-muted-foreground mb-4">
                     Contact your AWS Partner Manager or reach out to our support team.
                   </p>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Contact Support
-                  </Button>
+                  <Button variant="outline" size="sm" className="w-full">Contact Support</Button>
                 </CardContent>
               </Card>
 
@@ -309,11 +298,7 @@ export default function SubmitPage() {
                       {parseFloat(form.creditAmount) < 10000 ? "Tier 1" : parseFloat(form.creditAmount) <= 50000 ? "Tier 2" : "Tier 3"}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {parseFloat(form.creditAmount) < 10000
-                        ? "Finance approval only"
-                        : parseFloat(form.creditAmount) <= 50000
-                        ? "Finance + Director"
-                        : "Finance + Director + VP"}
+                      {parseFloat(form.creditAmount) < 10000 ? "Finance approval only" : parseFloat(form.creditAmount) <= 50000 ? "Finance + Director" : "Finance + Director + VP"}
                     </p>
                   </CardContent>
                 </Card>
@@ -322,6 +307,6 @@ export default function SubmitPage() {
           </div>
         </form>
       </div>
-    </PublicLayout>
+    </CustomerLayout>
   );
 }

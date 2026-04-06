@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { PublicLayout } from "@/components/layouts/PublicLayout";
+import { CustomerLayout } from "@/components/layouts/CustomerLayout";
+import { usePersona } from "@/contexts/PersonaContext";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/StatusBadge";
 import { TierBadge } from "@/components/TierBadge";
 import { TimelineStep } from "@/components/TimelineStep";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertTriangle, DollarSign, Calendar, User } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { AlertTriangle, DollarSign, Calendar, User, ArrowLeft, Send, CheckCircle2 } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 const LIFECYCLE_STEPS = [
@@ -24,53 +27,87 @@ const STATUS_ORDER: Record<string, number> = {
   APPROVED: 4, PAID_OUT: 5, NEEDS_CHANGES: 1, DENIED: -1,
 };
 
-export default function StatusPage() {
+export default function CustomerStatus() {
   const { trackingId } = useParams<{ trackingId: string }>();
+  const { persona } = usePersona();
+  const { toast } = useToast();
   const [request, setRequest] = useState<Tables<"credit_requests"> | null>(null);
   const [history, setHistory] = useState<Tables<"status_history">[]>([]);
   const [loading, setLoading] = useState(true);
+  const [followUp, setFollowUp] = useState("");
+  const [sending, setSending] = useState(false);
 
-  useEffect(() => {
+  const fetchData = async () => {
     if (!trackingId) return;
-    (async () => {
-      const { data: req } = await supabase
-        .from("credit_requests")
-        .select("*")
-        .eq("tracking_id", trackingId)
-        .single();
-      setRequest(req);
+    const { data: req } = await supabase
+      .from("credit_requests")
+      .select("*")
+      .eq("tracking_id", trackingId)
+      .single();
+    setRequest(req);
 
-      if (req) {
-        const { data: hist } = await supabase
-          .from("status_history")
-          .select("*")
-          .eq("request_id", req.id)
-          .order("created_at", { ascending: true });
-        setHistory(hist || []);
-      }
-      setLoading(false);
-    })();
-  }, [trackingId]);
+    if (req) {
+      const { data: hist } = await supabase
+        .from("status_history")
+        .select("*")
+        .eq("request_id", req.id)
+        .order("created_at", { ascending: true });
+      setHistory(hist || []);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchData(); }, [trackingId]);
+
+  const handleFollowUp = async () => {
+    if (!request || !followUp.trim()) return;
+    setSending(true);
+
+    if (request.status === "NEEDS_CHANGES") {
+      // Resubmit
+      await supabase.from("credit_requests").update({ status: "FINANCE_REVIEW" as any }).eq("id", request.id);
+      await supabase.from("status_history").insert({
+        request_id: request.id,
+        from_status: "NEEDS_CHANGES",
+        to_status: "FINANCE_REVIEW" as any,
+        changed_by: persona.email,
+        comments: followUp,
+      });
+      toast({ title: "Request resubmitted", description: "Your response has been sent to the finance team." });
+    } else {
+      // Add a comment
+      await supabase.from("status_history").insert({
+        request_id: request.id,
+        from_status: request.status,
+        to_status: request.status,
+        changed_by: persona.email,
+        comments: followUp,
+      });
+      toast({ title: "Message sent", description: "Your follow-up has been logged." });
+    }
+
+    setFollowUp("");
+    setSending(false);
+    fetchData();
+  };
 
   if (loading) {
     return (
-      <PublicLayout>
-        <div className="container py-20 text-center">
-          <div className="animate-pulse text-muted-foreground">Loading request...</div>
-        </div>
-      </PublicLayout>
+      <CustomerLayout>
+        <div className="container py-20 text-center text-muted-foreground">Loading request...</div>
+      </CustomerLayout>
     );
   }
 
   if (!request) {
     return (
-      <PublicLayout>
+      <CustomerLayout>
         <div className="container py-20 text-center">
           <h1 className="font-display font-bold text-2xl mb-4">Request Not Found</h1>
           <p className="text-muted-foreground mb-6">No request found with tracking ID "{trackingId}".</p>
-          <Button asChild><Link to="/my-requests">Search Requests</Link></Button>
+          <Button asChild><Link to="/customer/requests">Back to My Requests</Link></Button>
         </div>
-      </PublicLayout>
+      </CustomerLayout>
     );
   }
 
@@ -82,8 +119,13 @@ export default function StatusPage() {
     : LIFECYCLE_STEPS;
 
   return (
-    <PublicLayout>
+    <CustomerLayout>
       <div className="container py-10 max-w-6xl">
+        {/* Back link */}
+        <Link to="/customer/requests" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+          <ArrowLeft className="h-3 w-3" /> Back to My Requests
+        </Link>
+
         <div className="grid lg:grid-cols-[1fr_360px] gap-8">
           {/* Main */}
           <div>
@@ -96,16 +138,26 @@ export default function StatusPage() {
               Last updated {new Date(request.updated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
             </p>
 
+            {/* Status Banners */}
             {request.status === "NEEDS_CHANGES" && (
-              <div className="flex items-center gap-3 rounded-lg border border-warning/30 bg-warning/10 p-4 mb-8">
-                <AlertTriangle className="h-5 w-5 text-warning shrink-0" />
+              <div className="flex items-start gap-3 rounded-lg border border-warning/30 bg-warning/10 p-4 mb-8">
+                <AlertTriangle className="h-5 w-5 text-warning shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-semibold">Action Required</p>
-                  <p className="text-xs text-muted-foreground">The finance team has requested changes to your submission. Please review and resubmit.</p>
+                  <p className="text-sm font-semibold">Action Required — Changes Requested</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    The finance team has requested changes. Use the response box below to address their feedback and resubmit.
+                  </p>
                 </div>
-                <Button size="sm" variant="outline" className="ml-auto shrink-0">
-                  Resubmit
-                </Button>
+              </div>
+            )}
+
+            {request.status === "APPROVED" && (
+              <div className="flex items-center gap-3 rounded-lg border border-success/30 bg-success/10 p-4 mb-8">
+                <CheckCircle2 className="h-5 w-5 text-success shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold">Credit Approved!</p>
+                  <p className="text-xs text-muted-foreground">Your credit request has been fully approved. Payout will be processed within 30 business days.</p>
+                </div>
               </div>
             )}
 
@@ -155,7 +207,37 @@ export default function StatusPage() {
               </CardContent>
             </Card>
 
-            {/* Status History */}
+            {/* Follow-up / Respond */}
+            <Card className="mt-6">
+              <CardContent className="p-6">
+                <h2 className="font-display font-semibold text-lg mb-3">
+                  {request.status === "NEEDS_CHANGES" ? "Respond & Resubmit" : "Send Follow-up"}
+                </h2>
+                <p className="text-xs text-muted-foreground mb-3">
+                  {request.status === "NEEDS_CHANGES"
+                    ? "Address the finance team's feedback and resubmit your request."
+                    : "Send a message or additional information to the review team."}
+                </p>
+                <Textarea
+                  value={followUp}
+                  onChange={(e) => setFollowUp(e.target.value)}
+                  placeholder={
+                    request.status === "NEEDS_CHANGES"
+                      ? "I've addressed the requested changes. The corrected invoice dates are..."
+                      : "Additional information or follow-up question..."
+                  }
+                  className="min-h-[100px] mb-3"
+                />
+                <div className="flex justify-end">
+                  <Button onClick={handleFollowUp} disabled={sending || !followUp.trim()}>
+                    <Send className="h-4 w-4 mr-2" />
+                    {request.status === "NEEDS_CHANGES" ? "Respond & Resubmit" : "Send Message"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Activity Log */}
             {history.length > 0 && (
               <Card className="mt-6">
                 <CardContent className="p-6">
@@ -166,13 +248,13 @@ export default function StatusPage() {
                         <div className="h-2 w-2 rounded-full bg-primary mt-1.5 shrink-0" />
                         <div>
                           <p>
-                            <span className="font-medium">{h.changed_by}</span> changed status to{" "}
-                            <span className="font-medium">{h.to_status.replace(/_/g, " ")}</span>
+                            <span className="font-medium">{h.changed_by}</span>
+                            {h.from_status !== h.to_status && (
+                              <> → <span className="font-medium">{h.to_status.replace(/_/g, " ")}</span></>
+                            )}
                           </p>
                           {h.comments && <p className="text-muted-foreground text-xs mt-0.5">{h.comments}</p>}
-                          <p className="text-xs text-muted-foreground">
-                            {new Date(h.created_at).toLocaleString()}
-                          </p>
+                          <p className="text-xs text-muted-foreground">{new Date(h.created_at).toLocaleString()}</p>
                         </div>
                       </div>
                     ))}
@@ -192,7 +274,7 @@ export default function StatusPage() {
                     <DollarSign className="h-5 w-5 text-primary" />
                     <div>
                       <p className="text-xs text-muted-foreground">Requested Amount</p>
-                      <p className="font-display font-bold text-2xl">${request.credit_amount.toLocaleString()}</p>
+                      <p className="font-display font-bold text-2xl">${Number(request.credit_amount).toLocaleString()}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -236,6 +318,6 @@ export default function StatusPage() {
           </div>
         </div>
       </div>
-    </PublicLayout>
+    </CustomerLayout>
   );
 }
