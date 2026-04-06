@@ -82,11 +82,21 @@ function InternalSidebar() {
 }
 
 export function InternalLayout({ children }: { children: React.ReactNode }) {
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <InternalSidebar />
         <div className="flex-1 flex flex-col">
+          {!bannerDismissed && (
+            <div className="bg-amber-50 border-b border-amber-200 px-4 py-1.5 text-center text-xs text-amber-800 flex items-center justify-center gap-2">
+              <span>🔶 Prototype — Built for interview purposes. All data is fictional.</span>
+              <button onClick={() => setBannerDismissed(true)} className="text-amber-600 hover:text-amber-900 ml-2">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
           <header className="h-14 flex items-center border-b bg-card px-4 gap-4">
             <SidebarTrigger />
             <div className="flex-1" />
@@ -104,9 +114,6 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
               Home
             </Link>
           </header>
-          <div className="bg-amber-50 border-b border-amber-200 px-4 py-1.5 text-center text-xs text-amber-800">
-            🔶 Prototype — Interview Demo. All data is fictional.
-          </div>
           <main className="flex-1 overflow-auto">{children}</main>
         </div>
       </div>
