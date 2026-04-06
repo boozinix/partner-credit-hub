@@ -269,8 +269,9 @@ export default function InternalReports() {
           </CardContent>
         </Card>
 
-        {/* Bottom Row: Product + Tier */}
+        {/* Bottom Row: Product + Tier — donut charts */}
         <div className="grid md:grid-cols-2 gap-6">
+          {/* Product Donut */}
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-1">
@@ -282,70 +283,105 @@ export default function InternalReports() {
                   </TabsList>
                 </Tabs>
               </div>
-              <p className="text-sm text-muted-foreground mb-6">
+              <p className="text-sm text-muted-foreground mb-4">
                 {productView === "count" ? "Number of requests per product" : "Total credit dollars per product"}
               </p>
-              <div className="space-y-3">
-                {productData.length === 0 && (
-                  <p className="text-sm text-muted-foreground text-center py-8">No data matches current filters</p>
-                )}
-                {productData.map((p, i) => {
-                  const maxVal = Math.max(...productData.map((x) => productView === "count" ? x.count : x.amount));
-                  const val = productView === "count" ? p.count : p.amount;
-                  const pct = maxVal > 0 ? (val / maxVal) * 100 : 0;
-                  return (
-                    <div key={p.name}>
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center gap-2">
-                          <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: PRODUCT_COLORS[i % PRODUCT_COLORS.length] }} />
-                          <span className="text-xs font-medium truncate max-w-[180px]">{p.name}</span>
-                        </div>
-                        <span className="text-xs font-semibold tabular-nums">
-                          {productView === "count" ? `${p.count} requests` : `$${(p.amount / 1000).toFixed(0)}K`}
+              {productData.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-12">No data matches current filters</p>
+              ) : (
+                <>
+                  <div className="h-[220px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={productData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={95}
+                          dataKey={productView === "count" ? "count" : "amount"}
+                          strokeWidth={2}
+                          stroke="hsl(var(--card))"
+                        >
+                          {productData.map((_, i) => (
+                            <Cell key={i} fill={PRODUCT_COLORS[i % PRODUCT_COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          formatter={(value: number) =>
+                            productView === "count"
+                              ? [`${value} requests`, "Count"]
+                              : [`$${value.toLocaleString()}`, "Amount"]
+                          }
+                          contentStyle={{ borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))", fontSize: 12 }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
+                    {productData.map((p, i) => (
+                      <div key={p.name} className="flex items-center gap-2 text-xs">
+                        <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: PRODUCT_COLORS[i % PRODUCT_COLORS.length] }} />
+                        <span className="truncate text-muted-foreground flex-1">{p.name}</span>
+                        <span className="font-semibold tabular-nums shrink-0">
+                          {productView === "count" ? p.count : `$${(p.amount / 1000).toFixed(0)}K`}
                         </span>
                       </div>
-                      <div className="h-2 rounded-full bg-muted overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-500"
-                          style={{ width: `${pct}%`, backgroundColor: PRODUCT_COLORS[i % PRODUCT_COLORS.length] }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
+          {/* Tier Donut */}
           <Card>
             <CardContent className="p-6">
               <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Distribution by Tier</h3>
-              <p className="text-sm text-muted-foreground mb-6">Request count and value across approval tiers</p>
-              <div className="space-y-5 mt-8">
-                {tierData.map((t) => {
-                  const maxCount = Math.max(...tierData.map((x) => x.count));
-                  const pct = maxCount > 0 ? (t.count / maxCount) * 100 : 0;
-                  return (
-                    <div key={t.tier}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">{t.name}</span>
-                        <span className="text-xs text-muted-foreground">{t.count} requests · ${(t.amount / 1000).toFixed(0)}K</span>
-                      </div>
-                      <div className="h-3 rounded-full bg-muted overflow-hidden">
-                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: TIER_COLORS[t.tier] || "hsl(231, 48%, 48%)" }} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="grid grid-cols-3 gap-3 mt-8">
-                {tierData.map((t) => (
-                  <div key={t.tier} className="text-center p-3 rounded-lg bg-muted/50">
-                    <p className="font-display font-bold text-xl">{t.count}</p>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">{t.name}</p>
+              <p className="text-sm text-muted-foreground mb-4">Request count and value across approval tiers</p>
+              {tierData.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-12">No data</p>
+              ) : (
+                <>
+                  <div className="h-[220px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={tierData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={95}
+                          dataKey="count"
+                          strokeWidth={2}
+                          stroke="hsl(var(--card))"
+                        >
+                          {tierData.map((t) => (
+                            <Cell key={t.tier} fill={TIER_COLORS[t.tier] || "hsl(231, 48%, 48%)"} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          formatter={(value: number, _: any, props: any) => {
+                            const item = props.payload;
+                            return [`${value} requests · $${(item.amount / 1000).toFixed(0)}K`, item.name];
+                          }}
+                          contentStyle={{ borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))", fontSize: 12 }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
                   </div>
-                ))}
-              </div>
+                  <div className="grid grid-cols-3 gap-3 mt-4">
+                    {tierData.map((t) => (
+                      <div key={t.tier} className="text-center p-3 rounded-lg bg-muted/50">
+                        <div className="h-2 w-2 rounded-full mx-auto mb-2" style={{ backgroundColor: TIER_COLORS[t.tier] }} />
+                        <p className="font-display font-bold text-xl">{t.count}</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">{t.name}</p>
+                        <p className="text-[10px] text-muted-foreground">${(t.amount / 1000).toFixed(0)}K</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>
