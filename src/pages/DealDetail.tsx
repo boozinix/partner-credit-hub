@@ -295,6 +295,31 @@ export default function DealDetail() {
               </CardContent>
             </Card>
 
+            {/* Observers */}
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-4">Observers</h3>
+                <div className="space-y-3">
+                  {[
+                    { name: "Lisa Nguyen", role: "Account Manager", initials: "LN" },
+                    { name: "David Park", role: "Partnership Manager", initials: "DP" },
+                    { name: "Rachel Adams", role: "Solutions Architect", initials: "RA" },
+                  ].map((o) => (
+                    <div key={o.name} className="flex items-center gap-3">
+                      <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-muted-foreground">{o.initials}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium leading-none">{o.name}</p>
+                        <p className="text-[10px] text-muted-foreground">{o.role}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-4 border-t pt-3">Observers receive status notifications but cannot approve or deny.</p>
+              </CardContent>
+            </Card>
+
             {/* Email Button */}
             <Button variant="outline" className="w-full" onClick={() => setEmailModalOpen(true)}>
               <Mail className="h-4 w-4 mr-2" /> Open Email Composer
