@@ -1,75 +1,65 @@
 
 
-# Pre-Demo Critical Fixes
+# Consolidated Final Plan — All 3 Audit Prompts
 
-## Issue 1 — Landing Page Stats Show Zeros
-The stats are hardcoded with correct values (line 118-123: `end: 1000000`, `end: 847`, etc.) but the `AnimatedCounter` starts at 0 and only animates when scrolled into view (IntersectionObserver with threshold 0.3). The counters likely never trigger because the stats section may not intersect properly on certain viewports.
+## What's Already Done (from last implementation round)
+- ✅ Landing page stats wired to live Supabase data
+- ✅ "Why I Built This" narrative with 3 problem cards + solutions row
+- ✅ Demo guide banner on landing page
+- ✅ Send Back modal with editable action items
+- ✅ "Red Hat AI/ML Suite" → "Red Hat OpenShift AI" in database
+- ✅ "+X business days" estimates on customer timeline
+- ✅ "Awaiting review…" label + pulse on active approval step
+- ✅ "Edit with Lovable" badge hidden
+- ✅ Seed data verified (25 deals)
+- ✅ Approval buttons wired and functional
+- ✅ Internal pages (Reports, Settings, Users) are fully built
+- ✅ Email composer modal exists in DealDetail
+- ✅ OOO badge shows on DealDetail approval chain
+- ✅ Empty states handled in CustomerRequests
 
-**Fix**: Wire the stats to pull live data from Supabase on mount. Fetch counts from `credit_requests` table:
-- FY2026 Credit Pool = hardcoded $1,000,000
-- Credits Processed = `SELECT COUNT(*) FROM credit_requests WHERE status = 'PAID_OUT'`
-- Approval Rate = `SELECT (COUNT(*) FILTER (WHERE status IN ('APPROVED','PAID_OUT')) * 100 / COUNT(*)) FROM credit_requests`
-- Avg Processing Time = `SELECT AVG(EXTRACT(DAY FROM updated_at - created_at)) FROM credit_requests WHERE status IN ('APPROVED','PAID_OUT')`
+## What's Still NOT Done
 
-Also fix the AnimatedCounter to start animation immediately if already visible on mount (not just on scroll).
+### 1. `.env` not in `.gitignore` — Security Risk
+`.gitignore` has no `.env` entry. The `.env` file with real keys is committed.
+- Add `.env` and `.env.local` to `.gitignore`
+- Create `.env.example` with placeholder values
 
-**File**: `src/pages/Index.tsx`
+**File**: `.gitignore`, new file `.env.example`
 
----
+### 2. `README.md` still says "TODO: Document your project here"
+First thing an interviewer clicks in the repo.
+- Full rewrite: project description, problem statement, tech stack, setup instructions, live demo link at `partner-credits-demo.lovable.app`
 
-## Issue 2 — Add "Why I Built This" Narrative
-Add a new section between the hero and the portal selector cards with:
-1. A personal narrative paragraph (first-person voice from a Senior Partner Manager)
-2. Three problem cards: "Customers Fly Blind", "Partner Managers Have Zero Visibility", "Finance Runs on Spreadsheets"
-3. A "What This Solves" row showing how each problem maps to a solution
+**File**: `README.md`
 
-**File**: `src/pages/Index.tsx`
+### 3. App title/meta still says "Shield" with TODO comments
+`index.html` has `<title>Shield</title>`, OG tags say "Shield", and TODO comments remain.
+- Title → "Partner Credit Hub"
+- OG/Twitter title → "Partner Credit Hub"
+- Description → "AWS Red Hat Partner Credit Management Portal"
+- Remove TODO comments
+- Add favicon link with cache-busting
 
----
+**File**: `index.html`
 
-## Issue 3 — Send Back Modal
-Currently "Send Back to Customer" in the action bar (line 341) calls `performAction("send_back")` directly. Need to intercept this to open a modal first with:
-- Pre-filled subject: `Action Required: Credit Request [trackingId]`
-- Body textarea pre-filled with customer name and request ID
-- Amber-bordered editable action items list
-- Cancel / Send & Notify buttons
-- Only update status to NEEDS_CHANGES on confirm
+### 4. Demo Mode Banner on Internal Portal
+No banner on internal pages. Add a subtle top bar to `InternalLayout.tsx`:
+"Prototype — Interview Demo. All data is fictional."
 
-**File**: `src/pages/DealDetail.tsx`
-
----
-
-## Issue 4 — Fix "Red Hat AI/ML Suite" Product Name
-Database has `Red Hat AI/ML Suite` in AWZ-2026-0044's products array. Need to update this to `Red Hat OpenShift AI` in the database.
-
-**Action**: Database UPDATE via insert tool to fix the product name in credit_requests.
-
----
-
-## Minor Polish
-
-### Status tracker — estimated future dates
-In `CustomerStatus.tsx`, add "+X business days" estimates on pending/upcoming timeline steps based on average processing times.
-
-**File**: `src/pages/CustomerStatus.tsx`
-
-### Approval chain — "Awaiting" label + pulse
-In `DealDetail.tsx`, add an "Awaiting" label and subtle pulse animation on the currently active approval step (non-approved, non-completed steps).
-
-**File**: `src/pages/DealDetail.tsx`
-
-### "Edit with Lovable" badge
-Hide the badge via the publish settings tool.
+**File**: `src/components/layouts/InternalLayout.tsx`
 
 ---
 
 ## Files to Change
 
-| File | Changes |
+| File | Change |
 |---|---|
-| `src/pages/Index.tsx` | Add Supabase data fetch for stats, add "Why I Built This" narrative section, fix AnimatedCounter visibility |
-| `src/pages/DealDetail.tsx` | Add Send Back modal with editable action items, add "Awaiting" label + pulse on active approval step |
-| `src/pages/CustomerStatus.tsx` | Add "+X business days" estimates on pending timeline steps |
-| Database (UPDATE) | Fix `Red Hat AI/ML Suite` → `Red Hat OpenShift AI` in credit_requests products |
-| Publish settings | Hide "Edit with Lovable" badge |
+| `.gitignore` | Add `.env`, `.env.local` entries |
+| `.env.example` | New file with placeholder values |
+| `README.md` | Full project documentation |
+| `index.html` | Title → "Partner Credit Hub", fix meta tags, remove TODOs, favicon |
+| `src/components/layouts/InternalLayout.tsx` | Add demo mode banner |
+
+**5 files. All straightforward text/config edits — no logic changes.**
 
