@@ -8,7 +8,8 @@ import { TierBadge } from "@/components/TierBadge";
 import { TimelineStep } from "@/components/TimelineStep";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, Shield, DollarSign } from "lucide-react";
+import { Check, X, Shield, DollarSign, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { Tables } from "@/integrations/supabase/types";
 
 const STATUS_ORDER: Record<string, number> = {
