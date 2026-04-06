@@ -243,7 +243,16 @@ export default function InternalDashboard() {
                           </div>
                         </TableCell>
                     <TableCell><TierBadge tier={r.tier} /></TableCell>
-                    <TableCell><StatusBadge status={r.status} /></TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1.5">
+                        <StatusBadge status={r.status} />
+                        {!["APPROVED", "PAID_OUT", "DENIED"].includes(r.status) && isOverdue(r.updated_at) && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-[10px] font-semibold text-destructive">
+                            <AlertTriangle className="h-3 w-3" /> Overdue
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <Button asChild variant="ghost" size="icon">
                         <Link to={`/internal/deals/${r.tracking_id}`}><ExternalLink className="h-4 w-4" /></Link>
