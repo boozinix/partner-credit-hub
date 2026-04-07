@@ -52,8 +52,16 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
               My Requests
             </Link>
 
+            {/* View Toggle */}
+            <div className="flex items-center border-l pl-4 mr-2">
+              <div className="flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
+                <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium">👤 Customer</span>
+                <button onClick={() => navigate("/internal")} className="px-3 py-1 rounded-full text-muted-foreground hover:text-foreground transition-colors">🏦 Finance</button>
+              </div>
+            </div>
+
             {/* Persona Switcher */}
-            <div className="flex items-center gap-2 border-l pl-6">
+            <div className="flex items-center gap-2 border-l pl-4">
               <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-xs font-bold text-primary">{persona.initials}</span>
               </div>
