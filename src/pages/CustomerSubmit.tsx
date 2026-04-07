@@ -462,7 +462,6 @@ export default function CustomerSubmit() {
                   </CardContent>
                 </Card>
               )}
-              )}
             </div>
           </div>
         </form>
