@@ -165,17 +165,17 @@ const Index = () => {
       <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-display font-bold text-sm">RH</span>
+            <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center">
+              <span className="text-redhat-foreground font-display font-bold text-sm">RH</span>
             </div>
-            <span className="font-display font-bold text-lg">Partner Credit Funding Portal</span>
+            <span className="font-display font-bold text-lg"><span className="text-redhat">Red Hat</span> Partner Credit Funding Portal</span>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/customer">
-              <Button variant="ghost" size="sm" className="text-xs">Customer Portal</Button>
+              <Button variant="ghost" size="sm" className="text-xs text-redhat hover:text-redhat hover:bg-redhat/10">Customer Portal</Button>
             </Link>
             <Link to="/internal">
-              <Button variant="ghost" size="sm" className="text-xs">Finance Portal</Button>
+              <Button variant="ghost" size="sm" className="text-xs text-aws hover:text-aws hover:bg-aws/10">Finance Portal</Button>
             </Link>
           </div>
         </div>
@@ -191,7 +191,7 @@ const Index = () => {
             </div>
             <h1 className="font-display font-bold text-4xl md:text-6xl tracking-tight mb-6 text-foreground">
               Unlock Post-Deal Credits for Your{" "}
-              <span className="text-primary">Red Hat</span> Investments
+              <span className="text-redhat">Red Hat</span> Investments
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
@@ -199,10 +199,10 @@ const Index = () => {
             </p>
             <div className="flex items-center justify-center gap-4">
               <Link to="/customer">
-                <Button size="lg" className="gap-2">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
+                <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
               </Link>
               <Link to="/internal">
-                <Button variant="outline" size="lg" className="gap-2">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
+                <Button variant="outline" size="lg" className="gap-2 border-aws text-aws hover:bg-aws/10">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
               </Link>
             </div>
           </div>
@@ -238,10 +238,10 @@ const Index = () => {
       <section className="py-16 md:py-20" style={{ backgroundColor: "#1E293B" }}>
         <div className="container max-w-5xl">
           <h2 className="font-display font-bold text-2xl md:text-4xl text-white text-center mb-6 leading-tight">
-            I managed AWS's Red Hat partnership. I had no idea where my customers' money was.
+            I managed AWS's <span className="text-redhat">Red Hat</span> partnership. I had no idea where my customers' money was.
           </h2>
           <p className="text-center text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed text-sm md:text-base">
-            When a customer buys Red Hat products on AWS Marketplace and qualifies for post-deal credits, they submit a request — and enter a black box. No confirmation. No timeline. No status updates. My Finance team tracked every single credit request in a manual Excel spreadsheet — not a shared Google Doc, an actual .xlsx file sitting on someone's desktop. I found out a deal was stuck only when the customer emailed me directly asking what happened. I managed the relationship but couldn't answer basic questions about money that was owed to them.
+            When a customer buys <span className="text-redhat font-medium">Red Hat</span> products on AWS Marketplace and qualifies for post-deal credits, they submit a request — and enter a black box. No confirmation. No timeline. No status updates. My Finance team tracked every single credit request in a manual Excel spreadsheet — not a shared Google Doc, an actual .xlsx file sitting on someone's desktop. I found out a deal was stuck only when the customer emailed me directly asking what happened. I managed the relationship but couldn't answer basic questions about money that was owed to them.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -494,30 +494,30 @@ const Index = () => {
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold text-center mb-8">Choose your role to get started ↓</p>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Link to="/customer" className="group">
-              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/40">
+              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-redhat/40">
                 <CardContent className="p-8 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
-                    <Building2 className="h-7 w-7 text-primary" />
+                  <div className="h-14 w-14 rounded-2xl bg-redhat/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-redhat/20 transition-colors">
+                    <Building2 className="h-7 w-7 text-redhat" />
                   </div>
                   <h2 className="font-display font-bold text-xl mb-2">Customer Portal</h2>
                   <p className="text-sm text-muted-foreground mb-1">Submit new credit requests, track approvals, and manage your funding lifecycle.</p>
                   <p className="text-xs text-muted-foreground mb-3">For AWS Marketplace partners submitting and tracking credit requests</p>
-                  <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">👤 You are: A company that purchased Red Hat products on AWS Marketplace and wants to claim post-deal credits.</p>
-                  <div className="inline-flex items-center gap-2 text-sm font-medium text-primary">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
+                  <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">👤 You are: A company that purchased <span className="text-redhat font-medium">Red Hat</span> products on AWS Marketplace and wants to claim post-deal credits.</p>
+                  <div className="inline-flex items-center gap-2 text-sm font-medium text-redhat">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
                 </CardContent>
               </Card>
             </Link>
             <Link to="/internal" className="group">
-              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/40">
+              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-aws/40">
                 <CardContent className="p-8 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
-                    <Shield className="h-7 w-7 text-primary" />
+                  <div className="h-14 w-14 rounded-2xl bg-aws/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-aws/20 transition-colors">
+                    <Shield className="h-7 w-7 text-aws" />
                   </div>
                   <h2 className="font-display font-bold text-xl mb-2">Finance Portal</h2>
                   <p className="text-sm text-muted-foreground mb-1">Review submissions, manage tiered approvals, and track budget utilization.</p>
-                  <p className="text-xs text-muted-foreground mb-3">For Red Hat Finance Analysts, Directors, and VPs reviewing and approving requests</p>
+                  <p className="text-xs text-muted-foreground mb-3">For <span className="text-redhat font-medium">Red Hat</span> Finance Analysts, Directors, and VPs reviewing and approving requests</p>
                   <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">🔒 You are: An AWS Finance team member, Director, or VP who reviews and approves credit requests.</p>
-                  <div className="inline-flex items-center gap-2 text-sm font-medium text-primary">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
+                  <div className="inline-flex items-center gap-2 text-sm font-medium text-aws">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
                 </CardContent>
               </Card>
             </Link>
@@ -527,7 +527,7 @@ const Index = () => {
 
       <footer className="border-t bg-card py-8 mt-auto">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© 2026 Red Hat Partner Credit Funding Portal. All rights reserved.</p>
+          <p>© 2026 <span className="text-redhat font-medium">Red Hat</span> Partner Credit Funding Portal. All rights reserved.</p>
           <div className="flex gap-4">
             <span>Privacy Policy</span>
             <span>Terms of Service</span>

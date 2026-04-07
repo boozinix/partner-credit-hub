@@ -16,10 +16,10 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
       <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/customer" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-display font-bold text-sm">RH</span>
+            <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center">
+              <span className="text-redhat-foreground font-display font-bold text-sm">RH</span>
             </div>
-            <span className="font-display font-bold text-lg">Partner Credit Portal</span>
+            <span className="font-display font-bold text-lg"><span className="text-redhat">Red Hat</span> Partner Credit Portal</span>
           </Link>
           <nav className="flex items-center gap-6">
             <Link
@@ -55,15 +55,15 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
             {/* View Toggle */}
             <div className="flex items-center border-l pl-4 mr-2">
               <div className="flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
-                <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium">👤 Customer</span>
+                <span className="px-3 py-1 rounded-full bg-redhat text-redhat-foreground font-medium">👤 Customer</span>
                 <button onClick={() => navigate("/internal")} className="px-3 py-1 rounded-full text-muted-foreground hover:text-foreground transition-colors">🏦 Finance</button>
               </div>
             </div>
 
             {/* Persona Switcher */}
             <div className="flex items-center gap-2 border-l pl-4">
-              <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-xs font-bold text-primary">{persona.initials}</span>
+              <div className="h-7 w-7 rounded-full bg-redhat/10 flex items-center justify-center">
+                <span className="text-xs font-bold text-redhat">{persona.initials}</span>
               </div>
               <Select
                 value={persona.email}
@@ -117,7 +117,7 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
 
       <footer className="border-t bg-card py-8">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© 2026 Red Hat Partner Credit Funding Portal. All rights reserved.</p>
+          <p>© 2026 <span className="text-redhat font-medium">Red Hat</span> Partner Credit Funding Portal. All rights reserved.</p>
           <div className="flex gap-4">
             <span>Privacy Policy</span>
             <span>Terms of Service</span>

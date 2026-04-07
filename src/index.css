@@ -43,6 +43,11 @@
     --info: 210 100% 52%;
     --info-foreground: 0 0% 100%;
 
+    --redhat: 0 100% 47%;
+    --redhat-foreground: 0 0% 100%;
+    --aws: 36 100% 50%;
+    --aws-foreground: 0 0% 100%;
+
     --sidebar-background: 231 35% 22%;
     --sidebar-foreground: 220 20% 92%;
     --sidebar-primary: 231 60% 65%;

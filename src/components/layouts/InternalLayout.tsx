@@ -32,12 +32,12 @@ function InternalSidebar() {
   return (
     <Sidebar collapsible="icon">
       <div className="flex h-16 items-center gap-2 px-4 border-b border-sidebar-border">
-        <div className="h-8 w-8 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
-          <span className="text-sidebar-primary-foreground font-display font-bold text-sm">RH</span>
+        <div className="h-8 w-8 rounded-lg bg-aws flex items-center justify-center shrink-0">
+          <span className="text-aws-foreground font-display font-bold text-sm">AF</span>
         </div>
         {!collapsed && (
           <span className="font-display font-semibold text-sm text-sidebar-foreground">
-            Finance Portal
+            AWS Finance Portal
           </span>
         )}
       </div>
@@ -106,7 +106,7 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
             {/* View Toggle */}
             <div className="flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
               <button onClick={() => navigate("/customer")} className="px-3 py-1 rounded-full text-muted-foreground hover:text-foreground transition-colors">👤 Customer</button>
-              <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium">🏦 Finance</span>
+              <span className="px-3 py-1 rounded-full bg-aws text-aws-foreground font-medium">🏦 Finance</span>
             </div>
             <Link
               to="/"
