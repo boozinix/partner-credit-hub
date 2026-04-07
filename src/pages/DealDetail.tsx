@@ -51,6 +51,7 @@ export default function DealDetail() {
     setLoading(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchData(); }, [trackingId]);
 
   const performAction = async (action: "approve" | "deny" | "send_back", sendBackComment?: string) => {
