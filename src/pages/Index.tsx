@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Users, Search, LayoutDashboard, UserCheck, Zap, MessageSquare, MailX, Lock, XCircle, RefreshCw, Mail, FileText, Activity } from "lucide-react";
+import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Users, Search, LayoutDashboard, UserCheck, Zap, MessageSquare, MailX, Lock, XCircle, RefreshCw, Mail, FileText, Activity, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
@@ -168,6 +170,14 @@ const Index = () => {
             </div>
             <span className="font-display font-bold text-lg">Partner Credit Funding Portal</span>
           </div>
+          <div className="flex items-center gap-3">
+            <Link to="/customer">
+              <Button variant="ghost" size="sm" className="text-xs">Customer Portal</Button>
+            </Link>
+            <Link to="/internal">
+              <Button variant="ghost" size="sm" className="text-xs">Finance Portal</Button>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -187,9 +197,41 @@ const Index = () => {
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
               From submission to payout in days, not weeks.
             </p>
+            <div className="flex items-center justify-center gap-4">
+              <Link to="/customer">
+                <Button size="lg" className="gap-2">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
+              </Link>
+              <Link to="/internal">
+                <Button variant="outline" size="lg" className="gap-2">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
+              </Link>
+            </div>
           </div>
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
+      </section>
+
+      {/* QUICK START GUIDE — moved up from bottom */}
+      <section className="py-16 border-b bg-muted/30">
+        <div className="container max-w-4xl">
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">How It Works — Try It Yourself</h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { icon: Users, step: "1", title: "Submit a Request", desc: "Go to Customer Portal → Submit Request. Fill in the form as a Red Hat customer requesting post-deal credits." },
+              { icon: Search, step: "2", title: "Track Your Status", desc: "After submitting, you'll get a tracking ID. Visit My Requests to see the live funding lifecycle." },
+              { icon: LayoutDashboard, step: "3", title: "Review as Finance", desc: "Switch to Internal Finance Portal. See the live budget pool, review incoming requests, and approve or route them." },
+              { icon: UserCheck, step: "4", title: "Approve as a Director", desc: "Open any deal above $10K. Click Approve & Route — it auto-advances to the next approval tier based on deal size." },
+            ].map((s) => (
+              <div key={s.step} className="text-center">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <s.icon className="h-6 w-6 text-primary" />
+                </div>
+                <div className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold mb-2">{s.step}</div>
+                <h3 className="font-display font-semibold text-sm mb-2">{s.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* SECTION 1 — THE PROBLEM */}
@@ -310,8 +352,11 @@ const Index = () => {
                     <Building2 className="h-7 w-7 text-primary" />
                   </div>
                   <h2 className="font-display font-bold text-xl mb-2">Customer Portal</h2>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm text-muted-foreground mb-1">
                     Submit new credit requests, track approvals, and manage your funding lifecycle.
+                  </p>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    For AWS Marketplace partners submitting and tracking credit requests
                   </p>
                   <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">
                     👤 You are: A company that purchased Red Hat products on AWS Marketplace and wants to claim post-deal credits.
@@ -328,9 +373,12 @@ const Index = () => {
                   <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
                     <Shield className="h-7 w-7 text-primary" />
                   </div>
-                  <h2 className="font-display font-bold text-xl mb-2">Internal Finance Portal</h2>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <h2 className="font-display font-bold text-xl mb-2">Finance Portal</h2>
+                  <p className="text-sm text-muted-foreground mb-1">
                     Review submissions, manage tiered approvals, and track budget utilization.
+                  </p>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    For Red Hat Finance Analysts, Directors, and VPs reviewing and approving requests
                   </p>
                   <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">
                     🔒 You are: An AWS Finance team member, Director, or VP who reviews and approves credit requests.
@@ -430,45 +478,43 @@ const Index = () => {
         </div>
       </section>
 
-      {/* MERGED SCOPE DECISIONS */}
+      {/* SCOPE DECISIONS — Collapsible */}
       <section className="py-16 border-b">
         <div className="container max-w-4xl">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2 text-center">Intentional gaps</p>
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-3">Scope Decisions</h2>
-          <p className="text-sm text-muted-foreground text-center mb-10">Good product judgment means knowing what not to build — yet</p>
-          <div className="space-y-4">
-            {[
-              {
-                icon: MailX, title: "Real email delivery",
-                body: "The email composer modal, templates, and send flow are fully built — but emails log to the console instead of delivering via SMTP. Real email infrastructure requires domain verification, bounce handling, and deliverability testing. None of that adds demo value. The interface shows the workflow; the plumbing is straightforward. Estimated V2 effort: 4 hours with SendGrid.",
-              },
-              {
-                icon: Lock, title: "Customer authentication",
-                body: "Customers access request status via tracking ID link — no account, no password. Deliberate choice: a customer submits 1–2 credit requests per year. Login friction is not justified for that usage pattern. The tracking ID is sufficient to demonstrate the workflow. Production version would add magic link auth for customers with multiple requests and SSO (AWS IAM) for internal Finance users.",
-              },
-              {
-                icon: FileText, title: "Document upload and storage",
-                body: "The schema supports it and the form shows it — but S3 storage isn't wired. In discovery, the primary customer pain was visibility, not file management. Solving 'where is my request' came before 'where is my invoice.' Storage is a workflow optimization on top of a working approval chain, not a prerequisite for one.",
-              },
-              {
-                icon: Activity, title: "Full compliance audit trail",
-                body: "StatusHistory is in the schema and partially surfaced in the deal detail view. Full compliance-grade audit trail with export, retention policies, and tamper detection is a v2 feature — the data model is ready, the UI polish is remaining work.",
-              },
-            ].map((item) => (
-              <div key={item.title} className="rounded-xl border bg-card p-5 flex items-start gap-4 border-l-4 border-l-amber-400">
-                <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
-                  <XCircle className="h-4 w-4 text-amber-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-display font-semibold text-sm mb-1">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
-                </div>
+          <Collapsible>
+            <CollapsibleTrigger className="w-full group">
+              <div className="flex items-center justify-center gap-3 cursor-pointer">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Intentional gaps</p>
+                <h2 className="font-display font-bold text-2xl md:text-3xl">Scope Decisions</h2>
+                <ChevronDown className="h-5 w-5 text-muted-foreground group-data-[state=open]:hidden" />
+                <ChevronUp className="h-5 w-5 text-muted-foreground hidden group-data-[state=open]:block" />
               </div>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground italic text-center mt-6 max-w-2xl mx-auto">
-            These weren't oversights — they were conscious tradeoffs to keep the prototype focused on the core approval workflow.
-          </p>
+              <p className="text-sm text-muted-foreground text-center mt-2">Good product judgment means knowing what not to build — yet</p>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-8">
+              <div className="space-y-4">
+                {[
+                  { icon: MailX, title: "Real email delivery", body: "The email composer modal, templates, and send flow are fully built — but emails log to the console instead of delivering via SMTP. Real email infrastructure requires domain verification, bounce handling, and deliverability testing. None of that adds demo value. The interface shows the workflow; the plumbing is straightforward. Estimated V2 effort: 4 hours with SendGrid." },
+                  { icon: Lock, title: "Customer authentication", body: "Customers access request status via tracking ID link — no account, no password. Deliberate choice: a customer submits 1–2 credit requests per year. Login friction is not justified for that usage pattern. The tracking ID is sufficient to demonstrate the workflow. Production version would add magic link auth for customers with multiple requests and SSO (AWS IAM) for internal Finance users." },
+                  { icon: FileText, title: "Document upload and storage", body: "The schema supports it and the form shows it — but S3 storage isn't wired. In discovery, the primary customer pain was visibility, not file management. Solving 'where is my request' came before 'where is my invoice.' Storage is a workflow optimization on top of a working approval chain, not a prerequisite for one." },
+                  { icon: Activity, title: "Full compliance audit trail", body: "StatusHistory is in the schema and partially surfaced in the deal detail view. Full compliance-grade audit trail with export, retention policies, and tamper detection is a v2 feature — the data model is ready, the UI polish is remaining work." },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-xl border bg-card p-5 flex items-start gap-4 border-l-4 border-l-amber-400">
+                    <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
+                      <XCircle className="h-4 w-4 text-amber-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-display font-semibold text-sm mb-1">{item.title}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground italic text-center mt-6 max-w-2xl mx-auto">
+                These weren't oversights — they were conscious tradeoffs to keep the prototype focused on the core approval workflow.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </section>
 
@@ -494,29 +540,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* SECTION 6 — DEMO GUIDE */}
-      <section className="py-16 border-t bg-muted/30">
-        <div className="container max-w-4xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">How to explore this prototype</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { icon: Users, step: "1", title: "Submit a Request", desc: "Go to Customer Portal → Submit Request. Fill in the form as a Red Hat customer requesting post-deal credits." },
-              { icon: Search, step: "2", title: "Track Your Status", desc: "After submitting, you'll get a tracking ID. Visit My Requests to see the live funding lifecycle." },
-              { icon: LayoutDashboard, step: "3", title: "Review as Finance", desc: "Switch to Internal Finance Portal. See the live budget pool, review incoming requests, and approve or route them." },
-              { icon: UserCheck, step: "4", title: "Approve as a Director", desc: "Open any deal above $10K. Click Approve & Route — it auto-advances to the next approval tier based on deal size." },
-            ].map((s) => (
-              <div key={s.step} className="text-center">
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <s.icon className="h-6 w-6 text-primary" />
-                </div>
-                <div className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold mb-2">{s.step}</div>
-                <h3 className="font-display font-semibold text-sm mb-2">{s.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="border-t bg-card py-8 mt-auto">
