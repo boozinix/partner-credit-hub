@@ -197,6 +197,14 @@ const Index = () => {
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
               From submission to payout in days, not weeks.
             </p>
+            <div className="flex items-center justify-center gap-4">
+              <Link to="/customer">
+                <Button size="lg" className="gap-2">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
+              </Link>
+              <Link to="/internal">
+                <Button variant="outline" size="lg" className="gap-2">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
+              </Link>
+            </div>
           </div>
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
