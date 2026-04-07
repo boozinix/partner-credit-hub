@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { StatusBadge } from "@/components/StatusBadge";
-import { ArrowRight, Plus, FileText, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
+import { ArrowRight, Plus, FileText, Clock, CheckCircle2, AlertTriangle, Pencil } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export default function CustomerDashboard() {
   const { persona } = usePersona();
