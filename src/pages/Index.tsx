@@ -529,9 +529,9 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="border-t bg-card py-8 mt-auto">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© 2026 <span className="text-redhat font-medium">Red Hat</span> Partner Credit Funding Portal. All rights reserved.</p>
+      <footer className="border-t bg-card py-6 md:py-8 mt-auto">
+        <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm text-muted-foreground px-4">
+          <p>© 2026 <span className="text-redhat font-medium">Red Hat</span> Partner Credit Funding Portal.</p>
           <div className="flex gap-4">
             <span>Privacy Policy</span>
             <span>Terms of Service</span>

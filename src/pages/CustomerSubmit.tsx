@@ -335,11 +335,11 @@ export default function CustomerSubmit() {
                   {/* Totals */}
                   {(totalPurchase > 0 || totalCredit > 0) && (
                     <div className="border-t pt-3 mt-3">
-                      <div className="grid grid-cols-[1fr_140px_140px_36px] gap-3 px-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:grid md:grid-cols-[1fr_140px_140px_36px] md:gap-3 px-1">
                         <p className="text-sm font-semibold">Totals</p>
-                        <p className="text-sm font-semibold">${totalPurchase.toLocaleString()}</p>
-                        <p className="text-sm font-semibold text-primary">${totalCredit.toLocaleString()}</p>
-                        <div />
+                        <p className="text-sm font-semibold">Purchase: ${totalPurchase.toLocaleString()}</p>
+                        <p className="text-sm font-semibold text-primary">Credit: ${totalCredit.toLocaleString()}</p>
+                        <div className="hidden md:block" />
                       </div>
                       {totalPurchase > 0 && (
                         <p className="text-[10px] text-muted-foreground mt-1 px-1">
