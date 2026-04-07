@@ -145,7 +145,7 @@ function AnimatedCounter({ end, prefix = "", suffix = "", duration = 2000 }: { e
 }
 
 const Index = () => {
-  const [stats, setStats] = useState({ pool: 1000000, processed: 0, approvalRate: 0, avgDays: 4.2 });
+  const [stats, setStats] = useState({ pool: 2400000, processed: 47, approvalRate: 89, avgDays: 3.2 });
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -154,7 +154,7 @@ const Index = () => {
       const paidOut = all.filter(r => r.status === "PAID_OUT").length;
       const approvedOrPaid = all.filter(r => ["APPROVED", "PAID_OUT"].includes(r.status));
       const rate = all.length > 0 ? Math.round((approvedOrPaid.length / all.length) * 100) : 94;
-      setStats({ pool: 1000000, processed: paidOut, approvalRate: rate || 94, avgDays: 4.2 });
+      setStats({ pool: 2400000, processed: paidOut || 47, approvalRate: rate || 89, avgDays: 3.2 });
     };
     fetchStats();
   }, []);
@@ -168,11 +168,14 @@ const Index = () => {
             <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center shrink-0">
               <span className="text-redhat-foreground font-display font-bold text-sm">RH</span>
             </div>
-            <span className="font-display font-bold text-base md:text-lg truncate">
-              <span className="text-redhat">Red Hat</span>{" "}
-              <span className="hidden sm:inline">Partner Credit Funding Portal</span>
-              <span className="sm:hidden">Credits</span>
-            </span>
+            <div className="min-w-0">
+              <span className="font-display font-bold text-base md:text-lg truncate block">
+                <span className="text-redhat">Red Hat</span>{" "}
+                <span className="hidden sm:inline">Partner Credit Funding Portal</span>
+                <span className="sm:hidden">Credits</span>
+              </span>
+              <span className="text-[10px] md:text-xs text-muted-foreground hidden sm:block">An AWS-administered portal for managing <span className="text-redhat font-medium">Red Hat</span> Marketplace partner credits</span>
+            </div>
           </div>
           <div className="hidden md:flex items-center gap-3">
             <Link to="/customer">
@@ -197,10 +200,17 @@ const Index = () => {
               Unlock Post-Deal Credits for Your{" "}
               <span className="text-redhat">Red Hat</span> Investments
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-muted-foreground mb-4 md:mb-6 max-w-2xl mx-auto leading-relaxed">
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
               From submission to payout in days, not weeks.
             </p>
+            {/* What is a Post-Deal Credit? */}
+            <div className="max-w-2xl mx-auto mb-6 md:mb-8 rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 text-left">
+              <p className="text-sm md:text-base text-foreground leading-relaxed">
+                <span className="font-display font-bold text-primary">What is a Post-Deal Credit?</span>{" "}
+                When a customer purchases eligible software (e.g., <span className="text-redhat font-medium">Red Hat</span>) through AWS Marketplace and hits a spend threshold, AWS owes them a rebate — called a post-deal credit. This portal replaces manual spreadsheet tracking with a structured, auditable workflow.
+              </p>
+            </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
               <Link to="/customer" className="w-full sm:w-auto">
                 <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground w-full sm:w-auto">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
@@ -212,6 +222,30 @@ const Index = () => {
           </div>
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
+      </section>
+
+      {/* WHO THIS IS FOR */}
+      <section className="py-12 md:py-16 border-b">
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-center mb-8 md:mb-10">Who This Is For</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {[
+              { icon: Building2, title: "Customer", desc: "Submit and track your credit requests. See real-time status from submission through payout.", color: "text-redhat", bg: "bg-redhat/10" },
+              { icon: DollarSign, title: "AWS Finance Team", desc: "Review, validate, and process submissions. Manage the credit pool with automated tier-based routing.", color: "text-primary", bg: "bg-primary/10" },
+              { icon: UserCheck, title: "Director / VP", desc: "Approve or reject credit requests with full audit trail. One-click decisions with complete context.", color: "text-aws", bg: "bg-aws/10" },
+            ].map((card) => (
+              <Card key={card.title} className="border hover:shadow-md transition-shadow">
+                <CardContent className="p-5 md:p-6 text-center">
+                  <div className={`h-12 w-12 rounded-xl ${card.bg} flex items-center justify-center mx-auto mb-4`}>
+                    <card.icon className={`h-6 w-6 ${card.color}`} />
+                  </div>
+                  <h3 className="font-display font-bold text-base mb-2">{card.title}</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* QUICK START GUIDE — moved up from bottom */}
@@ -325,10 +359,10 @@ const Index = () => {
         <div className="container px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {[
-              { end: stats.pool, prefix: "$", label: "FY2026 Credit Pool", icon: DollarSign },
+              { end: stats.pool, prefix: "$", label: "FY2026 Credit Pool", icon: DollarSign, customDisplay: "$2.4M" },
               { end: stats.processed, label: "Credits Processed", icon: CheckCircle2 },
               { end: stats.approvalRate, suffix: "%", label: "Approval Rate", icon: TrendingUp },
-              { end: 42, suffix: "", label: "Avg. Processing Time", icon: Clock, customDisplay: "4.2 days" },
+              { end: 32, suffix: "", label: "Avg. Processing Time", icon: Clock, customDisplay: "3.2 days" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <stat.icon className="h-5 md:h-6 w-5 md:w-6 text-primary/60 mx-auto mb-2 md:mb-3" />
@@ -496,6 +530,23 @@ const Index = () => {
         <div className="container px-4">
           <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-2">Try It Yourself</h2>
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold text-center mb-8">Choose your role to get started ↓</p>
+
+          {/* How to Use This Demo — numbered guide */}
+          <div className="max-w-2xl mx-auto mb-10 rounded-xl border bg-card p-5 md:p-6">
+            <h3 className="font-display font-bold text-sm md:text-base mb-4 text-center">How to Use This Demo</h3>
+            <div className="space-y-3">
+              {[
+                { step: "1", text: "Start in the Customer Portal — submit a credit request." },
+                { step: "2", text: "Switch to the Internal Finance Portal — review and approve it." },
+                { step: "3", text: "Return to the Customer Portal — see the status update in real time." },
+              ].map((s) => (
+                <div key={s.step} className="flex items-start gap-3">
+                  <div className="h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{s.step}</div>
+                  <p className="text-sm text-muted-foreground">{s.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Link to="/customer" className="group">
               <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-redhat/40">
