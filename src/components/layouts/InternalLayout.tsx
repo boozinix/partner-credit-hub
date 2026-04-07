@@ -104,15 +104,20 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
             <SidebarTrigger />
             <div className="flex-1" />
             {/* View Toggle */}
-            <div className="flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
+            <div className="hidden sm:flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
               <button onClick={() => navigate("/customer")} className="px-3 py-1 rounded-full text-muted-foreground hover:text-foreground transition-colors">👤 Customer</button>
               <span className="px-3 py-1 rounded-full bg-aws text-aws-foreground font-medium">🏦 Finance</span>
+            </div>
+            <div className="sm:hidden flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
+              <button onClick={() => navigate("/customer")} className="px-2 py-1 rounded-full text-muted-foreground">👤</button>
+              <span className="px-2 py-1 rounded-full bg-aws text-aws-foreground font-medium">🏦</span>
             </div>
             <Link
               to="/"
               className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
             >
-              ← Back to Overview
+              <span className="hidden sm:inline">← Back to Overview</span>
+              <span className="sm:hidden">←</span>
             </Link>
           </header>
           {/* Orientation Banner */}

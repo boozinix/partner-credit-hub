@@ -39,9 +39,9 @@ export default function CustomerRequests() {
 
   return (
     <CustomerLayout>
-      <div className="container py-10 max-w-5xl">
-        <div className="mb-8">
-          <h1 className="font-display font-bold text-3xl mb-1">My Requests</h1>
+      <div className="container py-6 md:py-10 max-w-5xl px-4">
+        <div className="mb-6 md:mb-8">
+          <h1 className="font-display font-bold text-2xl md:text-3xl mb-1">My Requests</h1>
           <p className="text-muted-foreground">View and manage all credit requests for {persona.company}.</p>
         </div>
 
