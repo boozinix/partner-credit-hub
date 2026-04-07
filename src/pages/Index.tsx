@@ -170,6 +170,14 @@ const Index = () => {
             </div>
             <span className="font-display font-bold text-lg">Partner Credit Funding Portal</span>
           </div>
+          <div className="flex items-center gap-3">
+            <Link to="/customer">
+              <Button variant="ghost" size="sm" className="text-xs">Customer Portal</Button>
+            </Link>
+            <Link to="/internal">
+              <Button variant="ghost" size="sm" className="text-xs">Finance Portal</Button>
+            </Link>
+          </div>
         </div>
       </header>
 
