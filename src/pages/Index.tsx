@@ -22,9 +22,9 @@ function ExcelVsPortalToggle() {
   const [showPortal, setShowPortal] = useState(true);
 
   return (
-    <section className="py-16 border-b bg-muted/20">
-      <div className="container max-w-5xl">
-        <div className="flex items-center justify-center gap-4 mb-10">
+    <section className="py-12 md:py-16 border-b bg-muted/20">
+      <div className="container max-w-5xl px-4">
+        <div className="flex items-center justify-center gap-3 md:gap-4 mb-8 md:mb-10">
           <span className={`font-display font-bold text-sm uppercase tracking-wider transition-colors ${!showPortal ? "text-destructive" : "text-muted-foreground/50"}`}>Before</span>
           <Switch checked={showPortal} onCheckedChange={setShowPortal} className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-destructive scale-125" />
           <span className={`font-display font-bold text-sm uppercase tracking-wider transition-colors ${showPortal ? "text-green-600" : "text-muted-foreground/50"}`}>After</span>
