@@ -215,10 +215,10 @@ const Index = () => {
       </section>
 
       {/* QUICK START GUIDE — moved up from bottom */}
-      <section className="py-16 border-b bg-muted/30">
-        <div className="container max-w-4xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">How It Works — Try It Yourself</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <section className="py-12 md:py-16 border-b bg-muted/30">
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-center mb-8 md:mb-10">How It Works — Try It Yourself</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
               { icon: Users, step: "1", title: "Submit a Request", desc: "Go to Customer Portal → Submit Request. Fill in the form as a Red Hat customer requesting post-deal credits." },
               { icon: Search, step: "2", title: "Track Your Status", desc: "After submitting, you'll get a tracking ID. Visit My Requests to see the live funding lifecycle." },
@@ -226,12 +226,12 @@ const Index = () => {
               { icon: UserCheck, step: "4", title: "Approve as a Director", desc: "Open any deal above $10K. Click Approve & Route — it auto-advances to the next approval tier based on deal size." },
             ].map((s) => (
               <div key={s.step} className="text-center">
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <s.icon className="h-6 w-6 text-primary" />
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <s.icon className="h-5 md:h-6 w-5 md:w-6 text-primary" />
                 </div>
-                <div className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold mb-2">{s.step}</div>
-                <h3 className="font-display font-semibold text-sm mb-2">{s.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+                <div className="inline-flex items-center justify-center h-5 w-5 md:h-6 md:w-6 rounded-full bg-primary text-primary-foreground text-[10px] md:text-xs font-bold mb-2">{s.step}</div>
+                <h3 className="font-display font-semibold text-xs md:text-sm mb-1 md:mb-2">{s.title}</h3>
+                <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
