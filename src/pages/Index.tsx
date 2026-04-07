@@ -430,8 +430,8 @@ const Index = () => {
       </section>
 
       {/* SCOPE DECISIONS — Collapsible */}
-      <section className="py-16 border-b">
-        <div className="container max-w-4xl">
+      <section className="py-12 md:py-16 border-b">
+        <div className="container max-w-4xl px-4">
           <Collapsible defaultOpen>
             <CollapsibleTrigger className="w-full group">
               <div className="flex items-center justify-center gap-3 cursor-pointer">
