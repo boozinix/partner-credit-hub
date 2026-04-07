@@ -199,10 +199,10 @@ const Index = () => {
             </p>
             <div className="flex items-center justify-center gap-4">
               <Link to="/customer">
-                <Button size="lg" className="gap-2">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
+                <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
               </Link>
               <Link to="/internal">
-                <Button variant="outline" size="lg" className="gap-2">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
+                <Button variant="outline" size="lg" className="gap-2 border-aws text-aws hover:bg-aws/10">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
               </Link>
             </div>
           </div>
