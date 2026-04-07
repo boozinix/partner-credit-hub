@@ -316,7 +316,13 @@ export default function CustomerSubmit() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="h-9 w-9 text-muted-foreground hover:text-destructive"
+                        className="h-9 w-9 text-muted-foreground hover:text-destructive self-end md:self-auto"
+                        onClick={() => removeLine(idx)}
+                        disabled={lineItems.length === 1}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                      </div>
                         onClick={() => removeLine(idx)}
                         disabled={lineItems.length === 1}
                       >
