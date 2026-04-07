@@ -530,6 +530,23 @@ const Index = () => {
         <div className="container px-4">
           <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-2">Try It Yourself</h2>
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold text-center mb-8">Choose your role to get started ↓</p>
+
+          {/* How to Use This Demo — numbered guide */}
+          <div className="max-w-2xl mx-auto mb-10 rounded-xl border bg-card p-5 md:p-6">
+            <h3 className="font-display font-bold text-sm md:text-base mb-4 text-center">How to Use This Demo</h3>
+            <div className="space-y-3">
+              {[
+                { step: "1", text: "Start in the Customer Portal — submit a credit request." },
+                { step: "2", text: "Switch to the Internal Finance Portal — review and approve it." },
+                { step: "3", text: "Return to the Customer Portal — see the status update in real time." },
+              ].map((s) => (
+                <div key={s.step} className="flex items-start gap-3">
+                  <div className="h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{s.step}</div>
+                  <p className="text-sm text-muted-foreground">{s.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Link to="/customer" className="group">
               <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-redhat/40">
