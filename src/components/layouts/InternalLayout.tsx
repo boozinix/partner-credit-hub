@@ -106,7 +106,7 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
             {/* View Toggle */}
             <div className="flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
               <button onClick={() => navigate("/customer")} className="px-3 py-1 rounded-full text-muted-foreground hover:text-foreground transition-colors">👤 Customer</button>
-              <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium">🏦 Finance</span>
+              <span className="px-3 py-1 rounded-full bg-aws text-aws-foreground font-medium">🏦 Finance</span>
             </div>
             <Link
               to="/"

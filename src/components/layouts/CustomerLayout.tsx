@@ -62,8 +62,8 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
 
             {/* Persona Switcher */}
             <div className="flex items-center gap-2 border-l pl-4">
-              <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-xs font-bold text-primary">{persona.initials}</span>
+              <div className="h-7 w-7 rounded-full bg-redhat/10 flex items-center justify-center">
+                <span className="text-xs font-bold text-redhat">{persona.initials}</span>
               </div>
               <Select
                 value={persona.email}
