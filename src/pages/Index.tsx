@@ -168,7 +168,7 @@ const Index = () => {
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-display font-bold text-sm">RH</span>
             </div>
-            <span className="font-display font-bold text-lg">Partner Credit Funding Portal</span>
+            <span className="font-display font-bold text-lg"><span className="text-redhat">Red Hat</span> Partner Credit Funding Portal</span>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/customer">

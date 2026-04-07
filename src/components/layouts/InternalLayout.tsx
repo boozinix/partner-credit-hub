@@ -32,12 +32,12 @@ function InternalSidebar() {
   return (
     <Sidebar collapsible="icon">
       <div className="flex h-16 items-center gap-2 px-4 border-b border-sidebar-border">
-        <div className="h-8 w-8 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
-          <span className="text-sidebar-primary-foreground font-display font-bold text-sm">RH</span>
+        <div className="h-8 w-8 rounded-lg bg-aws flex items-center justify-center shrink-0">
+          <span className="text-aws-foreground font-display font-bold text-sm">AF</span>
         </div>
         {!collapsed && (
           <span className="font-display font-semibold text-sm text-sidebar-foreground">
-            Finance Portal
+            AWS Finance Portal
           </span>
         )}
       </div>

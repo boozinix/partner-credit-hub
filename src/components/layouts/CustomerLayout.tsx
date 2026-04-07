@@ -117,7 +117,7 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
 
       <footer className="border-t bg-card py-8">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© 2026 Red Hat Partner Credit Funding Portal. All rights reserved.</p>
+          <p>© 2026 <span className="text-redhat font-medium">Red Hat</span> Partner Credit Funding Portal. All rights reserved.</p>
           <div className="flex gap-4">
             <span>Privacy Policy</span>
             <span>Terms of Service</span>
