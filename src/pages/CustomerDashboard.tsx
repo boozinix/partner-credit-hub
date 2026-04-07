@@ -14,6 +14,9 @@ export default function CustomerDashboard() {
   const { persona } = usePersona();
   const [requests, setRequests] = useState<Tables<"credit_requests">[]>([]);
   const [loading, setLoading] = useState(true);
+  const [howItWorksOpen, setHowItWorksOpen] = useState(() => {
+    return localStorage.getItem("howItWorksDismissed") !== "true";
+  });
 
   useEffect(() => {
     (async () => {
