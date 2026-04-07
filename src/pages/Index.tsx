@@ -321,9 +321,9 @@ const Index = () => {
       </section>
 
       {/* SECTION 3 — STATS */}
-      <section className="py-16 border-b">
-        <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="py-12 md:py-16 border-b">
+        <div className="container px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {[
               { end: stats.pool, prefix: "$", label: "FY2026 Credit Pool", icon: DollarSign },
               { end: stats.processed, label: "Credits Processed", icon: CheckCircle2 },
@@ -331,13 +331,13 @@ const Index = () => {
               { end: 42, suffix: "", label: "Avg. Processing Time", icon: Clock, customDisplay: "4.2 days" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <stat.icon className="h-6 w-6 text-primary/60 mx-auto mb-3" />
+                <stat.icon className="h-5 md:h-6 w-5 md:w-6 text-primary/60 mx-auto mb-2 md:mb-3" />
                 {"customDisplay" in stat && stat.customDisplay ? (
-                  <div className="font-display font-bold text-4xl md:text-5xl text-primary">{stat.customDisplay}</div>
+                  <div className="font-display font-bold text-2xl md:text-5xl text-primary">{stat.customDisplay}</div>
                 ) : (
                   <AnimatedCounter end={stat.end} prefix={stat.prefix} suffix={stat.suffix} />
                 )}
-                <p className="text-sm text-muted-foreground mt-2 font-medium uppercase tracking-wider">{stat.label}</p>
+                <p className="text-[10px] md:text-sm text-muted-foreground mt-1 md:mt-2 font-medium uppercase tracking-wider">{stat.label}</p>
               </div>
             ))}
           </div>
