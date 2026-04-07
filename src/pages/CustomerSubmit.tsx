@@ -173,23 +173,23 @@ export default function CustomerSubmit() {
 
   return (
     <CustomerLayout>
-      <div className="container py-10 max-w-6xl">
-        <div className="mb-8">
-          <h1 className="font-display font-bold text-3xl mb-2">Submit Credit Request</h1>
-          <p className="text-muted-foreground">
+      <div className="container py-6 md:py-10 max-w-6xl px-4">
+        <div className="mb-6 md:mb-8">
+          <h1 className="font-display font-bold text-2xl md:text-3xl mb-2">Submit Credit Request</h1>
+          <p className="text-muted-foreground text-sm">
             Submitting as <span className="font-medium text-foreground">{persona.company}</span>
           </p>
         </div>
 
         {/* Progress */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-3">
+        <div className="mb-6 md:mb-8">
+          <div className="flex items-center justify-between mb-3 overflow-x-auto gap-2">
             {sections.map((s, i) => (
-              <div key={s.label} className="flex items-center gap-2 text-xs">
-                <div className={`h-6 w-6 rounded-full flex items-center justify-center ${i < filledSections ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  <s.icon className="h-3 w-3" />
+              <div key={s.label} className="flex items-center gap-1.5 md:gap-2 text-xs shrink-0">
+                <div className={`h-5 w-5 md:h-6 md:w-6 rounded-full flex items-center justify-center ${i < filledSections ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                  <s.icon className="h-2.5 w-2.5 md:h-3 md:w-3" />
                 </div>
-                <span className={i < filledSections ? "font-medium text-foreground" : "text-muted-foreground"}>{s.label}</span>
+                <span className={`hidden sm:inline ${i < filledSections ? "font-medium text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
               </div>
             ))}
           </div>
