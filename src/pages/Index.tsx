@@ -186,27 +186,27 @@ const Index = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/30 py-16 md:py-24">
-        <div className="container relative z-10">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/30 py-12 md:py-24">
+        <div className="container relative z-10 px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary mb-4 md:mb-6">
               <Shield className="h-3.5 w-3.5" />
               AWS Marketplace Partner Program
             </div>
-            <h1 className="font-display font-bold text-4xl md:text-6xl tracking-tight mb-6 text-foreground">
+            <h1 className="font-display font-bold text-3xl md:text-6xl tracking-tight mb-4 md:mb-6 text-foreground">
               Unlock Post-Deal Credits for Your{" "}
               <span className="text-redhat">Red Hat</span> Investments
             </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
               From submission to payout in days, not weeks.
             </p>
-            <div className="flex items-center justify-center gap-4">
-              <Link to="/customer">
-                <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+              <Link to="/customer" className="w-full sm:w-auto">
+                <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground w-full sm:w-auto">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
               </Link>
-              <Link to="/internal">
-                <Button variant="outline" size="lg" className="gap-2 border-aws text-aws hover:bg-aws/10">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
+              <Link to="/internal" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="gap-2 border-aws text-aws hover:bg-aws/10 w-full sm:w-auto">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
               </Link>
             </div>
           </div>
