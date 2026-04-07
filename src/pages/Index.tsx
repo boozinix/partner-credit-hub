@@ -224,6 +224,30 @@ const Index = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
       </section>
 
+      {/* WHO THIS IS FOR */}
+      <section className="py-12 md:py-16 border-b">
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-center mb-8 md:mb-10">Who This Is For</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {[
+              { icon: Building2, title: "Customer", desc: "Submit and track your credit requests. See real-time status from submission through payout.", color: "text-redhat", bg: "bg-redhat/10" },
+              { icon: DollarSign, title: "AWS Finance Team", desc: "Review, validate, and process submissions. Manage the credit pool with automated tier-based routing.", color: "text-primary", bg: "bg-primary/10" },
+              { icon: UserCheck, title: "Director / VP", desc: "Approve or reject credit requests with full audit trail. One-click decisions with complete context.", color: "text-aws", bg: "bg-aws/10" },
+            ].map((card) => (
+              <Card key={card.title} className="border hover:shadow-md transition-shadow">
+                <CardContent className="p-5 md:p-6 text-center">
+                  <div className={`h-12 w-12 rounded-xl ${card.bg} flex items-center justify-center mx-auto mb-4`}>
+                    <card.icon className={`h-6 w-6 ${card.color}`} />
+                  </div>
+                  <h3 className="font-display font-bold text-base mb-2">{card.title}</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* QUICK START GUIDE — moved up from bottom */}
       <section className="py-12 md:py-16 border-b bg-muted/30">
         <div className="container max-w-4xl px-4">
