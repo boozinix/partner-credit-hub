@@ -1,8 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { usePersona, CUSTOMER_PERSONAS } from "@/contexts/PersonaContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User } from "lucide-react";
+import { User, X } from "lucide-react";
 
 export function CustomerLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
