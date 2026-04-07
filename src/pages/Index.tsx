@@ -3,6 +3,105 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Scissors, ArrowRightCircle, Users, Search, LayoutDashboard, UserCheck } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Switch } from "@/components/ui/switch";
+
+const excelRows = [
+  { id: "AWZ-2026-0001", customer: "TechForward Solutions", amount: "$8,500", product: "RHEL", status: "check with Sarah", updated: "3/12 - manually updated by finance", notes: "Jake emailed 2x" },
+  { id: "AWZ-2026-0002", customer: "GlobalEdge Networks", amount: "$15,200", product: "OpenShift", status: "waiting on director", updated: "3/15 - ???", notes: "invoice missing" },
+  { id: "AWZ-2026-0003", customer: "Apex Cloud Services", amount: "$72,000", product: "Ansible + RHEL", status: "approved? confirm", updated: "2/28 - needs VP sign off", notes: "Priya OOO???" },
+  { id: "AWZ-2026-0004", customer: "Pinnacle Health", amount: "$5,800", product: "RHEL", status: "sent email", updated: "3/18 - left voicemail", notes: "" },
+  { id: "AWZ-2026-0005", customer: "Vertex Financial", amount: "$34,000", product: "OpenShift + ACS", status: "unknown", updated: "3/01 - who owns this?", notes: "escalated to mgr" },
+  { id: "AWZ-2026-0006", customer: "Atlas Manufacturing", amount: "$9,200", product: "Satellite", status: "check with Sarah", updated: "3/20 - manually updated", notes: "" },
+  { id: "AWZ-2026-0007", customer: "GlobalEdge Networks", amount: "$28,500", product: "OpenShift", status: "approved? need PO#", updated: "3/05 - waiting on finance", notes: "2nd request this Q" },
+  { id: "AWZ-2026-0008", customer: "Meridian Data", amount: "$62,000", product: "Ansible + Storage", status: "waiting on director", updated: "2/14 - stale??", notes: "deal might be dead" },
+];
+
+function ExcelVsPortalToggle() {
+  const [showPortal, setShowPortal] = useState(true);
+
+  return (
+    <section className="py-16 border-b bg-muted/20">
+      <div className="container max-w-5xl">
+        <div className="flex items-center justify-center gap-4 mb-10">
+          <span className={`font-display font-bold text-sm uppercase tracking-wider transition-colors ${!showPortal ? "text-destructive" : "text-muted-foreground/50"}`}>Before</span>
+          <Switch checked={showPortal} onCheckedChange={setShowPortal} className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-destructive scale-125" />
+          <span className={`font-display font-bold text-sm uppercase tracking-wider transition-colors ${showPortal ? "text-green-600" : "text-muted-foreground/50"}`}>After</span>
+        </div>
+
+        <div className="relative min-h-[420px]">
+          {/* Excel State */}
+          <div className={`transition-opacity duration-300 ${!showPortal ? "opacity-100" : "opacity-0 pointer-events-none absolute inset-0"}`}>
+            <div className="rounded-sm border border-destructive/40 bg-destructive/10 px-4 py-2 text-sm text-destructive font-medium mb-3 text-center">
+              ⚠ This is how it worked before. One spreadsheet. No routing. No visibility. Updated manually.
+            </div>
+            <div className="rounded-lg border bg-[#f0f0f0] overflow-hidden shadow-md">
+              {/* Fake toolbar */}
+              <div className="flex items-center gap-0 border-b bg-[#e8e8e8] px-2 py-1">
+                {["File", "Edit", "View", "Insert", "Format", "Data"].map(m => (
+                  <span key={m} className="px-3 py-0.5 text-xs text-gray-500 cursor-default">{m}</span>
+                ))}
+              </div>
+              {/* Spreadsheet */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs" style={{ fontFamily: "Calibri, 'Segoe UI', sans-serif" }}>
+                  <thead>
+                    <tr className="bg-[#d9e2f3] border-b-2 border-[#8eaadb]">
+                      {["Deal ID", "Customer", "Amount", "Product", "Status", "Last Updated", "Notes"].map(h => (
+                        <th key={h} className="px-3 py-2 text-left font-semibold text-[#333] border border-[#b4c6e7] whitespace-nowrap">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {excelRows.map((row, i) => (
+                      <tr key={row.id} className={i % 2 === 0 ? "bg-white" : "bg-[#f5f5f5]"}>
+                        <td className="px-3 py-1.5 border border-[#d0d0d0] font-mono">{row.id}</td>
+                        <td className="px-3 py-1.5 border border-[#d0d0d0]">{row.customer}</td>
+                        <td className="px-3 py-1.5 border border-[#d0d0d0] text-right">{row.amount}</td>
+                        <td className="px-3 py-1.5 border border-[#d0d0d0]">{row.product}</td>
+                        <td className="px-3 py-1.5 border border-[#d0d0d0] text-orange-600 italic">{row.status}</td>
+                        <td className="px-3 py-1.5 border border-[#d0d0d0] text-gray-500">{row.updated}</td>
+                        <td className="px-3 py-1.5 border border-[#d0d0d0] text-red-500">{row.notes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="flex items-center gap-1 px-2 py-1 bg-[#e8e8e8] border-t text-[10px] text-gray-400">
+                <span className="bg-white border px-4 py-0.5 text-gray-600 font-medium">FY2026 Credits</span>
+                <span className="px-4 py-0.5">Sheet2</span>
+                <span className="px-4 py-0.5">Sheet3</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Portal State */}
+          <div className={`transition-opacity duration-300 ${showPortal ? "opacity-100" : "opacity-0 pointer-events-none absolute inset-0"}`}>
+            <div className="rounded-sm border border-green-500/40 bg-green-500/10 px-4 py-2 text-sm text-green-700 font-medium mb-3 text-center">
+              ✓ Real-time. Automated. Zero spreadsheets.
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                { icon: TrendingUp, title: "Real-Time Status Tracking", desc: "Customers see exactly where their request is — from submission through payout — with estimated timelines." },
+                { icon: ArrowRight, title: "Automated Tier-Based Routing", desc: "Requests auto-route through Finance → Director → VP based on amount. No manual handoffs, no missed approvals." },
+                { icon: CheckCircle2, title: "Full Audit Trail", desc: "Every action is logged with timestamps, comments, and approver identity. Complete compliance and accountability." },
+              ].map((card) => (
+                <Card key={card.title} className="border-green-200">
+                  <CardContent className="p-5 text-center">
+                    <div className="h-10 w-10 rounded-lg bg-green-50 flex items-center justify-center mx-auto mb-3">
+                      <card.icon className="h-5 w-5 text-green-600" />
+                    </div>
+                    <h3 className="font-display font-bold text-sm mb-2">{card.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{card.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function AnimatedCounter({ end, prefix = "", suffix = "", duration = 2000 }: { end: number; prefix?: string; suffix?: string; duration?: number }) {
   const [count, setCount] = useState(0);
@@ -140,6 +239,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* EXCEL VS PORTAL TOGGLE */}
+      <ExcelVsPortalToggle />
 
       {/* SECTION 2 — WHAT THIS FIXES */}
       <section className="py-16 border-b bg-muted/30">
