@@ -239,45 +239,45 @@ const Index = () => {
       </section>
 
       {/* SECTION 1 — THE PROBLEM */}
-      <section className="py-16 md:py-20" style={{ backgroundColor: "#1E293B" }}>
-        <div className="container max-w-5xl">
-          <h2 className="font-display font-bold text-2xl md:text-4xl text-white text-center mb-6 leading-tight">
+      <section className="py-12 md:py-20" style={{ backgroundColor: "#1E293B" }}>
+        <div className="container max-w-5xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-4xl text-white text-center mb-4 md:mb-6 leading-tight">
             I managed AWS's <span className="text-redhat">Red Hat</span> partnership. I had no idea where my customers' money was.
           </h2>
-          <p className="text-center text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed text-sm md:text-base">
+          <p className="text-center text-slate-400 max-w-3xl mx-auto mb-8 md:mb-12 leading-relaxed text-xs md:text-base">
             When a customer buys <span className="text-redhat font-medium">Red Hat</span> products on AWS Marketplace and qualifies for post-deal credits, they submit a request — and enter a black box. No confirmation. No timeline. No status updates. My Finance team tracked every single credit request in a manual Excel spreadsheet — not a shared Google Doc, an actual .xlsx file sitting on someone's desktop. I found out a deal was stuck only when the customer emailed me directly asking what happened. I managed the relationship but couldn't answer basic questions about money that was owed to them.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <Card className="bg-white border-0">
-              <CardContent className="p-6 text-center">
-                <div className="h-12 w-12 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-4">
-                  <HelpCircle className="h-6 w-6 text-red-500" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <HelpCircle className="h-5 md:h-6 w-5 md:w-6 text-red-500" />
                 </div>
-                <h3 className="font-display font-bold text-lg mb-2 text-slate-900">Customers fly blind</h3>
-                <p className="text-sm text-slate-600">
+                <h3 className="font-display font-bold text-base md:text-lg mb-2 text-slate-900">Customers fly blind</h3>
+                <p className="text-xs md:text-sm text-slate-600">
                   No confirmation after submitting. No status. No estimated timeline. They start emailing their AWS Partner Manager directly for updates.
                 </p>
               </CardContent>
             </Card>
             <Card className="bg-white border-0">
-              <CardContent className="p-6 text-center">
-                <div className="h-12 w-12 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-4">
-                  <Unlink className="h-6 w-6 text-amber-500" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <Unlink className="h-5 md:h-6 w-5 md:w-6 text-amber-500" />
                 </div>
-                <h3 className="font-display font-bold text-lg mb-2 text-slate-900">Partner Managers are invisible</h3>
-                <p className="text-sm text-slate-600">
+                <h3 className="font-display font-bold text-base md:text-lg mb-2 text-slate-900">Partner Managers are invisible</h3>
+                <p className="text-xs md:text-sm text-slate-600">
                   Once Finance takes over, the Account Manager has zero visibility. Responsible for the customer relationship but unable to answer basic status questions.
                 </p>
               </CardContent>
             </Card>
             <Card className="bg-white border-0">
-              <CardContent className="p-6 text-center">
-                <div className="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                  <FileSpreadsheet className="h-6 w-6 text-blue-500" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <FileSpreadsheet className="h-5 md:h-6 w-5 md:w-6 text-blue-500" />
                 </div>
-                <h3 className="font-display font-bold text-lg mb-2 text-slate-900">Finance runs on Excel</h3>
-                <p className="text-sm text-slate-600">
+                <h3 className="font-display font-bold text-base md:text-lg mb-2 text-slate-900">Finance runs on Excel</h3>
+                <p className="text-xs md:text-sm text-slate-600">
                   Every status update manually entered. No routing logic. No approval tiers enforced. No budget tracking. Deals fall through the cracks for weeks.
                 </p>
               </CardContent>
