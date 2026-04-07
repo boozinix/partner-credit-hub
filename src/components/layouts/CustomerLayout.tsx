@@ -109,7 +109,7 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
           <User className="h-3 w-3 inline mr-1" />
           Viewing as <span className="font-semibold text-foreground">{persona.name}</span> from {persona.company}
           <span className="mx-2">·</span>
-          <Link to="/" className="text-primary hover:underline">Home</Link>
+          <Link to="/internal" className="text-primary hover:underline">Switch to Finance Portal</Link>
         </p>
       </div>
 

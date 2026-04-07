@@ -112,7 +112,7 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
               to="/"
               className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
             >
-              Home
+              ← Back to Overview
             </Link>
           </header>
           {/* Orientation Banner */}

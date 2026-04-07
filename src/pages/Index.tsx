@@ -373,9 +373,12 @@ const Index = () => {
                   <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
                     <Shield className="h-7 w-7 text-primary" />
                   </div>
-                  <h2 className="font-display font-bold text-xl mb-2">Internal Finance Portal</h2>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <h2 className="font-display font-bold text-xl mb-2">Finance Portal</h2>
+                  <p className="text-sm text-muted-foreground mb-1">
                     Review submissions, manage tiered approvals, and track budget utilization.
+                  </p>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    For Red Hat Finance Analysts, Directors, and VPs reviewing and approving requests
                   </p>
                   <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">
                     🔒 You are: An AWS Finance team member, Director, or VP who reviews and approves credit requests.
