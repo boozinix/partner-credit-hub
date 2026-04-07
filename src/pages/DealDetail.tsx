@@ -274,6 +274,55 @@ export default function DealDetail() {
 
           {/* Right Sidebar */}
           <div className="space-y-6">
+            {/* OOO Alert */}
+            {(() => {
+              const assignedApprover = approvers.find(a => a.id === request.assigned_approver_id);
+              if (!assignedApprover?.is_ooo) return null;
+              const delegate = approvers.find(a => a.id === assignedApprover.ooo_delegate_id);
+              const daysPending = Math.floor((Date.now() - new Date(request.updated_at).getTime()) / (1000 * 60 * 60 * 24));
+              return (
+                <Card className="border-2 border-warning/40 bg-warning/5">
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <AlertTriangle className="h-5 w-5 text-warning" />
+                      <h3 className="font-display font-bold text-sm text-warning">OOO Alert</h3>
+                    </div>
+                    <p className="text-sm mb-4">
+                      <span className="font-semibold">{assignedApprover.name}</span> is unavailable. This deal has been pending {assignedApprover.role.toLowerCase()} approval for <span className="font-semibold">{daysPending} days</span>. Reassign to continue.
+                    </p>
+                    {delegate && (
+                      <>
+                        <div className="rounded-md border bg-card px-3 py-2 mb-3">
+                          <p className="text-xs text-muted-foreground">Reassign to</p>
+                          <p className="text-sm font-semibold">{delegate.name} — {delegate.role} (Available)</p>
+                        </div>
+                        <Button
+                          className="w-full"
+                          onClick={async () => {
+                            setActing(true);
+                            await supabase.from("credit_requests").update({ assigned_approver_id: delegate.id }).eq("id", request.id);
+                            await supabase.from("status_history").insert({
+                              request_id: request.id,
+                              from_status: request.status,
+                              to_status: request.status,
+                              changed_by: "Finance Admin",
+                              comments: `Reassigned from ${assignedApprover.name} (OOO) to ${delegate.name} by Finance Admin`,
+                            });
+                            toast({ title: "Reassigned", description: `${delegate.name} has been notified.` });
+                            setActing(false);
+                            fetchData();
+                          }}
+                          disabled={acting}
+                        >
+                          Reassign to {delegate.name}
+                        </Button>
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })()}
+
             {/* Amount */}
             <Card>
               <CardContent className="p-6 text-center">
