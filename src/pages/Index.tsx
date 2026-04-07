@@ -168,11 +168,14 @@ const Index = () => {
             <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center shrink-0">
               <span className="text-redhat-foreground font-display font-bold text-sm">RH</span>
             </div>
-            <span className="font-display font-bold text-base md:text-lg truncate">
-              <span className="text-redhat">Red Hat</span>{" "}
-              <span className="hidden sm:inline">Partner Credit Funding Portal</span>
-              <span className="sm:hidden">Credits</span>
-            </span>
+            <div className="min-w-0">
+              <span className="font-display font-bold text-base md:text-lg truncate block">
+                <span className="text-redhat">Red Hat</span>{" "}
+                <span className="hidden sm:inline">Partner Credit Funding Portal</span>
+                <span className="sm:hidden">Credits</span>
+              </span>
+              <span className="text-[10px] md:text-xs text-muted-foreground hidden sm:block">An AWS-administered portal for managing <span className="text-redhat font-medium">Red Hat</span> Marketplace partner credits</span>
+            </div>
           </div>
           <div className="hidden md:flex items-center gap-3">
             <Link to="/customer">
