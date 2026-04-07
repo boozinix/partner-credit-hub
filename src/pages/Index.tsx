@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Users, Search, LayoutDashboard, UserCheck, Zap, MessageSquare, MailX, Lock, XCircle, RefreshCw, Mail, FileText, Activity } from "lucide-react";
+import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Users, Search, LayoutDashboard, UserCheck, Zap, MessageSquare, MailX, Lock, XCircle, RefreshCw, Mail, FileText, Activity, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
