@@ -352,8 +352,11 @@ const Index = () => {
                     <Building2 className="h-7 w-7 text-primary" />
                   </div>
                   <h2 className="font-display font-bold text-xl mb-2">Customer Portal</h2>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm text-muted-foreground mb-1">
                     Submit new credit requests, track approvals, and manage your funding lifecycle.
+                  </p>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    For AWS Marketplace partners submitting and tracking credit requests
                   </p>
                   <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">
                     👤 You are: A company that purchased Red Hat products on AWS Marketplace and wants to claim post-deal credits.
