@@ -340,59 +340,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* PORTAL CARDS */}
-      <section className="py-16">
-        <div className="container">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold text-center mb-6">Choose your role to get started ↓</p>
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <Link to="/customer" className="group">
-              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/40">
-                <CardContent className="p-8 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
-                    <Building2 className="h-7 w-7 text-primary" />
-                  </div>
-                  <h2 className="font-display font-bold text-xl mb-2">Customer Portal</h2>
-                  <p className="text-sm text-muted-foreground mb-1">
-                    Submit new credit requests, track approvals, and manage your funding lifecycle.
-                  </p>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    For AWS Marketplace partners submitting and tracking credit requests
-                  </p>
-                  <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">
-                    👤 You are: A company that purchased Red Hat products on AWS Marketplace and wants to claim post-deal credits.
-                  </p>
-                  <div className="inline-flex items-center gap-2 text-sm font-medium text-primary">
-                    Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link to="/internal" className="group">
-              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/40">
-                <CardContent className="p-8 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
-                    <Shield className="h-7 w-7 text-primary" />
-                  </div>
-                  <h2 className="font-display font-bold text-xl mb-2">Finance Portal</h2>
-                  <p className="text-sm text-muted-foreground mb-1">
-                    Review submissions, manage tiered approvals, and track budget utilization.
-                  </p>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    For Red Hat Finance Analysts, Directors, and VPs reviewing and approving requests
-                  </p>
-                  <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">
-                    🔒 You are: An AWS Finance team member, Director, or VP who reviews and approves credit requests.
-                  </p>
-                  <div className="inline-flex items-center gap-2 text-sm font-medium text-primary">
-                    Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* MERGED ROADMAP — Timeline with arrow line */}
       <section className="py-16 border-t border-b" style={{ backgroundColor: "hsl(231, 48%, 97%)" }}>
         <div className="container max-w-5xl">
