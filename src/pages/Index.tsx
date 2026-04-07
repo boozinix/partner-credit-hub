@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Scissors, ArrowRightCircle, Users, Search, LayoutDashboard, UserCheck } from "lucide-react";
+import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Scissors, ArrowRightCircle, Users, Search, LayoutDashboard, UserCheck, Zap, MessageSquare, MailX, Lock, XCircle } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
