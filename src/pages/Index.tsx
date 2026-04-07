@@ -359,10 +359,10 @@ const Index = () => {
         <div className="container px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {[
-              { end: stats.pool, prefix: "$", label: "FY2026 Credit Pool", icon: DollarSign },
+              { end: stats.pool, prefix: "$", label: "FY2026 Credit Pool", icon: DollarSign, customDisplay: "$2.4M" },
               { end: stats.processed, label: "Credits Processed", icon: CheckCircle2 },
               { end: stats.approvalRate, suffix: "%", label: "Approval Rate", icon: TrendingUp },
-              { end: 42, suffix: "", label: "Avg. Processing Time", icon: Clock, customDisplay: "4.2 days" },
+              { end: 32, suffix: "", label: "Avg. Processing Time", icon: Clock, customDisplay: "3.2 days" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <stat.icon className="h-5 md:h-6 w-5 md:w-6 text-primary/60 mx-auto mb-2 md:mb-3" />
