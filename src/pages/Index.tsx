@@ -145,7 +145,7 @@ function AnimatedCounter({ end, prefix = "", suffix = "", duration = 2000 }: { e
 }
 
 const Index = () => {
-  const [stats, setStats] = useState({ pool: 1000000, processed: 0, approvalRate: 0, avgDays: 4.2 });
+  const [stats, setStats] = useState({ pool: 2400000, processed: 47, approvalRate: 89, avgDays: 3.2 });
 
   useEffect(() => {
     const fetchStats = async () => {
