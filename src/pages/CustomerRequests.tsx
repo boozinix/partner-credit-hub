@@ -4,7 +4,7 @@ import { CustomerLayout } from "@/components/layouts/CustomerLayout";
 import { usePersona } from "@/contexts/PersonaContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/StatusBadge";
-import { TierBadge } from "@/components/TierBadge";
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { ExternalLink } from "lucide-react";
