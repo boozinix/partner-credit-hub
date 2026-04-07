@@ -241,7 +241,7 @@ const Index = () => {
             I managed AWS's <span className="text-redhat">Red Hat</span> partnership. I had no idea where my customers' money was.
           </h2>
           <p className="text-center text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed text-sm md:text-base">
-            When a customer buys Red Hat products on AWS Marketplace and qualifies for post-deal credits, they submit a request — and enter a black box. No confirmation. No timeline. No status updates. My Finance team tracked every single credit request in a manual Excel spreadsheet — not a shared Google Doc, an actual .xlsx file sitting on someone's desktop. I found out a deal was stuck only when the customer emailed me directly asking what happened. I managed the relationship but couldn't answer basic questions about money that was owed to them.
+            When a customer buys <span className="text-redhat font-medium">Red Hat</span> products on AWS Marketplace and qualifies for post-deal credits, they submit a request — and enter a black box. No confirmation. No timeline. No status updates. My Finance team tracked every single credit request in a manual Excel spreadsheet — not a shared Google Doc, an actual .xlsx file sitting on someone's desktop. I found out a deal was stuck only when the customer emailed me directly asking what happened. I managed the relationship but couldn't answer basic questions about money that was owed to them.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
