@@ -470,20 +470,20 @@ const Index = () => {
       </section>
 
       {/* SECTION 5 — WHAT THIS REPLACES */}
-      <section className="py-16" style={{ backgroundColor: "#312E81" }}>
-        <div className="container max-w-4xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-white text-center mb-10">What this replaces</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+      <section className="py-12 md:py-16" style={{ backgroundColor: "#312E81" }}>
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-white text-center mb-8 md:mb-10">What this replaces</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {[
               { before: "~4 hrs/week", after: "~15 min/week", label: "Finance team time on manual spreadsheet updates" },
               { before: "Unknown", after: "Real-time", label: "Visibility into credit request status for Account Managers" },
               { before: "Email chains", after: "Tracking link", label: "How customers check their request status" },
             ].map((card, i) => (
               <Card key={i} className="bg-white/10 border-white/20 text-white">
-                <CardContent className="p-6 text-center">
-                  <p className="text-red-300 font-display font-bold text-2xl line-through mb-1">{card.before}</p>
-                  <p className="text-green-300 font-display font-bold text-2xl mb-3">{card.after}</p>
-                  <p className="text-sm text-white/70">{card.label}</p>
+                <CardContent className="p-4 md:p-6 text-center">
+                  <p className="text-red-300 font-display font-bold text-xl md:text-2xl line-through mb-1">{card.before}</p>
+                  <p className="text-green-300 font-display font-bold text-xl md:text-2xl mb-2 md:mb-3">{card.after}</p>
+                  <p className="text-xs md:text-sm text-white/70">{card.label}</p>
                 </CardContent>
               </Card>
             ))}
@@ -492,8 +492,8 @@ const Index = () => {
       </section>
 
       {/* PORTAL CARDS — Final CTA */}
-      <section className="py-16 bg-muted/30 border-t">
-        <div className="container">
+      <section className="py-12 md:py-16 bg-muted/30 border-t">
+        <div className="container px-4">
           <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-2">Try It Yourself</h2>
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold text-center mb-8">Choose your role to get started ↓</p>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
