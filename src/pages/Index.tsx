@@ -478,45 +478,43 @@ const Index = () => {
         </div>
       </section>
 
-      {/* MERGED SCOPE DECISIONS */}
+      {/* SCOPE DECISIONS — Collapsible */}
       <section className="py-16 border-b">
         <div className="container max-w-4xl">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2 text-center">Intentional gaps</p>
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-3">Scope Decisions</h2>
-          <p className="text-sm text-muted-foreground text-center mb-10">Good product judgment means knowing what not to build — yet</p>
-          <div className="space-y-4">
-            {[
-              {
-                icon: MailX, title: "Real email delivery",
-                body: "The email composer modal, templates, and send flow are fully built — but emails log to the console instead of delivering via SMTP. Real email infrastructure requires domain verification, bounce handling, and deliverability testing. None of that adds demo value. The interface shows the workflow; the plumbing is straightforward. Estimated V2 effort: 4 hours with SendGrid.",
-              },
-              {
-                icon: Lock, title: "Customer authentication",
-                body: "Customers access request status via tracking ID link — no account, no password. Deliberate choice: a customer submits 1–2 credit requests per year. Login friction is not justified for that usage pattern. The tracking ID is sufficient to demonstrate the workflow. Production version would add magic link auth for customers with multiple requests and SSO (AWS IAM) for internal Finance users.",
-              },
-              {
-                icon: FileText, title: "Document upload and storage",
-                body: "The schema supports it and the form shows it — but S3 storage isn't wired. In discovery, the primary customer pain was visibility, not file management. Solving 'where is my request' came before 'where is my invoice.' Storage is a workflow optimization on top of a working approval chain, not a prerequisite for one.",
-              },
-              {
-                icon: Activity, title: "Full compliance audit trail",
-                body: "StatusHistory is in the schema and partially surfaced in the deal detail view. Full compliance-grade audit trail with export, retention policies, and tamper detection is a v2 feature — the data model is ready, the UI polish is remaining work.",
-              },
-            ].map((item) => (
-              <div key={item.title} className="rounded-xl border bg-card p-5 flex items-start gap-4 border-l-4 border-l-amber-400">
-                <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
-                  <XCircle className="h-4 w-4 text-amber-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-display font-semibold text-sm mb-1">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
-                </div>
+          <Collapsible>
+            <CollapsibleTrigger className="w-full group">
+              <div className="flex items-center justify-center gap-3 cursor-pointer">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Intentional gaps</p>
+                <h2 className="font-display font-bold text-2xl md:text-3xl">Scope Decisions</h2>
+                <ChevronDown className="h-5 w-5 text-muted-foreground group-data-[state=open]:hidden" />
+                <ChevronUp className="h-5 w-5 text-muted-foreground hidden group-data-[state=open]:block" />
               </div>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground italic text-center mt-6 max-w-2xl mx-auto">
-            These weren't oversights — they were conscious tradeoffs to keep the prototype focused on the core approval workflow.
-          </p>
+              <p className="text-sm text-muted-foreground text-center mt-2">Good product judgment means knowing what not to build — yet</p>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-8">
+              <div className="space-y-4">
+                {[
+                  { icon: MailX, title: "Real email delivery", body: "The email composer modal, templates, and send flow are fully built — but emails log to the console instead of delivering via SMTP. Real email infrastructure requires domain verification, bounce handling, and deliverability testing. None of that adds demo value. The interface shows the workflow; the plumbing is straightforward. Estimated V2 effort: 4 hours with SendGrid." },
+                  { icon: Lock, title: "Customer authentication", body: "Customers access request status via tracking ID link — no account, no password. Deliberate choice: a customer submits 1–2 credit requests per year. Login friction is not justified for that usage pattern. The tracking ID is sufficient to demonstrate the workflow. Production version would add magic link auth for customers with multiple requests and SSO (AWS IAM) for internal Finance users." },
+                  { icon: FileText, title: "Document upload and storage", body: "The schema supports it and the form shows it — but S3 storage isn't wired. In discovery, the primary customer pain was visibility, not file management. Solving 'where is my request' came before 'where is my invoice.' Storage is a workflow optimization on top of a working approval chain, not a prerequisite for one." },
+                  { icon: Activity, title: "Full compliance audit trail", body: "StatusHistory is in the schema and partially surfaced in the deal detail view. Full compliance-grade audit trail with export, retention policies, and tamper detection is a v2 feature — the data model is ready, the UI polish is remaining work." },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-xl border bg-card p-5 flex items-start gap-4 border-l-4 border-l-amber-400">
+                    <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
+                      <XCircle className="h-4 w-4 text-amber-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-display font-semibold text-sm mb-1">{item.title}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground italic text-center mt-6 max-w-2xl mx-auto">
+                These weren't oversights — they were conscious tradeoffs to keep the prototype focused on the core approval workflow.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </section>
 
