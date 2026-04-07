@@ -296,21 +296,22 @@ export default function CustomerSubmit() {
                           ))}
                         </SelectContent>
                       </Select>
-                      <Input
-                        type="number"
-                        placeholder="500,000"
-                        value={item.purchaseAmount}
-                        onChange={(e) => updateLine(idx, "purchaseAmount", e.target.value)}
-                        className="h-9 text-sm"
-                        max={100000000}
-                      />
-                      <Input
-                        type="number"
-                        placeholder="5,000"
-                        value={item.creditAmount}
-                        onChange={(e) => updateLine(idx, "creditAmount", e.target.value)}
-                        className="h-9 text-sm"
-                      />
+                      <div className="flex gap-2 md:contents">
+                        <Input
+                          type="number"
+                          placeholder="Purchase $"
+                          value={item.purchaseAmount}
+                          onChange={(e) => updateLine(idx, "purchaseAmount", e.target.value)}
+                          className="h-9 text-sm flex-1"
+                          max={100000000}
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Credit $"
+                          value={item.creditAmount}
+                          onChange={(e) => updateLine(idx, "creditAmount", e.target.value)}
+                          className="h-9 text-sm flex-1"
+                        />
                       <Button
                         type="button"
                         variant="ghost"
