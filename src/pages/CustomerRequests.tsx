@@ -4,7 +4,7 @@ import { CustomerLayout } from "@/components/layouts/CustomerLayout";
 import { usePersona } from "@/contexts/PersonaContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/StatusBadge";
-import { TierBadge } from "@/components/TierBadge";
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { ExternalLink } from "lucide-react";
@@ -77,7 +77,7 @@ export default function CustomerRequests() {
                                 <div className="flex items-center gap-2">
                                   <span className="font-display font-bold text-sm font-mono">{r.tracking_id}</span>
                                   <StatusBadge status={r.status} />
-                                  <TierBadge tier={r.tier} />
+                                  
                                 </div>
                                 <div className="text-right flex items-center gap-3">
                                   <div>

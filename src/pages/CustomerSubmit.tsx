@@ -404,7 +404,7 @@ export default function CustomerSubmit() {
                     {[
                       { emoji: "✅", title: "Instant confirmation", desc: "You'll receive a Tracking ID immediately." },
                       { emoji: "🔄", title: "Finance review (1-3 days)", desc: "An AWS Finance Analyst reviews your submission and verifies deal details." },
-                      { emoji: "📋", title: "Tiered approval", desc: "Credits under $10K are approved directly. Larger amounts go to Director or VP review." },
+                      { emoji: "📋", title: "Approval routing", desc: "Depending on the credit amount, additional approvals may be needed — larger amounts take a bit longer." },
                       { emoji: "💳", title: "Credit applied", desc: "Approved credits are applied to your AWS account by the scheduled payout date." },
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2">
@@ -446,28 +446,21 @@ export default function CustomerSubmit() {
                 </CardContent>
               </Card>
 
-              {/* Live Tier + Warning */}
+              {/* Approval timeline estimate */}
               {totalCredit > 0 && (
                 <Card className="border-primary/30">
                   <CardContent className="p-6 text-center">
-                    <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Estimated Tier</p>
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Estimated Approval Time</p>
                     <p className="font-display font-bold text-2xl text-primary">
-                      {totalCredit < 10000 ? "Tier 1" : totalCredit <= 50000 ? "Tier 2" : "Tier 3"}
+                      {totalCredit < 10000 ? "1–2 days" : totalCredit <= 50000 ? "3–5 days" : "5–7 days"}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {totalCredit < 10000 ? "Finance approval only" : totalCredit <= 50000 ? "Finance + Director" : "Finance + Director + VP"}
+                      {totalCredit >= 10000
+                        ? "Larger credit amounts require additional approvals and may take longer."
+                        : "Standard review process."}
                     </p>
                   </CardContent>
                 </Card>
-              )}
-
-              {manualApprovalWarning && (
-                <div className="flex items-start gap-2 rounded-lg border border-info/40 bg-info/5 p-4">
-                  <Info className="h-4 w-4 text-info shrink-0 mt-0.5" />
-                  <p className="text-xs text-muted-foreground">
-                    <span className="font-semibold text-foreground">Note:</span> Credit requests of $10,000 or more are subject to manual multi-tier approvals and may have longer approval cycles.
-                  </p>
-                </div>
               )}
             </div>
           </div>
