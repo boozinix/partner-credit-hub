@@ -481,7 +481,7 @@ const Index = () => {
       {/* SCOPE DECISIONS — Collapsible */}
       <section className="py-16 border-b">
         <div className="container max-w-4xl">
-          <Collapsible>
+          <Collapsible defaultOpen>
             <CollapsibleTrigger className="w-full group">
               <div className="flex items-center justify-center gap-3 cursor-pointer">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Intentional gaps</p>
