@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Scissors, ArrowRightCircle, Users, Search, LayoutDashboard, UserCheck, Zap, MessageSquare, MailX, Lock, XCircle } from "lucide-react";
+import { ArrowRight, Building2, Shield, DollarSign, CheckCircle2, Clock, TrendingUp, HelpCircle, Unlink, FileSpreadsheet, Users, Search, LayoutDashboard, UserCheck, Zap, MessageSquare, MailX, Lock, XCircle, RefreshCw, Mail, FileText, Activity } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
@@ -274,83 +274,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ROADMAP — What comes next */}
-      <section className="py-16 border-b" style={{ backgroundColor: "hsl(231, 48%, 97%)" }}>
-        <div className="container max-w-5xl">
-          <div className="text-center mb-10">
-            <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-2">What this looks like when it ships</p>
-            <h2 className="font-display font-bold text-2xl md:text-3xl flex items-center justify-center gap-2">
-              Roadmap <ArrowRight className="h-5 w-5 text-primary" />
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              {
-                version: "v2", icon: Zap, title: "Zero-entry submission",
-                body: "Customer pastes their AWS Order ID. The portal pulls their account, products, and deal date directly from AWS Marketplace. No manual entry, no wrong data, no sendbacks for typos.",
-                tag: "Reduces form abandonment + sendback rate",
-              },
-              {
-                version: "v3", icon: MessageSquare, title: "Approver-in-a-text",
-                body: "Directors get a text message with deal details. Reply YES to approve, NO to deny. Full audit trail logged automatically. No portal login required for routine approvals under $10K.",
-                tag: "Eliminates the approval bottleneck entirely",
-              },
-            ].map((card) => (
-              <Card key={card.title} className="border-l-4 border-l-primary/40 relative">
-                <div className="absolute top-3 right-3">
-                  <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold text-primary uppercase tracking-wider">Future</span>
-                </div>
-                <CardContent className="p-6">
-                  <span className="inline-flex items-center rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold text-primary mb-3">{card.version.toUpperCase()}</span>
-                  <div className="flex items-center gap-2 mb-2">
-                    <card.icon className="h-5 w-5 text-primary" />
-                    <h3 className="font-display font-bold text-base">{card.title}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">{card.body}</p>
-                  <p className="text-xs text-primary/70 font-medium italic">{card.tag}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SCOPE DECISIONS — What I intentionally didn't build */}
-      <section className="py-16 border-b">
-        <div className="container max-w-4xl">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2 text-center">Intentional gaps</p>
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-3 flex items-center justify-center gap-2">
-            Scope Decisions
-          </h2>
-          <p className="text-sm text-muted-foreground text-center mb-10">Good product judgment means knowing what not to build</p>
-          <div className="space-y-4">
-            {[
-              {
-                icon: MailX, title: "Real email delivery",
-                body: "The email modal shows what gets sent and when — the workflow signal that matters. Wiring SendGrid adds infrastructure complexity and deliverability risk with zero additional insight into whether the approval flow works. This is a v2 integration, after the core workflow is validated.",
-              },
-              {
-                icon: Lock, title: "Document upload and storage",
-                body: "The schema supports it and the form shows it — but S3 storage isn't wired. In discovery, the primary customer pain was visibility, not file management. Solving 'where is my request' came before 'where is my invoice.' Storage is a workflow optimization on top of a working approval chain, not a prerequisite for one.",
-              },
-            ].map((item) => (
-              <div key={item.title} className="rounded-xl border border-destructive/15 bg-destructive/5 p-5 flex items-start gap-4 border-l-4 border-l-amber-400">
-                <div className="h-8 w-8 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <XCircle className="h-4 w-4 text-destructive/60" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-display font-semibold text-sm mb-1">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground italic text-center mt-6 max-w-2xl mx-auto">
-            Good product judgment includes knowing what not to build. These weren't oversights — they were conscious tradeoffs to keep the prototype focused on the core approval workflow.
-          </p>
-        </div>
-      </section>
-
       {/* SECTION 3 — STATS */}
       <section className="py-16 border-b">
         <div className="container">
@@ -415,57 +338,130 @@ const Index = () => {
         </div>
       </section>
 
-      {/* SECTION 4 — ABOUT THIS BUILD / TRADEOFFS */}
-      <section className="py-16 bg-muted/40 border-t border-b">
+      {/* MERGED ROADMAP — Timeline with arrow line */}
+      <section className="py-16 border-t border-b" style={{ backgroundColor: "hsl(231, 48%, 97%)" }}>
         <div className="container max-w-5xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">About This Build</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Left — What I Cut */}
-            <div>
-              <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                <Scissors className="h-5 w-5 text-muted-foreground" /> What I cut and why
-              </h3>
-              <div className="space-y-4">
-                {[
-                  { title: "Email delivery", body: "Simulated (logs to console). Real SMTP adds infrastructure complexity with zero demo value. V2: SendGrid with templated notifications per status change." },
-                  { title: "Authentication / SSO", body: "Omitted intentionally. For this workflow, tracking ID + email lookup is sufficient to demonstrate the core flow. V2: AWS IAM SSO for internal users, magic link for customers." },
-                  { title: "Document storage", body: "Upload field exists in the form and schema but S3 integration is intentionally not wired. The field is there; the infrastructure plumbing is the easy part. V2: S3 with virus scanning on upload." },
-                  { title: "Multi-level audit log", body: "StatusHistory is in the schema and partially surfaced. Full compliance-grade audit trail is a v2 feature." },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <span className="text-muted-foreground text-sm mt-0.5">✂️</span>
-                    <div>
-                      <p className="text-sm font-semibold">{item.title}</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-2">Implementation Timeline</p>
+            <h2 className="font-display font-bold text-2xl md:text-3xl flex items-center justify-center gap-2">
+              Roadmap <ArrowRight className="h-5 w-5 text-primary" />
+            </h2>
+          </div>
 
-            {/* Right — What Comes Next */}
-            <div>
-              <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                <ArrowRightCircle className="h-5 w-5 text-primary" /> What comes next
-              </h3>
-              <div className="space-y-4">
-                {[
-                  { title: "Salesforce / CRM Sync", body: "Pull deal data automatically on submission so customers don't re-enter what AWS already knows. Eliminates the #1 data quality problem." },
-                  { title: "SLA Alerting", body: "Ping Finance on Slack when any deal sits in a stage more than 3 business days without action. Turns passive tracking into active accountability." },
-                  { title: "Director Email Approvals", body: "Directors approve or deny directly from an email link — no portal login required. Reduces approval friction for senior stakeholders." },
-                ].map((item, i) => (
-                  <Card key={i} className="border">
-                    <CardContent className="p-4">
-                      <p className="text-sm font-semibold flex items-center gap-2 mb-1">
-                        <ArrowRight className="h-3.5 w-3.5 text-primary" /> {item.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+          {/* Timeline */}
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-6 md:left-8 top-0 bottom-0 w-0.5 bg-primary/20" />
+
+            <div className="space-y-8">
+              {[
+                {
+                  version: "V1", date: "Apr 2026", status: "live", icon: CheckCircle2,
+                  title: "Core Approval Workflow",
+                  body: "Customer submission → Finance review → tier-based routing → Director/VP approval → payout. Live budget tracking, OOO handling, and full status history.",
+                },
+                {
+                  version: "V1.1", date: "May 2026", status: "next", icon: Mail,
+                  title: "Email Notifications via SendGrid",
+                  body: "Status change emails to customers with tracking links. Approval request emails to Directors/VPs. Estimated effort: 4 hours.",
+                },
+                {
+                  version: "V1.2", date: "Jun 2026", status: "planned", icon: Lock,
+                  title: "Authentication & SSO",
+                  body: "AWS IAM SSO for Finance/Director/VP users. Magic link auth for customers with multiple requests. Tracking ID access remains for one-time users.",
+                },
+                {
+                  version: "V2", date: "Q3 2026", status: "planned", icon: RefreshCw,
+                  title: "CRM Auto-Fill & Zero-Entry Submission",
+                  body: "Pull deal data from Salesforce on close, pre-populate the request. Customer pastes AWS Order ID → portal fills everything. Cuts submission from 10 min to 30 seconds.",
+                },
+                {
+                  version: "V2", date: "Q3 2026", status: "planned", icon: Activity,
+                  title: "SLA Alerting & Slack Integration",
+                  body: "Ping Finance on Slack when any deal sits in a stage for 3+ business days. Turns passive tracking into active accountability.",
+                },
+                {
+                  version: "V3", date: "Q4 2026", status: "future", icon: MessageSquare,
+                  title: "Approver-in-a-Text",
+                  body: "Directors reply YES/NO to an SMS with deal details. Full audit trail logged automatically. No portal login for routine approvals under $10K. Eliminates the approval bottleneck entirely.",
+                },
+                {
+                  version: "V3", date: "Q4 2026", status: "future", icon: FileText,
+                  title: "Document Storage & Compliance Audit",
+                  body: "S3 upload with virus scanning. Full compliance-grade audit trail surfaced in the UI. Schema already supports both — infrastructure plumbing is the remaining work.",
+                },
+              ].map((item, i) => {
+                const dotColor = item.status === "live" ? "bg-green-500" : item.status === "next" ? "bg-primary" : "bg-muted-foreground/30";
+                const badgeColor = item.status === "live" ? "bg-green-100 text-green-700" : item.status === "next" ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground";
+                return (
+                  <div key={i} className="relative flex gap-5 md:gap-6 pl-0">
+                    {/* Dot on the line */}
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className={`h-4 w-4 rounded-full ${dotColor} ring-4 ring-background shrink-0 mt-1`} />
+                    </div>
+                    {/* Card */}
+                    <Card className="flex-1 border-l-4 border-l-primary/30">
+                      <CardContent className="p-5">
+                        <div className="flex items-center gap-2 flex-wrap mb-2">
+                          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${badgeColor}`}>{item.version}</span>
+                          <span className="text-xs text-muted-foreground font-medium">{item.date}</span>
+                          {item.status === "live" && <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700">✓ SHIPPED</span>}
+                          {item.status === "next" && <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">UP NEXT</span>}
+                        </div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <item.icon className="h-4 w-4 text-primary shrink-0" />
+                          <h3 className="font-display font-bold text-sm">{item.title}</h3>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                );
+              })}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* MERGED SCOPE DECISIONS */}
+      <section className="py-16 border-b">
+        <div className="container max-w-4xl">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2 text-center">Intentional gaps</p>
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-3">Scope Decisions</h2>
+          <p className="text-sm text-muted-foreground text-center mb-10">Good product judgment means knowing what not to build — yet</p>
+          <div className="space-y-4">
+            {[
+              {
+                icon: MailX, title: "Real email delivery",
+                body: "The email composer modal, templates, and send flow are fully built — but emails log to the console instead of delivering via SMTP. Real email infrastructure requires domain verification, bounce handling, and deliverability testing. None of that adds demo value. The interface shows the workflow; the plumbing is straightforward. Estimated V2 effort: 4 hours with SendGrid.",
+              },
+              {
+                icon: Lock, title: "Customer authentication",
+                body: "Customers access request status via tracking ID link — no account, no password. Deliberate choice: a customer submits 1–2 credit requests per year. Login friction is not justified for that usage pattern. The tracking ID is sufficient to demonstrate the workflow. Production version would add magic link auth for customers with multiple requests and SSO (AWS IAM) for internal Finance users.",
+              },
+              {
+                icon: FileText, title: "Document upload and storage",
+                body: "The schema supports it and the form shows it — but S3 storage isn't wired. In discovery, the primary customer pain was visibility, not file management. Solving 'where is my request' came before 'where is my invoice.' Storage is a workflow optimization on top of a working approval chain, not a prerequisite for one.",
+              },
+              {
+                icon: Activity, title: "Full compliance audit trail",
+                body: "StatusHistory is in the schema and partially surfaced in the deal detail view. Full compliance-grade audit trail with export, retention policies, and tamper detection is a v2 feature — the data model is ready, the UI polish is remaining work.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-xl border bg-card p-5 flex items-start gap-4 border-l-4 border-l-amber-400">
+                <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
+                  <XCircle className="h-4 w-4 text-amber-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-display font-semibold text-sm mb-1">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground italic text-center mt-6 max-w-2xl mx-auto">
+            These weren't oversights — they were conscious tradeoffs to keep the prototype focused on the core approval workflow.
+          </p>
         </div>
       </section>
 
