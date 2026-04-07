@@ -317,7 +317,7 @@ export default function InternalDashboard() {
                 <TableHead>Tracking ID</TableHead>
                 <TableHead>Customer</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
-                <TableHead>Solution</TableHead>
+                <TableHead>Products</TableHead>
                 <TableHead>Tier</TableHead>
                 <TableHead>Stage</TableHead>
                 <TableHead></TableHead>
