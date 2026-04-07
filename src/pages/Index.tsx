@@ -163,14 +163,18 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center">
+        <div className="container flex h-14 md:h-16 items-center justify-between px-4">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center shrink-0">
               <span className="text-redhat-foreground font-display font-bold text-sm">RH</span>
             </div>
-            <span className="font-display font-bold text-lg"><span className="text-redhat">Red Hat</span> Partner Credit Funding Portal</span>
+            <span className="font-display font-bold text-base md:text-lg truncate">
+              <span className="text-redhat">Red Hat</span>{" "}
+              <span className="hidden sm:inline">Partner Credit Funding Portal</span>
+              <span className="sm:hidden">Credits</span>
+            </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <Link to="/customer">
               <Button variant="ghost" size="sm" className="text-xs text-redhat hover:text-redhat hover:bg-redhat/10">Customer Portal</Button>
             </Link>
