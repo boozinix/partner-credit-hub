@@ -49,17 +49,19 @@ export default function CustomerRequests() {
           <p className="text-muted-foreground text-center py-12">Loading requests...</p>
         ) : (
           <Tabs defaultValue="all">
-            <TabsList>
-              <TabsTrigger value="all">All ({requests.length})</TabsTrigger>
-              <TabsTrigger value="pending">Pending ({filter("pending").length})</TabsTrigger>
-              <TabsTrigger value="action" className="relative">
-                Action Required ({filter("action").length})
-                {filter("action").length > 0 && (
-                  <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-warning" />
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="completed">Completed ({filter("completed").length})</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+              <TabsList className="inline-flex w-auto min-w-full md:min-w-0">
+                <TabsTrigger value="all">All ({requests.length})</TabsTrigger>
+                <TabsTrigger value="pending">Pending ({filter("pending").length})</TabsTrigger>
+                <TabsTrigger value="action" className="relative whitespace-nowrap">
+                  Action ({filter("action").length})
+                  {filter("action").length > 0 && (
+                    <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-warning" />
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="completed">Done ({filter("completed").length})</TabsTrigger>
+              </TabsList>
+            </div>
 
             {["all", "pending", "action", "completed", "denied"].map((tab) => (
               <TabsContent key={tab} value={tab}>
