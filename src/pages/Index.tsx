@@ -210,6 +210,30 @@ const Index = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
       </section>
 
+      {/* QUICK START GUIDE — moved up from bottom */}
+      <section className="py-16 border-b bg-muted/30">
+        <div className="container max-w-4xl">
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">How It Works — Try It Yourself</h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { icon: Users, step: "1", title: "Submit a Request", desc: "Go to Customer Portal → Submit Request. Fill in the form as a Red Hat customer requesting post-deal credits." },
+              { icon: Search, step: "2", title: "Track Your Status", desc: "After submitting, you'll get a tracking ID. Visit My Requests to see the live funding lifecycle." },
+              { icon: LayoutDashboard, step: "3", title: "Review as Finance", desc: "Switch to Internal Finance Portal. See the live budget pool, review incoming requests, and approve or route them." },
+              { icon: UserCheck, step: "4", title: "Approve as a Director", desc: "Open any deal above $10K. Click Approve & Route — it auto-advances to the next approval tier based on deal size." },
+            ].map((s) => (
+              <div key={s.step} className="text-center">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <s.icon className="h-6 w-6 text-primary" />
+                </div>
+                <div className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold mb-2">{s.step}</div>
+                <h3 className="font-display font-semibold text-sm mb-2">{s.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 1 — THE PROBLEM */}
       <section className="py-16 md:py-20" style={{ backgroundColor: "#1E293B" }}>
         <div className="container max-w-5xl">
