@@ -418,6 +418,7 @@ export default function CustomerSubmit() {
                   </ol>
                 </CardContent>
               </Card>
+              <Card className="border-primary/20 bg-accent/30">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Lightbulb className="h-5 w-5 text-primary" />
