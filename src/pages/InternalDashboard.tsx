@@ -184,7 +184,7 @@ export default function InternalDashboard() {
             </Button>
             <Button size="sm" asChild>
               <Link to="/customer/submit">
-                <Plus className="h-4 w-4 mr-2" /> New Entry
+                <Plus className="h-4 w-4 mr-2" /> + Manual Entry
               </Link>
             </Button>
           </div>
