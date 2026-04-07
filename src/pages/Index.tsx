@@ -494,30 +494,30 @@ const Index = () => {
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold text-center mb-8">Choose your role to get started ↓</p>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Link to="/customer" className="group">
-              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/40">
+              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-redhat/40">
                 <CardContent className="p-8 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
-                    <Building2 className="h-7 w-7 text-primary" />
+                  <div className="h-14 w-14 rounded-2xl bg-redhat/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-redhat/20 transition-colors">
+                    <Building2 className="h-7 w-7 text-redhat" />
                   </div>
                   <h2 className="font-display font-bold text-xl mb-2">Customer Portal</h2>
                   <p className="text-sm text-muted-foreground mb-1">Submit new credit requests, track approvals, and manage your funding lifecycle.</p>
                   <p className="text-xs text-muted-foreground mb-3">For AWS Marketplace partners submitting and tracking credit requests</p>
-                  <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">👤 You are: A company that purchased Red Hat products on AWS Marketplace and wants to claim post-deal credits.</p>
-                  <div className="inline-flex items-center gap-2 text-sm font-medium text-primary">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
+                  <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">👤 You are: A company that purchased <span className="text-redhat font-medium">Red Hat</span> products on AWS Marketplace and wants to claim post-deal credits.</p>
+                  <div className="inline-flex items-center gap-2 text-sm font-medium text-redhat">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
                 </CardContent>
               </Card>
             </Link>
             <Link to="/internal" className="group">
-              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/40">
+              <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-aws/40">
                 <CardContent className="p-8 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
-                    <Shield className="h-7 w-7 text-primary" />
+                  <div className="h-14 w-14 rounded-2xl bg-aws/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-aws/20 transition-colors">
+                    <Shield className="h-7 w-7 text-aws" />
                   </div>
                   <h2 className="font-display font-bold text-xl mb-2">Finance Portal</h2>
                   <p className="text-sm text-muted-foreground mb-1">Review submissions, manage tiered approvals, and track budget utilization.</p>
-                  <p className="text-xs text-muted-foreground mb-3">For Red Hat Finance Analysts, Directors, and VPs reviewing and approving requests</p>
+                  <p className="text-xs text-muted-foreground mb-3">For <span className="text-redhat font-medium">Red Hat</span> Finance Analysts, Directors, and VPs reviewing and approving requests</p>
                   <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-4">🔒 You are: An AWS Finance team member, Director, or VP who reviews and approves credit requests.</p>
-                  <div className="inline-flex items-center gap-2 text-sm font-medium text-primary">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
+                  <div className="inline-flex items-center gap-2 text-sm font-medium text-aws">Enter Portal <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></div>
                 </CardContent>
               </Card>
             </Link>
