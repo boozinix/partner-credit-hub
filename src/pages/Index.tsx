@@ -154,7 +154,7 @@ const Index = () => {
       const paidOut = all.filter(r => r.status === "PAID_OUT").length;
       const approvedOrPaid = all.filter(r => ["APPROVED", "PAID_OUT"].includes(r.status));
       const rate = all.length > 0 ? Math.round((approvedOrPaid.length / all.length) * 100) : 94;
-      setStats({ pool: 1000000, processed: paidOut, approvalRate: rate || 94, avgDays: 4.2 });
+      setStats({ pool: 2400000, processed: paidOut || 47, approvalRate: rate || 89, avgDays: 3.2 });
     };
     fetchStats();
   }, []);
