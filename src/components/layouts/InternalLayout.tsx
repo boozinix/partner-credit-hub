@@ -15,6 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { LayoutDashboard, FileText, Settings, Users, LogOut, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const navItems = [
   { title: "Finance Queue", url: "/internal", icon: LayoutDashboard },
@@ -83,6 +84,8 @@ function InternalSidebar() {
 
 export function InternalLayout({ children }: { children: React.ReactNode }) {
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [orientationDismissed, setOrientationDismissed] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <SidebarProvider>
@@ -100,13 +103,11 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
           <header className="h-14 flex items-center border-b bg-card px-4 gap-4">
             <SidebarTrigger />
             <div className="flex-1" />
-            <Link
-              to="/customer"
-              className="inline-flex items-center gap-1.5 rounded-md border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20 transition-colors"
-            >
-              <LogOut className="h-3.5 w-3.5" />
-              Switch to Customer Portal
-            </Link>
+            {/* View Toggle */}
+            <div className="flex items-center rounded-full border bg-muted/50 p-0.5 text-xs">
+              <button onClick={() => navigate("/customer")} className="px-3 py-1 rounded-full text-muted-foreground hover:text-foreground transition-colors">👤 Customer</button>
+              <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium">🏦 Finance</span>
+            </div>
             <Link
               to="/"
               className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
@@ -114,6 +115,15 @@ export function InternalLayout({ children }: { children: React.ReactNode }) {
               Home
             </Link>
           </header>
+          {/* Orientation Banner */}
+          {!orientationDismissed && (
+            <div className="bg-slate-800 text-white px-4 py-2 flex items-center justify-center gap-2 text-xs" style={{ minHeight: "40px" }}>
+              <span>🏦 <span className="font-semibold">Internal View</span> — You are in the AWS Finance team dashboard. Customers see a separate simplified portal. Approvals, send-backs, and denials you make here update the customer's status in real time.</span>
+              <button onClick={() => setOrientationDismissed(true)} className="text-white/60 hover:text-white ml-2 shrink-0">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
           <main className="flex-1 overflow-auto">{children}</main>
         </div>
       </div>

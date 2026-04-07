@@ -51,6 +51,7 @@ export default function DealDetail() {
     setLoading(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchData(); }, [trackingId]);
 
   const performAction = async (action: "approve" | "deny" | "send_back", sendBackComment?: string) => {
@@ -124,10 +125,19 @@ export default function DealDetail() {
   };
 
   if (loading) {
-    return <InternalLayout><div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div></InternalLayout>;
+    return <InternalLayout><div className="flex items-center justify-center h-64 text-muted-foreground">Loading deal details...</div></InternalLayout>;
   }
   if (!request) {
-    return <InternalLayout><div className="flex items-center justify-center h-64">Request not found.</div></InternalLayout>;
+    return (
+      <InternalLayout>
+        <div className="flex flex-col items-center justify-center h-64 gap-4">
+          <AlertTriangle className="h-8 w-8 text-muted-foreground" />
+          <h2 className="font-display font-bold text-xl">Deal Not Found</h2>
+          <p className="text-sm text-muted-foreground">No deal found with tracking ID "{trackingId}".</p>
+          <Button asChild variant="outline"><Link to="/internal">Back to Finance Queue</Link></Button>
+        </div>
+      </InternalLayout>
+    );
   }
 
   const financeApprover = approvers.find((a) => a.role === "FINANCE");

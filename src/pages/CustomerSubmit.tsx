@@ -396,6 +396,28 @@ export default function CustomerSubmit() {
 
             {/* Sidebar */}
             <div className="space-y-6">
+              {/* What happens next */}
+              <Card className="border-l-4 border-l-primary/40">
+                <CardContent className="p-6">
+                  <h3 className="font-display font-semibold text-sm mb-4">What happens next</h3>
+                  <ol className="space-y-3 text-sm">
+                    {[
+                      { emoji: "✅", title: "Instant confirmation", desc: "You'll receive a Tracking ID immediately." },
+                      { emoji: "🔄", title: "Finance review (1-3 days)", desc: "An AWS Finance Analyst reviews your submission and verifies deal details." },
+                      { emoji: "📋", title: "Tiered approval", desc: "Credits under $10K are approved directly. Larger amounts go to Director or VP review." },
+                      { emoji: "💳", title: "Credit applied", desc: "Approved credits are applied to your AWS account by the scheduled payout date." },
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="shrink-0 mt-0.5">{item.emoji}</span>
+                        <div>
+                          <p className="font-medium text-xs">{item.title}</p>
+                          <p className="text-xs text-muted-foreground">{item.desc}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
               <Card className="border-primary/20 bg-accent/30">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">

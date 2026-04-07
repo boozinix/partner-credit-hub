@@ -118,6 +118,19 @@ export default function CustomerStatus() {
     ? LIFECYCLE_STEPS.filter((s) => s.key !== "VP_PENDING")
     : LIFECYCLE_STEPS;
 
+  const statusCallouts: Record<string, { color: string; borderColor: string; icon: string; text: string }> = {
+    SUBMITTED: { color: "bg-blue-50", borderColor: "border-l-blue-500", icon: "📥", text: "Your request has been received and is in our queue. A Finance Analyst will begin review within 1 business day." },
+    FINANCE_REVIEW: { color: "bg-blue-50", borderColor: "border-l-blue-500", icon: "🔍", text: "An AWS Finance Analyst is actively reviewing your submission. They're verifying your deal details and credit eligibility. No action needed from you right now." },
+    DIRECTOR_PENDING: { color: "bg-purple-50", borderColor: "border-l-purple-500", icon: "📋", text: "Your request has passed Finance review and is now awaiting Director approval. Required for credits between $10K–$50K. Typically takes 2-3 business days." },
+    VP_PENDING: { color: "bg-purple-50", borderColor: "border-l-purple-500", icon: "📋", text: "Your request is awaiting VP approval. Required for credits above $50K. Typically takes 3-5 business days." },
+    NEEDS_CHANGES: { color: "bg-amber-50", borderColor: "border-l-amber-500", icon: "⚠️", text: "Action Required: Finance has reviewed your request and needs additional information. Check your email for details, then use the button below to update and resubmit." },
+    APPROVED: { color: "bg-green-50", borderColor: "border-l-green-500", icon: "🎉", text: "Approved! Your credit has been approved and will be applied to your AWS account by the payout date shown below." },
+    PAID_OUT: { color: "bg-green-50", borderColor: "border-l-green-500", icon: "✅", text: "Complete. Your credit has been disbursed to your AWS account. Check your AWS billing dashboard to confirm." },
+    DENIED: { color: "bg-red-50", borderColor: "border-l-red-500", icon: "❌", text: "This request was not approved. See the reason below. If you believe this is an error, contact your AWS Partner Manager." },
+  };
+
+  const callout = statusCallouts[request.status];
+
   return (
     <CustomerLayout>
       <div className="container py-10 max-w-6xl">
@@ -134,9 +147,17 @@ export default function CustomerStatus() {
               <StatusBadge status={request.status} />
               <TierBadge tier={request.tier} />
             </div>
-            <p className="text-sm text-muted-foreground mb-8">
+            <p className="text-sm text-muted-foreground mb-6">
               Last updated {new Date(request.updated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
             </p>
+
+            {/* What's happening right now */}
+            {callout && (
+              <div className={`rounded-lg border-l-4 ${callout.borderColor} ${callout.color} p-4 mb-6 flex items-start gap-3`}>
+                <span className="text-lg shrink-0">{callout.icon}</span>
+                <p className="text-sm leading-relaxed">{callout.text}</p>
+              </div>
+            )}
 
             {/* Status Banners */}
             {request.status === "NEEDS_CHANGES" && (

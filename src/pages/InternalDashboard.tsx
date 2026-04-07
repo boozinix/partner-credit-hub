@@ -184,7 +184,7 @@ export default function InternalDashboard() {
             </Button>
             <Button size="sm" asChild>
               <Link to="/customer/submit">
-                <Plus className="h-4 w-4 mr-2" /> New Entry
+                <Plus className="h-4 w-4 mr-2" /> + Manual Entry
               </Link>
             </Button>
           </div>
@@ -317,7 +317,7 @@ export default function InternalDashboard() {
                 <TableHead>Tracking ID</TableHead>
                 <TableHead>Customer</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
-                <TableHead>Solution</TableHead>
+                <TableHead>Products</TableHead>
                 <TableHead>Tier</TableHead>
                 <TableHead>Stage</TableHead>
                 <TableHead></TableHead>
