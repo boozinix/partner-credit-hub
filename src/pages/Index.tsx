@@ -240,6 +240,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* EXCEL VS PORTAL TOGGLE */}
+      <ExcelVsPortalToggle />
+
       {/* SECTION 2 — WHAT THIS FIXES */}
       <section className="py-16 border-b bg-muted/30">
         <div className="container max-w-4xl">
