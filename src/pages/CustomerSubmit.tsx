@@ -323,11 +323,6 @@ export default function CustomerSubmit() {
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                       </div>
-                        onClick={() => removeLine(idx)}
-                        disabled={lineItems.length === 1}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
                     </div>
                   ))}
 
