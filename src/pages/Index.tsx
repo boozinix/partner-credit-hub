@@ -172,10 +172,10 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-3">
             <Link to="/customer">
-              <Button variant="ghost" size="sm" className="text-xs">Customer Portal</Button>
+              <Button variant="ghost" size="sm" className="text-xs text-redhat hover:text-redhat hover:bg-redhat/10">Customer Portal</Button>
             </Link>
             <Link to="/internal">
-              <Button variant="ghost" size="sm" className="text-xs">Finance Portal</Button>
+              <Button variant="ghost" size="sm" className="text-xs text-aws hover:text-aws hover:bg-aws/10">Finance Portal</Button>
             </Link>
           </div>
         </div>
