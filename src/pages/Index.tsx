@@ -345,9 +345,9 @@ const Index = () => {
       </section>
 
       {/* MERGED ROADMAP — Timeline with arrow line */}
-      <section className="py-16 border-t border-b" style={{ backgroundColor: "hsl(231, 48%, 97%)" }}>
-        <div className="container max-w-5xl">
-          <div className="text-center mb-12">
+      <section className="py-12 md:py-16 border-t border-b" style={{ backgroundColor: "hsl(231, 48%, 97%)" }}>
+        <div className="container max-w-5xl px-4">
+          <div className="text-center mb-8 md:mb-12">
             <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-2">Implementation Timeline</p>
             <h2 className="font-display font-bold text-2xl md:text-3xl flex items-center justify-center gap-2">
               Roadmap <ArrowRight className="h-5 w-5 text-primary" />
