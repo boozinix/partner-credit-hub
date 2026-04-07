@@ -274,8 +274,8 @@ export default function CustomerSubmit() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {/* Header */}
-                  <div className="grid grid-cols-[1fr_140px_140px_36px] gap-3 px-1">
+                  {/* Header — hide on mobile */}
+                  <div className="hidden md:grid grid-cols-[1fr_140px_140px_36px] gap-3 px-1">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Product</p>
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Purchase ($)</p>
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Credit ($)</p>
@@ -283,7 +283,7 @@ export default function CustomerSubmit() {
                   </div>
 
                   {lineItems.map((item, idx) => (
-                    <div key={idx} className="grid grid-cols-[1fr_140px_140px_36px] gap-3 items-center">
+                    <div key={idx} className="flex flex-col md:grid md:grid-cols-[1fr_140px_140px_36px] gap-2 md:gap-3 md:items-center border-b md:border-b-0 pb-3 md:pb-0">
                       <Select value={item.product} onValueChange={(v) => updateLine(idx, "product", v)}>
                         <SelectTrigger className="h-9 text-sm">
                           <SelectValue placeholder="Select product..." />
