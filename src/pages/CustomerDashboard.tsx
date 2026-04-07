@@ -51,7 +51,47 @@ export default function CustomerDashboard() {
           </Button>
         </div>
 
-        {/* Stats */}
+        {/* How It Works */}
+        <Collapsible open={howItWorksOpen} onOpenChange={setHowItWorksOpen}>
+          <div className="rounded-xl bg-primary/5 border border-primary/20 p-5 mb-8">
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="font-display font-semibold text-sm">How this works</h3>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => {
+                    if (howItWorksOpen) {
+                      localStorage.setItem("howItWorksDismissed", "true");
+                    }
+                  }}
+                >
+                  {howItWorksOpen ? "Got it ✓" : "Show steps"}
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            <CollapsibleContent>
+              <div className="grid md:grid-cols-3 gap-4 mt-3">
+                {[
+                  { icon: Pencil, title: "Submit your request", desc: "Fill out your deal details and select which Red Hat products you purchased on AWS Marketplace." },
+                  { icon: Clock, title: "Finance reviews & routes", desc: "Your request is reviewed by AWS Finance. Depending on the credit amount, it may require Director or VP approval." },
+                  { icon: CheckCircle2, title: "Credit applied to your account", desc: "Once approved, credits are applied directly to your AWS account by the payout date." },
+                ].map((step, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                      <step.icon className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{step.title}</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CollapsibleContent>
+          </div>
+        </Collapsible>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card>
             <CardContent className="p-5">
