@@ -200,10 +200,17 @@ const Index = () => {
               Unlock Post-Deal Credits for Your{" "}
               <span className="text-redhat">Red Hat</span> Investments
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-muted-foreground mb-4 md:mb-6 max-w-2xl mx-auto leading-relaxed">
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
               From submission to payout in days, not weeks.
             </p>
+            {/* What is a Post-Deal Credit? */}
+            <div className="max-w-2xl mx-auto mb-6 md:mb-8 rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 text-left">
+              <p className="text-sm md:text-base text-foreground leading-relaxed">
+                <span className="font-display font-bold text-primary">What is a Post-Deal Credit?</span>{" "}
+                When a customer purchases eligible software (e.g., <span className="text-redhat font-medium">Red Hat</span>) through AWS Marketplace and hits a spend threshold, AWS owes them a rebate — called a post-deal credit. This portal replaces manual spreadsheet tracking with a structured, auditable workflow.
+              </p>
+            </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
               <Link to="/customer" className="w-full sm:w-auto">
                 <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground w-full sm:w-auto">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
