@@ -15,6 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { LayoutDashboard, FileText, Settings, Users, LogOut, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const navItems = [
   { title: "Finance Queue", url: "/internal", icon: LayoutDashboard },
