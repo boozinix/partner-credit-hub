@@ -22,9 +22,9 @@ function ExcelVsPortalToggle() {
   const [showPortal, setShowPortal] = useState(true);
 
   return (
-    <section className="py-16 border-b bg-muted/20">
-      <div className="container max-w-5xl">
-        <div className="flex items-center justify-center gap-4 mb-10">
+    <section className="py-12 md:py-16 border-b bg-muted/20">
+      <div className="container max-w-5xl px-4">
+        <div className="flex items-center justify-center gap-3 md:gap-4 mb-8 md:mb-10">
           <span className={`font-display font-bold text-sm uppercase tracking-wider transition-colors ${!showPortal ? "text-destructive" : "text-muted-foreground/50"}`}>Before</span>
           <Switch checked={showPortal} onCheckedChange={setShowPortal} className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-destructive scale-125" />
           <span className={`font-display font-bold text-sm uppercase tracking-wider transition-colors ${showPortal ? "text-green-600" : "text-muted-foreground/50"}`}>After</span>
@@ -138,7 +138,7 @@ function AnimatedCounter({ end, prefix = "", suffix = "", duration = 2000 }: { e
   }, [end, duration]);
 
   return (
-    <div ref={ref} className="font-display font-bold text-4xl md:text-5xl text-primary">
+    <div ref={ref} className="font-display font-bold text-2xl md:text-5xl text-primary">
       {prefix}{count.toLocaleString()}{suffix}
     </div>
   );
@@ -163,14 +163,18 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center">
+        <div className="container flex h-14 md:h-16 items-center justify-between px-4">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="h-8 w-8 rounded-lg bg-redhat flex items-center justify-center shrink-0">
               <span className="text-redhat-foreground font-display font-bold text-sm">RH</span>
             </div>
-            <span className="font-display font-bold text-lg"><span className="text-redhat">Red Hat</span> Partner Credit Funding Portal</span>
+            <span className="font-display font-bold text-base md:text-lg truncate">
+              <span className="text-redhat">Red Hat</span>{" "}
+              <span className="hidden sm:inline">Partner Credit Funding Portal</span>
+              <span className="sm:hidden">Credits</span>
+            </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <Link to="/customer">
               <Button variant="ghost" size="sm" className="text-xs text-redhat hover:text-redhat hover:bg-redhat/10">Customer Portal</Button>
             </Link>
@@ -182,27 +186,27 @@ const Index = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/30 py-16 md:py-24">
-        <div className="container relative z-10">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/30 py-12 md:py-24">
+        <div className="container relative z-10 px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary mb-4 md:mb-6">
               <Shield className="h-3.5 w-3.5" />
               AWS Marketplace Partner Program
             </div>
-            <h1 className="font-display font-bold text-4xl md:text-6xl tracking-tight mb-6 text-foreground">
+            <h1 className="font-display font-bold text-3xl md:text-6xl tracking-tight mb-4 md:mb-6 text-foreground">
               Unlock Post-Deal Credits for Your{" "}
               <span className="text-redhat">Red Hat</span> Investments
             </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
               From submission to payout in days, not weeks.
             </p>
-            <div className="flex items-center justify-center gap-4">
-              <Link to="/customer">
-                <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+              <Link to="/customer" className="w-full sm:w-auto">
+                <Button size="lg" className="gap-2 bg-redhat hover:bg-redhat/90 text-redhat-foreground w-full sm:w-auto">Try as a Customer <ArrowRight className="h-4 w-4" /></Button>
               </Link>
-              <Link to="/internal">
-                <Button variant="outline" size="lg" className="gap-2 border-aws text-aws hover:bg-aws/10">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
+              <Link to="/internal" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="gap-2 border-aws text-aws hover:bg-aws/10 w-full sm:w-auto">Review as Finance <ArrowRight className="h-4 w-4" /></Button>
               </Link>
             </div>
           </div>
@@ -211,10 +215,10 @@ const Index = () => {
       </section>
 
       {/* QUICK START GUIDE — moved up from bottom */}
-      <section className="py-16 border-b bg-muted/30">
-        <div className="container max-w-4xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">How It Works — Try It Yourself</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <section className="py-12 md:py-16 border-b bg-muted/30">
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-center mb-8 md:mb-10">How It Works — Try It Yourself</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
               { icon: Users, step: "1", title: "Submit a Request", desc: "Go to Customer Portal → Submit Request. Fill in the form as a Red Hat customer requesting post-deal credits." },
               { icon: Search, step: "2", title: "Track Your Status", desc: "After submitting, you'll get a tracking ID. Visit My Requests to see the live funding lifecycle." },
@@ -222,12 +226,12 @@ const Index = () => {
               { icon: UserCheck, step: "4", title: "Approve as a Director", desc: "Open any deal above $10K. Click Approve & Route — it auto-advances to the next approval tier based on deal size." },
             ].map((s) => (
               <div key={s.step} className="text-center">
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <s.icon className="h-6 w-6 text-primary" />
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <s.icon className="h-5 md:h-6 w-5 md:w-6 text-primary" />
                 </div>
-                <div className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold mb-2">{s.step}</div>
-                <h3 className="font-display font-semibold text-sm mb-2">{s.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+                <div className="inline-flex items-center justify-center h-5 w-5 md:h-6 md:w-6 rounded-full bg-primary text-primary-foreground text-[10px] md:text-xs font-bold mb-2">{s.step}</div>
+                <h3 className="font-display font-semibold text-xs md:text-sm mb-1 md:mb-2">{s.title}</h3>
+                <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -235,45 +239,45 @@ const Index = () => {
       </section>
 
       {/* SECTION 1 — THE PROBLEM */}
-      <section className="py-16 md:py-20" style={{ backgroundColor: "#1E293B" }}>
-        <div className="container max-w-5xl">
-          <h2 className="font-display font-bold text-2xl md:text-4xl text-white text-center mb-6 leading-tight">
+      <section className="py-12 md:py-20" style={{ backgroundColor: "#1E293B" }}>
+        <div className="container max-w-5xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-4xl text-white text-center mb-4 md:mb-6 leading-tight">
             I managed AWS's <span className="text-redhat">Red Hat</span> partnership. I had no idea where my customers' money was.
           </h2>
-          <p className="text-center text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed text-sm md:text-base">
+          <p className="text-center text-slate-400 max-w-3xl mx-auto mb-8 md:mb-12 leading-relaxed text-xs md:text-base">
             When a customer buys <span className="text-redhat font-medium">Red Hat</span> products on AWS Marketplace and qualifies for post-deal credits, they submit a request — and enter a black box. No confirmation. No timeline. No status updates. My Finance team tracked every single credit request in a manual Excel spreadsheet — not a shared Google Doc, an actual .xlsx file sitting on someone's desktop. I found out a deal was stuck only when the customer emailed me directly asking what happened. I managed the relationship but couldn't answer basic questions about money that was owed to them.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <Card className="bg-white border-0">
-              <CardContent className="p-6 text-center">
-                <div className="h-12 w-12 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-4">
-                  <HelpCircle className="h-6 w-6 text-red-500" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <HelpCircle className="h-5 md:h-6 w-5 md:w-6 text-red-500" />
                 </div>
-                <h3 className="font-display font-bold text-lg mb-2 text-slate-900">Customers fly blind</h3>
-                <p className="text-sm text-slate-600">
+                <h3 className="font-display font-bold text-base md:text-lg mb-2 text-slate-900">Customers fly blind</h3>
+                <p className="text-xs md:text-sm text-slate-600">
                   No confirmation after submitting. No status. No estimated timeline. They start emailing their AWS Partner Manager directly for updates.
                 </p>
               </CardContent>
             </Card>
             <Card className="bg-white border-0">
-              <CardContent className="p-6 text-center">
-                <div className="h-12 w-12 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-4">
-                  <Unlink className="h-6 w-6 text-amber-500" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <Unlink className="h-5 md:h-6 w-5 md:w-6 text-amber-500" />
                 </div>
-                <h3 className="font-display font-bold text-lg mb-2 text-slate-900">Partner Managers are invisible</h3>
-                <p className="text-sm text-slate-600">
+                <h3 className="font-display font-bold text-base md:text-lg mb-2 text-slate-900">Partner Managers are invisible</h3>
+                <p className="text-xs md:text-sm text-slate-600">
                   Once Finance takes over, the Account Manager has zero visibility. Responsible for the customer relationship but unable to answer basic status questions.
                 </p>
               </CardContent>
             </Card>
             <Card className="bg-white border-0">
-              <CardContent className="p-6 text-center">
-                <div className="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                  <FileSpreadsheet className="h-6 w-6 text-blue-500" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="h-10 md:h-12 w-10 md:w-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                  <FileSpreadsheet className="h-5 md:h-6 w-5 md:w-6 text-blue-500" />
                 </div>
-                <h3 className="font-display font-bold text-lg mb-2 text-slate-900">Finance runs on Excel</h3>
-                <p className="text-sm text-slate-600">
+                <h3 className="font-display font-bold text-base md:text-lg mb-2 text-slate-900">Finance runs on Excel</h3>
+                <p className="text-xs md:text-sm text-slate-600">
                   Every status update manually entered. No routing logic. No approval tiers enforced. No budget tracking. Deals fall through the cracks for weeks.
                 </p>
               </CardContent>
@@ -286,9 +290,9 @@ const Index = () => {
       <ExcelVsPortalToggle />
 
       {/* SECTION 2 — WHAT THIS FIXES */}
-      <section className="py-16 border-b bg-muted/30">
-        <div className="container max-w-4xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">What This Portal Fixes</h2>
+      <section className="py-12 md:py-16 border-b bg-muted/30">
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-center mb-8 md:mb-10">What This Portal Fixes</h2>
           <div className="space-y-4">
             {[
               {
@@ -317,9 +321,9 @@ const Index = () => {
       </section>
 
       {/* SECTION 3 — STATS */}
-      <section className="py-16 border-b">
-        <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="py-12 md:py-16 border-b">
+        <div className="container px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {[
               { end: stats.pool, prefix: "$", label: "FY2026 Credit Pool", icon: DollarSign },
               { end: stats.processed, label: "Credits Processed", icon: CheckCircle2 },
@@ -327,13 +331,13 @@ const Index = () => {
               { end: 42, suffix: "", label: "Avg. Processing Time", icon: Clock, customDisplay: "4.2 days" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <stat.icon className="h-6 w-6 text-primary/60 mx-auto mb-3" />
+                <stat.icon className="h-5 md:h-6 w-5 md:w-6 text-primary/60 mx-auto mb-2 md:mb-3" />
                 {"customDisplay" in stat && stat.customDisplay ? (
-                  <div className="font-display font-bold text-4xl md:text-5xl text-primary">{stat.customDisplay}</div>
+                  <div className="font-display font-bold text-2xl md:text-5xl text-primary">{stat.customDisplay}</div>
                 ) : (
                   <AnimatedCounter end={stat.end} prefix={stat.prefix} suffix={stat.suffix} />
                 )}
-                <p className="text-sm text-muted-foreground mt-2 font-medium uppercase tracking-wider">{stat.label}</p>
+                <p className="text-[10px] md:text-sm text-muted-foreground mt-1 md:mt-2 font-medium uppercase tracking-wider">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -341,9 +345,9 @@ const Index = () => {
       </section>
 
       {/* MERGED ROADMAP — Timeline with arrow line */}
-      <section className="py-16 border-t border-b" style={{ backgroundColor: "hsl(231, 48%, 97%)" }}>
-        <div className="container max-w-5xl">
-          <div className="text-center mb-12">
+      <section className="py-12 md:py-16 border-t border-b" style={{ backgroundColor: "hsl(231, 48%, 97%)" }}>
+        <div className="container max-w-5xl px-4">
+          <div className="text-center mb-8 md:mb-12">
             <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-2">Implementation Timeline</p>
             <h2 className="font-display font-bold text-2xl md:text-3xl flex items-center justify-center gap-2">
               Roadmap <ArrowRight className="h-5 w-5 text-primary" />
@@ -426,8 +430,8 @@ const Index = () => {
       </section>
 
       {/* SCOPE DECISIONS — Collapsible */}
-      <section className="py-16 border-b">
-        <div className="container max-w-4xl">
+      <section className="py-12 md:py-16 border-b">
+        <div className="container max-w-4xl px-4">
           <Collapsible defaultOpen>
             <CollapsibleTrigger className="w-full group">
               <div className="flex items-center justify-center gap-3 cursor-pointer">
@@ -466,20 +470,20 @@ const Index = () => {
       </section>
 
       {/* SECTION 5 — WHAT THIS REPLACES */}
-      <section className="py-16" style={{ backgroundColor: "#312E81" }}>
-        <div className="container max-w-4xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-white text-center mb-10">What this replaces</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+      <section className="py-12 md:py-16" style={{ backgroundColor: "#312E81" }}>
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-white text-center mb-8 md:mb-10">What this replaces</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {[
               { before: "~4 hrs/week", after: "~15 min/week", label: "Finance team time on manual spreadsheet updates" },
               { before: "Unknown", after: "Real-time", label: "Visibility into credit request status for Account Managers" },
               { before: "Email chains", after: "Tracking link", label: "How customers check their request status" },
             ].map((card, i) => (
               <Card key={i} className="bg-white/10 border-white/20 text-white">
-                <CardContent className="p-6 text-center">
-                  <p className="text-red-300 font-display font-bold text-2xl line-through mb-1">{card.before}</p>
-                  <p className="text-green-300 font-display font-bold text-2xl mb-3">{card.after}</p>
-                  <p className="text-sm text-white/70">{card.label}</p>
+                <CardContent className="p-4 md:p-6 text-center">
+                  <p className="text-red-300 font-display font-bold text-xl md:text-2xl line-through mb-1">{card.before}</p>
+                  <p className="text-green-300 font-display font-bold text-xl md:text-2xl mb-2 md:mb-3">{card.after}</p>
+                  <p className="text-xs md:text-sm text-white/70">{card.label}</p>
                 </CardContent>
               </Card>
             ))}
@@ -488,8 +492,8 @@ const Index = () => {
       </section>
 
       {/* PORTAL CARDS — Final CTA */}
-      <section className="py-16 bg-muted/30 border-t">
-        <div className="container">
+      <section className="py-12 md:py-16 bg-muted/30 border-t">
+        <div className="container px-4">
           <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-2">Try It Yourself</h2>
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold text-center mb-8">Choose your role to get started ↓</p>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
@@ -525,9 +529,9 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="border-t bg-card py-8 mt-auto">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© 2026 <span className="text-redhat font-medium">Red Hat</span> Partner Credit Funding Portal. All rights reserved.</p>
+      <footer className="border-t bg-card py-6 md:py-8 mt-auto">
+        <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm text-muted-foreground px-4">
+          <p>© 2026 <span className="text-redhat font-medium">Red Hat</span> Partner Credit Funding Portal.</p>
           <div className="flex gap-4">
             <span>Privacy Policy</span>
             <span>Terms of Service</span>

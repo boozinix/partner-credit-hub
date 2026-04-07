@@ -173,23 +173,23 @@ export default function CustomerSubmit() {
 
   return (
     <CustomerLayout>
-      <div className="container py-10 max-w-6xl">
-        <div className="mb-8">
-          <h1 className="font-display font-bold text-3xl mb-2">Submit Credit Request</h1>
-          <p className="text-muted-foreground">
+      <div className="container py-6 md:py-10 max-w-6xl px-4">
+        <div className="mb-6 md:mb-8">
+          <h1 className="font-display font-bold text-2xl md:text-3xl mb-2">Submit Credit Request</h1>
+          <p className="text-muted-foreground text-sm">
             Submitting as <span className="font-medium text-foreground">{persona.company}</span>
           </p>
         </div>
 
         {/* Progress */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-3">
+        <div className="mb-6 md:mb-8">
+          <div className="flex items-center justify-between mb-3 overflow-x-auto gap-2">
             {sections.map((s, i) => (
-              <div key={s.label} className="flex items-center gap-2 text-xs">
-                <div className={`h-6 w-6 rounded-full flex items-center justify-center ${i < filledSections ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  <s.icon className="h-3 w-3" />
+              <div key={s.label} className="flex items-center gap-1.5 md:gap-2 text-xs shrink-0">
+                <div className={`h-5 w-5 md:h-6 md:w-6 rounded-full flex items-center justify-center ${i < filledSections ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                  <s.icon className="h-2.5 w-2.5 md:h-3 md:w-3" />
                 </div>
-                <span className={i < filledSections ? "font-medium text-foreground" : "text-muted-foreground"}>{s.label}</span>
+                <span className={`hidden sm:inline ${i < filledSections ? "font-medium text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -274,8 +274,8 @@ export default function CustomerSubmit() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {/* Header */}
-                  <div className="grid grid-cols-[1fr_140px_140px_36px] gap-3 px-1">
+                  {/* Header — hide on mobile */}
+                  <div className="hidden md:grid grid-cols-[1fr_140px_140px_36px] gap-3 px-1">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Product</p>
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Purchase ($)</p>
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Credit ($)</p>
@@ -283,7 +283,7 @@ export default function CustomerSubmit() {
                   </div>
 
                   {lineItems.map((item, idx) => (
-                    <div key={idx} className="grid grid-cols-[1fr_140px_140px_36px] gap-3 items-center">
+                    <div key={idx} className="flex flex-col md:grid md:grid-cols-[1fr_140px_140px_36px] gap-2 md:gap-3 md:items-center border-b md:border-b-0 pb-3 md:pb-0">
                       <Select value={item.product} onValueChange={(v) => updateLine(idx, "product", v)}>
                         <SelectTrigger className="h-9 text-sm">
                           <SelectValue placeholder="Select product..." />
@@ -296,31 +296,33 @@ export default function CustomerSubmit() {
                           ))}
                         </SelectContent>
                       </Select>
-                      <Input
-                        type="number"
-                        placeholder="500,000"
-                        value={item.purchaseAmount}
-                        onChange={(e) => updateLine(idx, "purchaseAmount", e.target.value)}
-                        className="h-9 text-sm"
-                        max={100000000}
-                      />
-                      <Input
-                        type="number"
-                        placeholder="5,000"
-                        value={item.creditAmount}
-                        onChange={(e) => updateLine(idx, "creditAmount", e.target.value)}
-                        className="h-9 text-sm"
-                      />
+                      <div className="flex gap-2 md:contents">
+                        <Input
+                          type="number"
+                          placeholder="Purchase $"
+                          value={item.purchaseAmount}
+                          onChange={(e) => updateLine(idx, "purchaseAmount", e.target.value)}
+                          className="h-9 text-sm flex-1"
+                          max={100000000}
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Credit $"
+                          value={item.creditAmount}
+                          onChange={(e) => updateLine(idx, "creditAmount", e.target.value)}
+                          className="h-9 text-sm flex-1"
+                        />
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="h-9 w-9 text-muted-foreground hover:text-destructive"
+                        className="h-9 w-9 text-muted-foreground hover:text-destructive self-end md:self-auto"
                         onClick={() => removeLine(idx)}
                         disabled={lineItems.length === 1}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
+                      </div>
                     </div>
                   ))}
 
@@ -333,11 +335,11 @@ export default function CustomerSubmit() {
                   {/* Totals */}
                   {(totalPurchase > 0 || totalCredit > 0) && (
                     <div className="border-t pt-3 mt-3">
-                      <div className="grid grid-cols-[1fr_140px_140px_36px] gap-3 px-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:grid md:grid-cols-[1fr_140px_140px_36px] md:gap-3 px-1">
                         <p className="text-sm font-semibold">Totals</p>
-                        <p className="text-sm font-semibold">${totalPurchase.toLocaleString()}</p>
-                        <p className="text-sm font-semibold text-primary">${totalCredit.toLocaleString()}</p>
-                        <div />
+                        <p className="text-sm font-semibold">Purchase: ${totalPurchase.toLocaleString()}</p>
+                        <p className="text-sm font-semibold text-primary">Credit: ${totalCredit.toLocaleString()}</p>
+                        <div className="hidden md:block" />
                       </div>
                       {totalPurchase > 0 && (
                         <p className="text-[10px] text-muted-foreground mt-1 px-1">

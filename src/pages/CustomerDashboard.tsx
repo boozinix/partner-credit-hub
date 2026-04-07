@@ -39,12 +39,12 @@ export default function CustomerDashboard() {
   return (
     <CustomerLayout>
       <div className="container py-10 max-w-5xl">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="font-display font-bold text-3xl">Welcome back, {persona.name.split(" ")[0]}</h1>
-            <p className="text-muted-foreground mt-1">{persona.company} · Partner Credit Dashboard</p>
+            <h1 className="font-display font-bold text-2xl md:text-3xl">Welcome back, {persona.name.split(" ")[0]}</h1>
+            <p className="text-muted-foreground mt-1 text-sm">{persona.company} · Partner Credit Dashboard</p>
           </div>
-          <Button asChild>
+          <Button asChild className="w-full sm:w-auto">
             <Link to="/customer/submit">
               <Plus className="h-4 w-4 mr-2" /> New Credit Request
             </Link>

@@ -39,9 +39,9 @@ export default function CustomerRequests() {
 
   return (
     <CustomerLayout>
-      <div className="container py-10 max-w-5xl">
-        <div className="mb-8">
-          <h1 className="font-display font-bold text-3xl mb-1">My Requests</h1>
+      <div className="container py-6 md:py-10 max-w-5xl px-4">
+        <div className="mb-6 md:mb-8">
+          <h1 className="font-display font-bold text-2xl md:text-3xl mb-1">My Requests</h1>
           <p className="text-muted-foreground">View and manage all credit requests for {persona.company}.</p>
         </div>
 
@@ -49,17 +49,19 @@ export default function CustomerRequests() {
           <p className="text-muted-foreground text-center py-12">Loading requests...</p>
         ) : (
           <Tabs defaultValue="all">
-            <TabsList>
-              <TabsTrigger value="all">All ({requests.length})</TabsTrigger>
-              <TabsTrigger value="pending">Pending ({filter("pending").length})</TabsTrigger>
-              <TabsTrigger value="action" className="relative">
-                Action Required ({filter("action").length})
-                {filter("action").length > 0 && (
-                  <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-warning" />
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="completed">Completed ({filter("completed").length})</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+              <TabsList className="inline-flex w-auto min-w-full md:min-w-0">
+                <TabsTrigger value="all">All ({requests.length})</TabsTrigger>
+                <TabsTrigger value="pending">Pending ({filter("pending").length})</TabsTrigger>
+                <TabsTrigger value="action" className="relative whitespace-nowrap">
+                  Action ({filter("action").length})
+                  {filter("action").length > 0 && (
+                    <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-warning" />
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="completed">Done ({filter("completed").length})</TabsTrigger>
+              </TabsList>
+            </div>
 
             {["all", "pending", "action", "completed", "denied"].map((tab) => (
               <TabsContent key={tab} value={tab}>
