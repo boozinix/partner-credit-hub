@@ -7,7 +7,9 @@ import { User, X } from "lucide-react";
 
 export function CustomerLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { persona, setPersona } = usePersona();
+  const [demoBannerDismissed, setDemoBannerDismissed] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
