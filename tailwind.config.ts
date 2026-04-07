@@ -63,6 +63,14 @@ export default {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
+        redhat: {
+          DEFAULT: "hsl(var(--redhat))",
+          foreground: "hsl(var(--redhat-foreground))",
+        },
+        aws: {
+          DEFAULT: "hsl(var(--aws))",
+          foreground: "hsl(var(--aws-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
