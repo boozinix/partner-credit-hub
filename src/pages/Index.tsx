@@ -290,9 +290,9 @@ const Index = () => {
       <ExcelVsPortalToggle />
 
       {/* SECTION 2 — WHAT THIS FIXES */}
-      <section className="py-16 border-b bg-muted/30">
-        <div className="container max-w-4xl">
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-10">What This Portal Fixes</h2>
+      <section className="py-12 md:py-16 border-b bg-muted/30">
+        <div className="container max-w-4xl px-4">
+          <h2 className="font-display font-bold text-xl md:text-3xl text-center mb-8 md:mb-10">What This Portal Fixes</h2>
           <div className="space-y-4">
             {[
               {
