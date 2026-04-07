@@ -404,7 +404,7 @@ export default function CustomerSubmit() {
                     {[
                       { emoji: "✅", title: "Instant confirmation", desc: "You'll receive a Tracking ID immediately." },
                       { emoji: "🔄", title: "Finance review (1-3 days)", desc: "An AWS Finance Analyst reviews your submission and verifies deal details." },
-                      { emoji: "📋", title: "Tiered approval", desc: "Credits under $10K are approved directly. Larger amounts go to Director or VP review." },
+                      { emoji: "📋", title: "Approval routing", desc: "Depending on the credit amount, additional approvals may be needed — larger amounts take a bit longer." },
                       { emoji: "💳", title: "Credit applied", desc: "Approved credits are applied to your AWS account by the scheduled payout date." },
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2">

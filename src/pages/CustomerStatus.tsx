@@ -145,7 +145,7 @@ export default function CustomerStatus() {
             <div className="flex items-center gap-3 mb-2">
               <h1 className="font-display font-bold text-2xl">{request.tracking_id}</h1>
               <StatusBadge status={request.status} />
-              <TierBadge tier={request.tier} />
+              
             </div>
             <p className="text-sm text-muted-foreground mb-6">
               Last updated {new Date(request.updated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}

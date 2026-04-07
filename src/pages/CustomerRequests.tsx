@@ -77,7 +77,7 @@ export default function CustomerRequests() {
                                 <div className="flex items-center gap-2">
                                   <span className="font-display font-bold text-sm font-mono">{r.tracking_id}</span>
                                   <StatusBadge status={r.status} />
-                                  <TierBadge tier={r.tier} />
+                                  
                                 </div>
                                 <div className="text-right flex items-center gap-3">
                                   <div>
