@@ -8,9 +8,12 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { TierBadge } from "@/components/TierBadge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { Search, Download, Plus, ExternalLink, Clock, TrendingUp, AlertCircle, AlertTriangle, ChevronDown, ChevronUp, Send, UserX, ArrowUpRight } from "lucide-react";
+import { Search, Download, Plus, ExternalLink, Clock, TrendingUp, AlertCircle, AlertTriangle, ChevronDown, ChevronUp, Send, UserX, ArrowUpRight, Share2, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Tables } from "@/integrations/supabase/types";
 
