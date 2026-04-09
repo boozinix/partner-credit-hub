@@ -42,6 +42,11 @@ export default function DealDetail() {
   const [addObserverOpen, setAddObserverOpen] = useState(false);
   const [newObserverName, setNewObserverName] = useState("");
   const [newObserverRole, setNewObserverRole] = useState("");
+  const [emailSendBackSubject, setEmailSendBackSubject] = useState("");
+  const [emailSendBackItems, setEmailSendBackItems] = useState<string[]>([]);
+  const [emailSendBackBody, setEmailSendBackBody] = useState("");
+  const [emailApprovalSubject, setEmailApprovalSubject] = useState("");
+  const [emailApprovalBody, setEmailApprovalBody] = useState("");
 
   const fetchData = async () => {
     if (!trackingId) return;
@@ -429,7 +434,18 @@ export default function DealDetail() {
             </Card>
 
             {/* Email Button */}
-            <Button variant="outline" className="w-full" onClick={() => setEmailModalOpen(true)}>
+            <Button variant="outline" className="w-full" onClick={() => {
+              setEmailSendBackSubject(`Action Required: ${request?.tracking_id} — Changes Requested`);
+              setEmailSendBackItems([
+                "Verify the requested credit amount matches your invoice",
+                "Provide updated business justification",
+                "Confirm deal start and end dates",
+              ]);
+              setEmailSendBackBody("");
+              setEmailApprovalSubject(`Approved: ${request?.tracking_id} — Credit Request Approved`);
+              setEmailApprovalBody(`Your credit request for $${Number(request?.credit_amount).toLocaleString()} has been approved. Payout will be processed within 30 business days.`);
+              setEmailModalOpen(true);
+            }}>
               <Mail className="h-4 w-4 mr-2" /> Open Email Composer
             </Button>
           </div>
@@ -545,17 +561,41 @@ export default function DealDetail() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Subject</p>
-                <p className="text-sm font-medium">Action Required: {request?.tracking_id} — Changes Requested</p>
+                <Input value={emailSendBackSubject} onChange={(e) => setEmailSendBackSubject(e.target.value)} />
               </div>
               <div className="rounded-lg border border-warning/30 bg-warning/5 p-4">
                 <p className="text-xs font-semibold text-warning mb-2">Required Action Items</p>
-                <ul className="text-xs text-muted-foreground space-y-1">
-                  <li>• Verify the requested credit amount matches your invoice</li>
-                  <li>• Provide updated business justification</li>
-                  <li>• Confirm deal start and end dates</li>
-                </ul>
+                <div className="space-y-2">
+                  {emailSendBackItems.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span className="text-warning text-xs">•</span>
+                      <input
+                        type="text"
+                        value={item}
+                        onChange={(e) => {
+                          const updated = [...emailSendBackItems];
+                          updated[idx] = e.target.value;
+                          setEmailSendBackItems(updated);
+                        }}
+                        className="flex-1 bg-transparent border-b border-warning/20 text-xs py-1 focus:outline-none focus:border-warning"
+                      />
+                      <button
+                        onClick={() => setEmailSendBackItems(emailSendBackItems.filter((_, i) => i !== idx))}
+                        className="text-muted-foreground hover:text-destructive text-xs"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => setEmailSendBackItems([...emailSendBackItems, ""])}
+                    className="text-xs text-warning hover:text-warning/80 font-medium mt-1"
+                  >
+                    + Add item
+                  </button>
+                </div>
               </div>
-              <Textarea placeholder="Additional message to the customer..." className="min-h-[80px]" />
+              <Textarea value={emailSendBackBody} onChange={(e) => setEmailSendBackBody(e.target.value)} placeholder="Additional message to the customer..." className="min-h-[80px]" />
             </TabsContent>
             <TabsContent value="approval" className="space-y-4 mt-4">
               <div>
@@ -564,13 +604,11 @@ export default function DealDetail() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Subject</p>
-                <p className="text-sm font-medium">Approved: {request?.tracking_id} — Credit Request Approved</p>
+                <Input value={emailApprovalSubject} onChange={(e) => setEmailApprovalSubject(e.target.value)} />
               </div>
-              <div className="rounded-lg border border-success/30 bg-success/5 p-4">
-                <p className="text-xs text-muted-foreground">
-                  Your credit request for <span className="font-semibold">${Number(request?.credit_amount).toLocaleString()}</span> has been approved. 
-                  Payout will be processed within 30 business days.
-                </p>
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Message</p>
+                <Textarea value={emailApprovalBody} onChange={(e) => setEmailApprovalBody(e.target.value)} className="min-h-[80px]" />
               </div>
             </TabsContent>
           </Tabs>
