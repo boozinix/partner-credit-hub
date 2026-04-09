@@ -582,6 +582,63 @@ export default function DealDetail() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Add Observer Modal */}
+      <Dialog open={addObserverOpen} onOpenChange={setAddObserverOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus className="h-5 w-5 text-primary" />
+              Add Observer
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Name</label>
+              <Input
+                value={newObserverName}
+                onChange={(e) => setNewObserverName(e.target.value)}
+                placeholder="e.g. Jane Smith"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Role</label>
+              <Select value={newObserverRole} onValueChange={setNewObserverRole}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Account Manager">Account Manager</SelectItem>
+                  <SelectItem value="Partnership Manager">Partnership Manager</SelectItem>
+                  <SelectItem value="Solutions Architect">Solutions Architect</SelectItem>
+                  <SelectItem value="Technical Lead">Technical Lead</SelectItem>
+                  <SelectItem value="Program Manager">Program Manager</SelectItem>
+                  <SelectItem value="Executive Sponsor">Executive Sponsor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddObserverOpen(false)}>Cancel</Button>
+            <Button
+              disabled={!newObserverName.trim() || !newObserverRole}
+              onClick={() => {
+                const names = newObserverName.trim().split(" ");
+                const initials = names.length >= 2
+                  ? `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase()
+                  : newObserverName.trim().substring(0, 2).toUpperCase();
+                setObservers([...observers, { name: newObserverName.trim(), role: newObserverRole, initials }]);
+                setNewObserverName("");
+                setNewObserverRole("");
+                setAddObserverOpen(false);
+                toast({ title: "Observer added", description: `${newObserverName.trim()} will receive status notifications.` });
+              }}
+            >
+              <UserPlus className="h-4 w-4 mr-2" /> Add Observer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </InternalLayout>
   );
 }
