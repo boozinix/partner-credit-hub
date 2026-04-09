@@ -66,6 +66,11 @@ export default function InternalUsers() {
     await fetchApprovers();
   };
 
+  const getDelegate = (id: string | null) => {
+    if (!id) return null;
+    return approvers.find((a) => a.id === id);
+  };
+
   const handleAddApprover = async () => {
     if (!newName.trim() || !newEmail.trim() || !newRole) return;
     await supabase.from("approvers").insert({
