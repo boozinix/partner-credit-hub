@@ -4,9 +4,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, User, AlertTriangle } from "lucide-react";
+import { Shield, User, AlertTriangle, UserPlus } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -26,6 +29,10 @@ export default function InternalUsers() {
   const [approvers, setApprovers] = useState<Tables<"approvers">[]>([]);
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState<string | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newRole, setNewRole] = useState<"FINANCE" | "DIRECTOR" | "VP" | "">("");
 
   const fetchApprovers = async () => {
     const { data } = await supabase.from("approvers").select("*").order("role");
@@ -64,12 +71,32 @@ export default function InternalUsers() {
     return approvers.find((a) => a.id === id);
   };
 
+  const handleAddApprover = async () => {
+    if (!newName.trim() || !newEmail.trim() || !newRole) return;
+    await supabase.from("approvers").insert({
+      name: newName.trim(),
+      email: newEmail.trim(),
+      role: newRole as any,
+    });
+    toast({ title: "Delegate added", description: `${newName.trim()} has been added as ${ROLE_LABELS[newRole]}.` });
+    setNewName("");
+    setNewEmail("");
+    setNewRole("");
+    setAddOpen(false);
+    await fetchApprovers();
+  };
+
   return (
     <InternalLayout>
       <div className="p-6 space-y-6">
-        <div>
-          <h1 className="font-display font-bold text-2xl">Approval Team</h1>
-          <p className="text-sm text-muted-foreground">Manage approvers and out-of-office status</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="font-display font-bold text-2xl">Approval Team</h1>
+            <p className="text-sm text-muted-foreground">Manage approvers and out-of-office status</p>
+          </div>
+          <Button onClick={() => setAddOpen(true)} className="gap-2">
+            <UserPlus className="h-4 w-4" /> Add Delegate
+          </Button>
         </div>
 
         <Card>
@@ -174,6 +201,47 @@ export default function InternalUsers() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Add Delegate Dialog */}
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus className="h-5 w-5 text-primary" />
+              Add Delegate
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Full Name</label>
+              <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="e.g. Jane Smith" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Email</label>
+              <Input value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="e.g. jane@company.com" type="email" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Role</label>
+              <Select value={newRole} onValueChange={(v) => setNewRole(v as any)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="FINANCE">Finance Analyst</SelectItem>
+                  <SelectItem value="DIRECTOR">Director</SelectItem>
+                  <SelectItem value="VP">Vice President</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddOpen(false)}>Cancel</Button>
+            <Button disabled={!newName.trim() || !newEmail.trim() || !newRole} onClick={handleAddApprover}>
+              <UserPlus className="h-4 w-4 mr-2" /> Add Delegate
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </InternalLayout>
   );
 }
