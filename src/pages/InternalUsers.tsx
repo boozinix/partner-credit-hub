@@ -201,6 +201,47 @@ export default function InternalUsers() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Add Delegate Dialog */}
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus className="h-5 w-5 text-primary" />
+              Add Delegate
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Full Name</label>
+              <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="e.g. Jane Smith" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Email</label>
+              <Input value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="e.g. jane@company.com" type="email" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Role</label>
+              <Select value={newRole} onValueChange={(v) => setNewRole(v as any)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="FINANCE">Finance Analyst</SelectItem>
+                  <SelectItem value="DIRECTOR">Director</SelectItem>
+                  <SelectItem value="VP">Vice President</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddOpen(false)}>Cancel</Button>
+            <Button disabled={!newName.trim() || !newEmail.trim() || !newRole} onClick={handleAddApprover}>
+              <UserPlus className="h-4 w-4 mr-2" /> Add Delegate
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </InternalLayout>
   );
 }
