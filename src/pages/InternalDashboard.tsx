@@ -43,6 +43,11 @@ export default function InternalDashboard() {
   const [tierFilter, setTierFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareMode, setShareMode] = useState<"full" | "selected">("full");
+  const [selectedDealIds, setSelectedDealIds] = useState<Set<string>>(new Set());
+  const [shareEmail, setShareEmail] = useState("");
+  const [shareMessage, setShareMessage] = useState("");
   const perPage = 10;
 
   useEffect(() => {
