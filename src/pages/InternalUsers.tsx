@@ -89,9 +89,14 @@ export default function InternalUsers() {
   return (
     <InternalLayout>
       <div className="p-6 space-y-6">
-        <div>
-          <h1 className="font-display font-bold text-2xl">Approval Team</h1>
-          <p className="text-sm text-muted-foreground">Manage approvers and out-of-office status</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="font-display font-bold text-2xl">Approval Team</h1>
+            <p className="text-sm text-muted-foreground">Manage approvers and out-of-office status</p>
+          </div>
+          <Button onClick={() => setAddOpen(true)} className="gap-2">
+            <UserPlus className="h-4 w-4" /> Add Delegate
+          </Button>
         </div>
 
         <Card>
