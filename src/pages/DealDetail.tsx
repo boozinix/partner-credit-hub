@@ -34,6 +34,14 @@ export default function DealDetail() {
     "Provide updated business justification",
     "Confirm deal start and end dates",
   ]);
+  const [observers, setObservers] = useState([
+    { name: "Lisa Nguyen", role: "Account Manager", initials: "LN" },
+    { name: "David Park", role: "Partnership Manager", initials: "DP" },
+    { name: "Rachel Adams", role: "Solutions Architect", initials: "RA" },
+  ]);
+  const [addObserverOpen, setAddObserverOpen] = useState(false);
+  const [newObserverName, setNewObserverName] = useState("");
+  const [newObserverRole, setNewObserverRole] = useState("");
 
   const fetchData = async () => {
     if (!trackingId) return;
