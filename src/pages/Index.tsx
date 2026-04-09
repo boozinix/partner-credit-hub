@@ -198,7 +198,7 @@ const Index = () => {
             </div>
             <h1 className="font-display font-bold text-3xl md:text-6xl tracking-tight mb-4 md:mb-6 text-foreground">
               Unlock Post-Deal Credits for Your{" "}
-              <span className="text-redhat">Red Hat</span> Investments
+              <span className="text-redhat">Red Hat</span> Purchases
             </h1>
             <p className="text-base md:text-lg text-muted-foreground mb-4 md:mb-6 max-w-2xl mx-auto leading-relaxed">
               Streamline your AWS Marketplace credit requests with our automated approval pipeline.
