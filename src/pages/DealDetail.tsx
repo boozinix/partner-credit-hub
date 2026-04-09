@@ -11,7 +11,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign, ArrowLeft, Send } from "lucide-react";
+import { Check, X, RotateCcw, Mail, AlertTriangle, User, Building2, Calendar, DollarSign, ArrowLeft, Send, UserPlus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Tables } from "@/integrations/supabase/types";
 
 export default function DealDetail() {
@@ -32,6 +34,14 @@ export default function DealDetail() {
     "Provide updated business justification",
     "Confirm deal start and end dates",
   ]);
+  const [observers, setObservers] = useState([
+    { name: "Lisa Nguyen", role: "Account Manager", initials: "LN" },
+    { name: "David Park", role: "Partnership Manager", initials: "DP" },
+    { name: "Rachel Adams", role: "Solutions Architect", initials: "RA" },
+  ]);
+  const [addObserverOpen, setAddObserverOpen] = useState(false);
+  const [newObserverName, setNewObserverName] = useState("");
+  const [newObserverRole, setNewObserverRole] = useState("");
 
   const fetchData = async () => {
     if (!trackingId) return;
@@ -395,13 +405,14 @@ export default function DealDetail() {
             {/* Observers */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-4">Observers</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground">Observers</h3>
+                  <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => setAddObserverOpen(true)}>
+                    <UserPlus className="h-3.5 w-3.5 mr-1" /> Add
+                  </Button>
+                </div>
                 <div className="space-y-3">
-                  {[
-                    { name: "Lisa Nguyen", role: "Account Manager", initials: "LN" },
-                    { name: "David Park", role: "Partnership Manager", initials: "DP" },
-                    { name: "Rachel Adams", role: "Solutions Architect", initials: "RA" },
-                  ].map((o) => (
+                  {observers.map((o) => (
                     <div key={o.name} className="flex items-center gap-3">
                       <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center">
                         <span className="text-[10px] font-bold text-muted-foreground">{o.initials}</span>
@@ -567,6 +578,63 @@ export default function DealDetail() {
             <Button variant="outline" onClick={() => setEmailModalOpen(false)}>Cancel</Button>
             <Button onClick={() => { setEmailModalOpen(false); toast({ title: "Email sent (demo)" }); }}>
               Send Message
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Observer Modal */}
+      <Dialog open={addObserverOpen} onOpenChange={setAddObserverOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus className="h-5 w-5 text-primary" />
+              Add Observer
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Name</label>
+              <Input
+                value={newObserverName}
+                onChange={(e) => setNewObserverName(e.target.value)}
+                placeholder="e.g. Jane Smith"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Role</label>
+              <Select value={newObserverRole} onValueChange={setNewObserverRole}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Account Manager">Account Manager</SelectItem>
+                  <SelectItem value="Partnership Manager">Partnership Manager</SelectItem>
+                  <SelectItem value="Solutions Architect">Solutions Architect</SelectItem>
+                  <SelectItem value="Technical Lead">Technical Lead</SelectItem>
+                  <SelectItem value="Program Manager">Program Manager</SelectItem>
+                  <SelectItem value="Executive Sponsor">Executive Sponsor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddObserverOpen(false)}>Cancel</Button>
+            <Button
+              disabled={!newObserverName.trim() || !newObserverRole}
+              onClick={() => {
+                const names = newObserverName.trim().split(" ");
+                const initials = names.length >= 2
+                  ? `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase()
+                  : newObserverName.trim().substring(0, 2).toUpperCase();
+                setObservers([...observers, { name: newObserverName.trim(), role: newObserverRole, initials }]);
+                setNewObserverName("");
+                setNewObserverRole("");
+                setAddObserverOpen(false);
+                toast({ title: "Observer added", description: `${newObserverName.trim()} will receive status notifications.` });
+              }}
+            >
+              <UserPlus className="h-4 w-4 mr-2" /> Add Observer
             </Button>
           </DialogFooter>
         </DialogContent>
