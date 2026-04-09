@@ -405,13 +405,14 @@ export default function DealDetail() {
             {/* Observers */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-4">Observers</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground">Observers</h3>
+                  <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => setAddObserverOpen(true)}>
+                    <UserPlus className="h-3.5 w-3.5 mr-1" /> Add
+                  </Button>
+                </div>
                 <div className="space-y-3">
-                  {[
-                    { name: "Lisa Nguyen", role: "Account Manager", initials: "LN" },
-                    { name: "David Park", role: "Partnership Manager", initials: "DP" },
-                    { name: "Rachel Adams", role: "Solutions Architect", initials: "RA" },
-                  ].map((o) => (
+                  {observers.map((o) => (
                     <div key={o.name} className="flex items-center gap-3">
                       <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center">
                         <span className="text-[10px] font-bold text-muted-foreground">{o.initials}</span>
