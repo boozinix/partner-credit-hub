@@ -187,6 +187,9 @@ export default function InternalDashboard() {
             <p className="text-sm text-muted-foreground">Manage and review partner credit requests</p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => { setShareMode("full"); setSelectedDealIds(new Set()); setShareEmail(""); setShareMessage(""); setShareOpen(true); }}>
+              <Share2 className="h-4 w-4 mr-2" /> Share
+            </Button>
             <Button variant="outline" size="sm">
               <Download className="h-4 w-4 mr-2" /> Export CSV
             </Button>
