@@ -66,9 +66,19 @@ export default function InternalUsers() {
     await fetchApprovers();
   };
 
-  const getDelegate = (id: string | null) => {
-    if (!id) return null;
-    return approvers.find((a) => a.id === id);
+  const handleAddApprover = async () => {
+    if (!newName.trim() || !newEmail.trim() || !newRole) return;
+    await supabase.from("approvers").insert({
+      name: newName.trim(),
+      email: newEmail.trim(),
+      role: newRole as any,
+    });
+    toast({ title: "Delegate added", description: `${newName.trim()} has been added as ${ROLE_LABELS[newRole]}.` });
+    setNewName("");
+    setNewEmail("");
+    setNewRole("");
+    setAddOpen(false);
+    await fetchApprovers();
   };
 
   return (
