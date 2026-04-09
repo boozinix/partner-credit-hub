@@ -29,6 +29,10 @@ export default function InternalUsers() {
   const [approvers, setApprovers] = useState<Tables<"approvers">[]>([]);
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState<string | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newRole, setNewRole] = useState<"FINANCE" | "DIRECTOR" | "VP" | "">("");
 
   const fetchApprovers = async () => {
     const { data } = await supabase.from("approvers").select("*").order("role");
