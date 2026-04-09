@@ -434,6 +434,82 @@ export default function InternalDashboard() {
           </div>
         )}
       </div>
+
+      {/* Share Dialog */}
+      <Dialog open={shareOpen} onOpenChange={setShareOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Share2 className="h-5 w-5 text-primary" />
+              Share Dashboard
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Recipient Email</label>
+              <Input value={shareEmail} onChange={(e) => setShareEmail(e.target.value)} placeholder="e.g. manager@company.com" type="email" />
+            </div>
+
+            <div>
+              <label className="text-xs text-muted-foreground mb-2 block">What to share</label>
+              <div className="flex gap-2">
+                <Button size="sm" variant={shareMode === "full" ? "default" : "outline"} onClick={() => setShareMode("full")}>
+                  Full Dashboard
+                </Button>
+                <Button size="sm" variant={shareMode === "selected" ? "default" : "outline"} onClick={() => setShareMode("selected")}>
+                  Select Deals
+                </Button>
+              </div>
+            </div>
+
+            {shareMode === "selected" && (
+              <div className="max-h-48 overflow-y-auto rounded-lg border p-3 space-y-2">
+                {requests.filter(r => !["DENIED"].includes(r.status)).slice(0, 20).map((r) => (
+                  <label key={r.id} className="flex items-center gap-3 cursor-pointer hover:bg-muted/50 rounded px-2 py-1.5 -mx-2">
+                    <Checkbox
+                      checked={selectedDealIds.has(r.id)}
+                      onCheckedChange={(checked) => {
+                        const next = new Set(selectedDealIds);
+                        if (checked) next.add(r.id); else next.delete(r.id);
+                        setSelectedDealIds(next);
+                      }}
+                    />
+                    <div className="flex-1 flex items-center gap-2">
+                      <span className="font-mono text-xs">{r.tracking_id}</span>
+                      <span className="text-xs text-muted-foreground">{r.customer_name}</span>
+                    </div>
+                    <span className="text-xs font-semibold">${Number(r.credit_amount).toLocaleString()}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+
+            {shareMode === "selected" && selectedDealIds.size > 0 && (
+              <p className="text-xs text-muted-foreground">{selectedDealIds.size} deal{selectedDealIds.size > 1 ? "s" : ""} selected</p>
+            )}
+
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Message (optional)</label>
+              <Textarea value={shareMessage} onChange={(e) => setShareMessage(e.target.value)} placeholder="Add a note to the recipient..." className="min-h-[60px]" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShareOpen(false)}>Cancel</Button>
+            <Button
+              disabled={!shareEmail.trim() || (shareMode === "selected" && selectedDealIds.size === 0)}
+              onClick={() => {
+                setShareOpen(false);
+                toast({
+                  title: "Dashboard shared (demo)",
+                  description: `${shareMode === "full" ? "Full dashboard" : `${selectedDealIds.size} deal(s)`} sent to ${shareEmail}.`,
+                });
+              }}
+            >
+              <Mail className="h-4 w-4 mr-2" /> Send
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </InternalLayout>
   );
 }
