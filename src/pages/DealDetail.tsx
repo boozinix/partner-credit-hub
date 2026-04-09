@@ -434,7 +434,18 @@ export default function DealDetail() {
             </Card>
 
             {/* Email Button */}
-            <Button variant="outline" className="w-full" onClick={() => setEmailModalOpen(true)}>
+            <Button variant="outline" className="w-full" onClick={() => {
+              setEmailSendBackSubject(`Action Required: ${request?.tracking_id} — Changes Requested`);
+              setEmailSendBackItems([
+                "Verify the requested credit amount matches your invoice",
+                "Provide updated business justification",
+                "Confirm deal start and end dates",
+              ]);
+              setEmailSendBackBody("");
+              setEmailApprovalSubject(`Approved: ${request?.tracking_id} — Credit Request Approved`);
+              setEmailApprovalBody(`Your credit request for $${Number(request?.credit_amount).toLocaleString()} has been approved. Payout will be processed within 30 business days.`);
+              setEmailModalOpen(true);
+            }}>
               <Mail className="h-4 w-4 mr-2" /> Open Email Composer
             </Button>
           </div>
