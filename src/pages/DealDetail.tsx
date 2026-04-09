@@ -42,6 +42,11 @@ export default function DealDetail() {
   const [addObserverOpen, setAddObserverOpen] = useState(false);
   const [newObserverName, setNewObserverName] = useState("");
   const [newObserverRole, setNewObserverRole] = useState("");
+  const [emailSendBackSubject, setEmailSendBackSubject] = useState("");
+  const [emailSendBackItems, setEmailSendBackItems] = useState<string[]>([]);
+  const [emailSendBackBody, setEmailSendBackBody] = useState("");
+  const [emailApprovalSubject, setEmailApprovalSubject] = useState("");
+  const [emailApprovalBody, setEmailApprovalBody] = useState("");
 
   const fetchData = async () => {
     if (!trackingId) return;
